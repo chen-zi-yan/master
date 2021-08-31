@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,5 +57,17 @@ public class UserController {
     public JsonBean<List<User>> getList() {
         List<User> list = userService.list();
         return JsonBean.success(list);
+    }
+
+    @ApiOperation("刷新token")
+    @PostMapping("refreshToken")
+    public JsonBean<Map<String, String>> refreshToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        token = token.replace("Bearer ", "");
+        String newToken = TokenUtil.refreshToken(token);
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("oldToken", token);
+        tokenMap.put("newToken", newToken);
+        return JsonBean.success(tokenMap);
     }
 }

@@ -29,7 +29,8 @@ public class TokenUtil {
      */
     public static String sign(User user) {
         Date expiresAt = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-        return JWT.create().withIssuer("auth0")
+        return JWT.create()
+                .withIssuer("auth0")
                 .withClaim("userName", user.getUsername())
                 .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -46,15 +47,28 @@ public class TokenUtil {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("auth0").build();
             DecodedJWT jwt = verifier.verify(token);
-            log.debug("issuer:{}", jwt.getIssuer());
-            log.debug("userName:{}", jwt.getClaim("userName").asString());
-            log.debug("过期时间:{}", jwt.getExpiresAt());
+            if (System.currentTimeMillis() > jwt.getExpiresAt().getTime()) {
+                log.debug("token:已过期");
+                return false;
+            }
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-
-
+    /**
+     * 刷新token
+     * @param token token
+     * @return 刷新后token
+     */
+    public static String refreshToken(String token){
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("auth0").build();
+        DecodedJWT jwt = verifier.verify(token);
+        return JWT.create()
+                .withIssuer("auth0")
+                .withClaim("userName", jwt.getClaim("userName").toString())
+                .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
+                .sign(Algorithm.HMAC256(TOKEN_SECRET));
+    }
 }

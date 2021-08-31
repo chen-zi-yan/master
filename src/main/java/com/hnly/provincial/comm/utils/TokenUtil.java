@@ -67,7 +67,7 @@ public class TokenUtil {
         DecodedJWT jwt = verifier.verify(token);
         return JWT.create()
                 .withIssuer("auth0")
-                .withClaim("userName", jwt.getClaim("userName").toString())
+                .withClaim("userName", jwt.getClaim("userName").asString())
                 .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
     }

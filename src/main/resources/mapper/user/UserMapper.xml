@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnly.provincial.dao.user.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.user.User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="status" property="status" />
+        <result column="ange" property="ange" />
+        <result column="unit_name" property="unitName" />
+        <result column="unit_address" property="unitAddress" />
+        <result column="phone" property="phone" />
+        <result column="contact_number" property="contactNumber" />
+        <result column="email" property="email" />
+        <result column="code" property="code" />
+        <result column="quanxian" property="quanxian" />
+        <result column="createtime" property="createtime" />
+        <result column="updatetime" property="updatetime" />
+        <result column="association" property="association" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, name, password, status, ange, unit_name, unit_address, phone, contact_number, email, code, quanxian, createtime, updatetime, association
+    </sql>
+
+</mapper>

@@ -80,6 +80,12 @@
             <artifactId>java-jwt</artifactId>
             <version>3.18.1</version>
         </dependency>
+        <!-- druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -110,6 +116,7 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>dev/*</exclude>
+                    <exclude>prod/*</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -130,6 +137,12 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
         </profile>
     </profiles>
 </project>

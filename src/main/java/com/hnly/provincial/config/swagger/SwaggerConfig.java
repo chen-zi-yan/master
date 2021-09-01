@@ -1,6 +1,5 @@
 package com.hnly.provincial.config.swagger;
 
-import com.sun.org.apache.xpath.internal.axes.PredicatedNodeTest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +32,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.OAS_30)
+        return new Docket(DocumentationType.OAS_30).enable(showApi)
                 .apiInfo(apiInfo())
                 .securitySchemes(Collections.singletonList(HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build()))
                 .securityContexts(Collections.singletonList(SecurityContext.builder()

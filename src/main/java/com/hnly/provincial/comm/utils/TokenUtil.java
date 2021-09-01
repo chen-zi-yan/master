@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.hnly.provincial.comm.ResultEnum;
+import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.entity.user.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +25,8 @@ public class TokenUtil {
 
     private static final String AUTH = "auth0";
 
+    private static final String USERNAME = "userName";
+
     /**
      * 签名生成
      *
@@ -33,7 +37,7 @@ public class TokenUtil {
         Date expiresAt = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         return JWT.create()
                 .withIssuer(AUTH)
-                .withClaim("userName", user.getUsername())
+                .withClaim(USERNAME, user.getUsername())
                 .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
     }
@@ -50,8 +54,7 @@ public class TokenUtil {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
             DecodedJWT jwt = verifier.verify(token);
             if (System.currentTimeMillis() > jwt.getExpiresAt().getTime()) {
-                log.debug("token:已过期");
-                return false;
+                throw new MyException(ResultEnum.TOKEN_EXPIRED);
             }
             return true;
         } catch (Exception e) {
@@ -61,15 +64,16 @@ public class TokenUtil {
 
     /**
      * 刷新token
+     *
      * @param token token
      * @return 刷新后token
      */
-    public static String refreshToken(String token){
+    public static String refreshToken(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
         DecodedJWT jwt = verifier.verify(token);
         return JWT.create()
                 .withIssuer(AUTH)
-                .withClaim("userName", jwt.getClaim("userName").asString())
+                .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())
                 .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
     }

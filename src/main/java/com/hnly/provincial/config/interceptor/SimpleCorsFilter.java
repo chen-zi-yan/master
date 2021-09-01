@@ -1,4 +1,4 @@
-package com.hnly.provincial.config;
+package com.hnly.provincial.config.interceptor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

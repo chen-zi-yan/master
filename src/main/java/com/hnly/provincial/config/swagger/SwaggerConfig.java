@@ -1,4 +1,4 @@
-package com.hnly.provincial.config;
+package com.hnly.provincial.config.swagger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

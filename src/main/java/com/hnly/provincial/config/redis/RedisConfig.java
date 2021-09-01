@@ -1,4 +1,4 @@
-package com.hnly.provincial.config;
+package com.hnly.provincial.config.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

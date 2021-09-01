@@ -20,9 +20,11 @@ public enum ResultEnum {
     SAVE_ERROR(40005, "保存错误"),
     NOT_DELETE(40006, "无法删除"),
     HIVE_NOT_DELETE(40007, "已经被使用,无法被删除"),
-    OLDPASSWORD_ERROR(40008, "老密码错误")
-    ;
-
+    OLDPASSWORD_ERROR(40008, "老密码错误"),
+    VALIDATION_ERR(40009, "验证错误"),
+    UNKNOWN_ERR(-1,"未知错误"),
+    TOKEN_EXPIRED(40010, "验证错误"),
+            ;
     /**
      * 状态码
      */
@@ -45,4 +47,4 @@ public enum ResultEnum {
     public String getMsg() {
         return msg;
     }
-}
+    }

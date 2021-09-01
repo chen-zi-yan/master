@@ -1,4 +1,4 @@
-package com.hnly.provincial.config;
+package com.hnly.provincial.config.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hnly.provincial.comm.JsonBean;

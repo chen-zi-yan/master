@@ -1,4 +1,4 @@
-package com.hnly.provincial.config;
+package com.hnly.provincial.config.mybatisPlus;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;

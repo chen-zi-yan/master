@@ -1,5 +1,6 @@
 package com.hnly.provincial.config.swagger;
 
+import com.sun.org.apache.xpath.internal.axes.PredicatedNodeTest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +45,8 @@ public class SwaggerConfig {
                         .build()))
                 .select()
                 .apis(RequestHandlerSelectors.any())
+                //过滤路径
+                .paths(PathSelectors.regex("/error").negate())
                 .paths(PathSelectors.any())
                 .build();
 

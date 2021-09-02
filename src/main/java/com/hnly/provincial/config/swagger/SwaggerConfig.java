@@ -27,12 +27,9 @@ import java.util.Collections;
 @EnableOpenApi
 public class SwaggerConfig {
 
-    @Value("${apiShow}")
-    private boolean showApi;
-
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.OAS_30).enable(showApi)
+        return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
                 .securitySchemes(Collections.singletonList(HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build()))
                 .securityContexts(Collections.singletonList(SecurityContext.builder()

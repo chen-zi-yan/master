@@ -53,9 +53,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SpringBoot API Doc")
-                .description("This is a restful api document of Spring Boot.")
-                .contact(new Contact("name", "url", "email"))
+                .title("省厅平台重构版接口文档")
+                .description("标准计量设备和非标准计量设备,包括渠灌,功能聚合")
+                //.contact(new Contact("name", "url", "email"))
                 .version("1.0")
                 .build();
     }

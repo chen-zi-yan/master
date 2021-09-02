@@ -24,6 +24,8 @@ public enum ResultEnum {
     VALIDATION_ERR(40009, "验证错误"),
     UNKNOWN_ERR(-1,"未知错误"),
     TOKEN_EXPIRED(40010, "验证错误"),
+    NOTHINGNESS(40011,"不存在"),
+    FAILURE(40012,"失败"),
             ;
     /**
      * 状态码

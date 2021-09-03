@@ -30,7 +30,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
 
     @Override
-    public boolean add(${entity} ${entity?uncap_first}){
+    public boolean add(${entity}VO ${entity?uncap_first}VO){
+        ${entity} ${entity?uncap_first} = Conversion.changeOne(${entity?uncap_first}VO, ${entity}.class);
         baseMapper.insert(${entity?uncap_first});
         return true;
     }
@@ -42,7 +43,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
 
     @Override
-    public boolean updateData(${entity} ${entity?uncap_first}){
+    public boolean updateData(${entity}VO ${entity?uncap_first}VO){
+        ${entity} ${entity?uncap_first} = Conversion.changeOne(${entity?uncap_first}VO, ${entity}.class);
         baseMapper.updateById(${entity?uncap_first});
         return true;
     }

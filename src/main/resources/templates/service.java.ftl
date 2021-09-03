@@ -30,10 +30,10 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
 
     /**
     * 添加${table.comment!}
-    * @param ${entity?uncap_first} ${table.comment!}
+    * @param ${entity?uncap_first}VO
     * @return false 失败   true 成功
     */
-    boolean add(${entity} ${entity?uncap_first});
+    boolean add(${entity}VO ${entity?uncap_first}VO);
 
     /**
     * 删除${table.comment!}
@@ -46,10 +46,10 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
     /**
     * 修改${table.comment!}
     *
-    * @param ${entity?uncap_first} ${table.comment!}
+    * @param ${entity?uncap_first}VO
     * @return false 失败   true 成功
     */
-    boolean updateData(${entity} ${entity?uncap_first});
+    boolean updateData(${entity}VO ${entity?uncap_first}VO);
 
     /**
     * id查询数据

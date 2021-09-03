@@ -47,8 +47,8 @@ import java.util.List;
 
     @ApiOperation(value = "新增${table.comment!}")
     @PostMapping()
-    public JsonBean<?> add(${entity} ${entity?uncap_first}){
-        ${(table.serviceName?substring(1))?uncap_first}.add(${entity?uncap_first});
+    public JsonBean<?> add(${entity}VO ${entity?uncap_first}VO){
+        ${(table.serviceName?substring(1))?uncap_first}.add(${entity?uncap_first}VO);
         return JsonBean.success();
     }
 
@@ -61,8 +61,8 @@ import java.util.List;
 
     @ApiOperation(value = "更新${table.comment!}")
     @PutMapping()
-    public JsonBean<?> update(${entity} ${entity?uncap_first}){
-        ${(table.serviceName?substring(1))?uncap_first}.updateData(${entity?uncap_first});
+    public JsonBean<?> update(${entity}VO ${entity?uncap_first}VO){
+        ${(table.serviceName?substring(1))?uncap_first}.updateData(${entity?uncap_first}VO);
         return JsonBean.success();
     }
 

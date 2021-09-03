@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
+import ${package.Entity}.${entity}VO;
 import lombok.extern.slf4j.Slf4j;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +48,8 @@ import java.util.List;
     @ApiOperation(value = "新增${table.comment!}")
     @PostMapping()
     public JsonBean<?> add(${entity} ${entity?uncap_first}){
-        return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}.add(${entity?uncap_first}));
+        ${(table.serviceName?substring(1))?uncap_first}.add(${entity?uncap_first});
+        return JsonBean.success();
     }
 
     @ApiOperation(value = "删除${table.comment!}")
@@ -65,21 +67,15 @@ import java.util.List;
     }
 
     @ApiOperation(value = "查询${table.comment!}分页数据")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "page", value = "页码"),
-        @ApiImplicitParam(name = "pageCount", value = "每页条数")
-    })
     @GetMapping()
-    public JsonBean<TableDataUtils<List<${entity}>>> findListByPage(Integer page, Integer pageCount){
-        ${(table.serviceName?substring(1))?uncap_first}.findListByPage(page, pageCount);
-        return JsonBean.success();
+    public JsonBean<TableDataUtils<List<${entity}VO>>> findListByPage(${entity}VO ${entity?uncap_first}VO){
+        return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}.findListByPage(${entity?uncap_first}VO));
     }
 
     @ApiOperation(value = "id查询${table.comment!}")
     @GetMapping("{id}")
-    public JsonBean<${entity}> findById(@PathVariable Long id){
-        ${(table.serviceName?substring(1))?uncap_first}.findById(id);
-        return JsonBean.success();
+    public JsonBean<${entity}VO> findById(@PathVariable Long id){
+        return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}.findById(id));
     }
 }
 </#if>

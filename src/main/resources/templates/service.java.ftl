@@ -2,6 +2,7 @@ package ${package.Service};
 
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import ${package.Entity}.${entity};
+import ${package.Entity}.${entity}VO;
 import ${superServiceClassPackage};
 import com.hnly.provincial.comm.JsonBean;
 import java.util.List;
@@ -22,11 +23,10 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
     /**
     * 查询${table.comment!}分页数据
     *
-    * @param page      页码
-    * @param pageCount 每页条数
+    * @param ${entity?uncap_first}VO     条件
     * @return 分页结果
     */
-    TableDataUtils<List<${entity}>> findListByPage(Integer page, Integer pageCount);
+    TableDataUtils<List<${entity}VO>> findListByPage(${entity}VO ${entity?uncap_first}VO);
 
     /**
     * 添加${table.comment!}
@@ -55,8 +55,8 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
     * id查询数据
     *
     * @param id id
-    * @return JsonBean
+    * @return ${entity}VO
     */
-    ${entity} findById(Long id);
+    ${entity}VO findById(Long id);
 }
 </#if>

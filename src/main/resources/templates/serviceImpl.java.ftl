@@ -1,14 +1,15 @@
 package ${package.ServiceImpl};
 
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.comm.utils.Conversion;
 import ${package.Entity}.${entity};
+import ${package.Entity}.${entity}VO;
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 import ${superServiceImplClassPackage};
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import java.util.List;
 
 /**
 * <p>
@@ -22,13 +23,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
 
     @Override
-    public TableDataUtils<List<${entity}>> findListByPage(Integer page, Integer pageCount){
-        IPage<${entity}> wherePage = new Page<>(page, pageCount);
-        ${entity} where = new ${entity}();
-
-        IPage<${entity}> iPage = baseMapper.selectPage(wherePage, Wrappers.query(where));
-
-        return TableDataUtils.success(iPage.getTotal(), iPage.getRecords());
+    public TableDataUtils<List<${entity}VO>> findListByPage(${entity}VO ${entity?uncap_first}VO){
+        Page<${entity}> page = lambdaQuery().page(areaVO.page());
+        List<${entity}VO> ${entity}VO = Conversion.changeList(page.getRecords(), ${entity}VO.class);
+        return TableDataUtils.success(page.getTotal(), ${entity}VO);
     }
 
     @Override
@@ -50,7 +48,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
 
     @Override
-    public ${entity} findById(Long id){
-        return  baseMapper.selectById(id);
+    public ${entity}VO findById(Long id){
+        ${entity} ${entity?uncap_first} = baseMapper.selectById(id);
+        return Conversion.changeOne(${entity?uncap_first}, ${entity}VO.class);
     }
 }

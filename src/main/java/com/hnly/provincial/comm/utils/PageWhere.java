@@ -14,7 +14,7 @@ import lombok.Data;
  * @since 2021-05-26
  */
 @Data
-public class PageWhere {
+public class PageWhere<T> {
 
     @ApiModelProperty(value = "每页条数", required = true)
     private long size;
@@ -22,7 +22,7 @@ public class PageWhere {
     private long current;
 
     @ApiModelProperty(value = "", hidden = true)
-    public Page page() {
-        return new Page<>(current, size);
+    public Page<T> page() {
+        return new Page<T>(current, size);
     }
 }

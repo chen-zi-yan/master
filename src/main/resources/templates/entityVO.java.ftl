@@ -1,16 +1,17 @@
 package ${package.Entity};
 
+import com.hnly.provincial.comm.utils.PageWhere;
 <#list table.importPackages as pkg>
-    import ${pkg};
+import ${pkg};
 </#list>
 <#if swagger2>
-    import io.swagger.annotations.ApiModel;
-    import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
-    import lombok.Data;
-    import lombok.EqualsAndHashCode;
-    import lombok.experimental.Accessors;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 </#if>
 
 /**
@@ -37,11 +38,11 @@ package ${package.Entity};
 @ApiModel(value="${entity}对象", description="${table.comment!}")
 </#if>
 <#if superEntityClass??>
-public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
+public class ${entity}VO extends PageWhere<${entity}><#if activeRecord><${entity}></#if> {
 <#elseif activeRecord>
-public class ${entity} extends Model<${entity}> {
+public class ${entity}VO extends PageWhere<${entity}> {
 <#else>
-public class ${entity} implements Serializable {
+public class ${entity}VO extends PageWhere<${entity}> implements Serializable {
 </#if>
 
 <#if entitySerialVersionUID>
@@ -55,40 +56,40 @@ public class ${entity} implements Serializable {
 
     <#if field.comment!?length gt 0>
         <#if swagger2>
-            @ApiModelProperty(value = "${field.comment}")
+    @ApiModelProperty(value = "${field.comment}")
         <#else>
-            /**
-            * ${field.comment}
-            */
+        /**
+        * ${field.comment}
+        */
         </#if>
     </#if>
     <#if field.keyFlag>
     <#-- 主键 -->
         <#if field.keyIdentityFlag>
-            @TableId(value = "${field.name}", type = IdType.AUTO)
+    @TableId(value = "${field.name}", type = IdType.AUTO)
         <#elseif idType??>
-            @TableId(value = "${field.name}", type = IdType.${idType})
+    @TableId(value = "${field.name}", type = IdType.${idType})
         <#elseif field.convert>
-            @TableId("${field.name}")
+    @TableId("${field.name}")
         </#if>
     <#-- 普通字段 -->
     <#elseif field.fill??>
     <#-- -----   存在字段填充设置   ----->
         <#if field.convert>
-            @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
+    @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
         <#else>
-            @TableField(fill = FieldFill.${field.fill})
+    @TableField(fill = FieldFill.${field.fill})
         </#if>
     <#elseif field.convert>
-        @TableField("${field.name}")
+    @TableField("${field.name}")
     </#if>
 <#-- 乐观锁注解 -->
     <#if (versionFieldName!"") == field.name>
-        @Version
+    @Version
     </#if>
 <#-- 逻辑删除注解 -->
     <#if (logicDeleteFieldName!"") == field.name>
-        @TableLogic
+    @TableLogic
     </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>

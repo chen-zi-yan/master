@@ -38,6 +38,11 @@ public class UserController {
     @Resource
     private IUserService userService;
 
+    private static final String TYPE_ONE = "1";
+    private static final String TYPE_ZERO = "0";
+
+
+
     @ApiOperation("登陆接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userName", required = true, value = "用户名"),
@@ -67,7 +72,7 @@ public class UserController {
         String token = request.getHeader("Authorization");
         token = token.replace("Bearer ", "");
         String newToken = TokenUtil.refreshToken(token);
-        Map<String, String> tokenMap = new HashMap<>();
+        Map<String, String> tokenMap = new HashMap<>(2);
         tokenMap.put("oldToken", token);
         tokenMap.put("newToken", newToken);
         return JsonBean.success(tokenMap);
@@ -97,7 +102,7 @@ public class UserController {
     @ApiOperation(value = "禁用用户")
     @PutMapping("{id}")
     public JsonBean<String> disableUser(@PathVariable Long id) {
-        if (userService.disableUser(id,"1")) {
+        if (userService.disableUser(id, TYPE_ONE)) {
             return JsonBean.success();
         }
         return JsonBean.err();
@@ -106,7 +111,7 @@ public class UserController {
     @ApiOperation(value = "启用用户")
     @PutMapping("enableUser/{id}")
     public JsonBean<String> enableUser(@PathVariable Long id) {
-        if (userService.disableUser(id,"0")) {
+        if (userService.disableUser(id, TYPE_ZERO)) {
             return JsonBean.success();
         }
         return JsonBean.err();

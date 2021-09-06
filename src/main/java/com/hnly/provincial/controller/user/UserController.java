@@ -41,8 +41,6 @@ public class UserController {
     private static final String TYPE_ONE = "1";
     private static final String TYPE_ZERO = "0";
 
-
-
     @ApiOperation("登陆接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userName", required = true, value = "用户名"),

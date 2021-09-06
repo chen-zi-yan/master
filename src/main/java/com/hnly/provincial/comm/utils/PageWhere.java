@@ -16,9 +16,9 @@ import lombok.Data;
 @Data
 public class PageWhere<T> {
 
-    @ApiModelProperty(value = "每页条数", required = true)
+    @ApiModelProperty(value = "每页条数,分页时使用")
     private long size;
-    @ApiModelProperty(value = "当前页", required = true)
+    @ApiModelProperty(value = "当前页,分页时使用")
     private long current;
 
     @ApiModelProperty(value = "", hidden = true)

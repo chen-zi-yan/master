@@ -47,21 +47,21 @@ import java.util.List;
 
     @ApiOperation(value = "新增${table.comment!}")
     @PostMapping()
-    public JsonBean<?> add(${entity}VO ${entity?uncap_first}VO){
+    public JsonBean<String> add(${entity}VO ${entity?uncap_first}VO){
         ${(table.serviceName?substring(1))?uncap_first}.add(${entity?uncap_first}VO);
         return JsonBean.success();
     }
 
     @ApiOperation(value = "删除${table.comment!}")
     @DeleteMapping("{id}")
-    public JsonBean<?> delete(@PathVariable("id") Long id){
+    public JsonBean<String> delete(@PathVariable("id") Long id){
         ${(table.serviceName?substring(1))?uncap_first}.delete(id);
         return JsonBean.success();
     }
 
     @ApiOperation(value = "更新${table.comment!}")
     @PutMapping()
-    public JsonBean<?> update(${entity}VO ${entity?uncap_first}VO){
+    public JsonBean<String> update(${entity}VO ${entity?uncap_first}VO){
         ${(table.serviceName?substring(1))?uncap_first}.updateData(${entity?uncap_first}VO);
         return JsonBean.success();
     }

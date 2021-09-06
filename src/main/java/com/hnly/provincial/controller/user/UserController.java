@@ -9,10 +9,7 @@ import com.hnly.provincial.comm.validation.Update;
 import com.hnly.provincial.entity.user.User;
 import com.hnly.provincial.entity.user.UserVO;
 import com.hnly.provincial.service.user.IUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -77,8 +74,11 @@ public class UserController {
     }
 
     @ApiOperation("添加用户")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "ddd", response = UserVO.class)
+    })
     @PostMapping
-    public JsonBean<?> addUser(@Validated({Add.class, Default.class}) UserVO user) {
+    public JsonBean<String> addUser(@Validated({Add.class, Default.class}) UserVO user) {
         if (userService.add(user)) {
             return JsonBean.success();
         }
@@ -87,7 +87,7 @@ public class UserController {
 
     @ApiOperation(value = "修改用户", notes = "只支持修改用户信息<br/> 不能修改账号和密码>")
     @PutMapping
-    public JsonBean<?> updateUser(@Validated({Update.class}) UserVO userVO) {
+    public JsonBean<String> updateUser(@Validated({Update.class}) UserVO userVO) {
         if (userService.updateUser(userVO)) {
             return JsonBean.success();
         }
@@ -96,7 +96,7 @@ public class UserController {
 
     @ApiOperation(value = "禁用用户")
     @PutMapping("{id}")
-    public JsonBean<?> disableUser(@PathVariable Long id) {
+    public JsonBean<String> disableUser(@PathVariable Long id) {
         if (userService.disableUser(id,"1")) {
             return JsonBean.success();
         }
@@ -105,7 +105,7 @@ public class UserController {
 
     @ApiOperation(value = "启用用户")
     @PutMapping("enableUser/{id}")
-    public JsonBean<?> enableUser(@PathVariable Long id) {
+    public JsonBean<String> enableUser(@PathVariable Long id) {
         if (userService.disableUser(id,"0")) {
             return JsonBean.success();
         }

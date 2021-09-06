@@ -78,7 +78,7 @@ public class ExceptionHandle {
     public JsonBean<Object> constraintViolationExceptionHandler(ConstraintViolationException e) {
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         List<String> collect = constraintViolations.stream()
-                .map(o -> o.getMessage())
+                .map(ConstraintViolation::getMessage)
                 .collect(Collectors.toList());
         return JsonBean.err(ResultEnum.VALIDATION_ERR, collect);
     }

@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface AreaMapper extends BaseMapper<Area> {
 
+    Area selectByCode(String code);
 }

@@ -32,6 +32,8 @@ public class Area implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @NotNull
+    @NotEmpty(message = "不能为空")
     @ApiModelProperty(value = "名称")
     private String name;
 

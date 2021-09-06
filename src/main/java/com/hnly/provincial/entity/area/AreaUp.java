@@ -38,8 +38,6 @@ public class AreaUp extends Area implements Serializable {
     private String name;
 
     @NotNull
-    @NotEmpty(message = "不能为空")
-    @NotNull
     @NotEmpty(message = "区域号不能为空")
     @ApiModelProperty(value = "区域号")
     private String code;

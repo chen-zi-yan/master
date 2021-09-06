@@ -42,7 +42,7 @@ public class AreaController {
     @ApiOperation("插入数据")
     @PostMapping()
     public JsonBean<String> addArea(Area area){
-        boolean flag = iAreaServicel.save(area);
+        boolean flag = iAreaServicel.saveArea(area);
         if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
         }

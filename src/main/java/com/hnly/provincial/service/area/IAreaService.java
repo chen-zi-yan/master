@@ -20,4 +20,5 @@ public interface IAreaService extends IService<Area> {
 
     IPage<Area> getAreaList(AreaVO areaVO);
 
+    boolean saveArea(Area area);
 }

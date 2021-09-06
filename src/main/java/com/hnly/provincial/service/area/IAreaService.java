@@ -1,7 +1,9 @@
 package com.hnly.provincial.service.area;
 
-import com.hnly.provincial.entity.area.Area;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hnly.provincial.entity.area.Area;
+import com.hnly.provincial.entity.area.AreaVO;
 
 
 /**
@@ -14,12 +16,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IAreaService extends IService<Area> {
 
-    //插入area数据
-    Long add(Area area, String code);
-    //删除数据
-    void deleteById(Long id);
-    //修改数据
-    void update(Area area);
-    //分页查询
+    boolean deleteById(Long id);
+
+    IPage<Area> getAreaList(AreaVO areaVO);
 
 }

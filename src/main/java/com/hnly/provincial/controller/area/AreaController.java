@@ -1,9 +1,10 @@
 package com.hnly.provincial.controller.area;
 
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.entity.area.Area;
+import com.hnly.provincial.entity.area.AreaVO;
 import com.hnly.provincial.service.area.IAreaService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -27,27 +28,17 @@ public class AreaController {
     private IAreaService iAreaServicel;
 
     @ApiOperation("查询所有用户")
-    @GetMapping("getAllAreaList")
+    @GetMapping()
     public JsonBean<List<Area>> getAllAreaList() {
         List<Area> allAreaList = iAreaServicel.list();
         return JsonBean.success(allAreaList);
-    }
-
-    /*
-    * queryPageBean
-    * */
-    @ApiOperation("模糊查询")
-    @PostMapping("getArea")
-    public JsonBean getArea() {
-
-        return JsonBean.success();
     }
 
     @ApiOperation("根据ID查询")
     @PostMapping("getById")
     public JsonBean<Area> getAreaById(Long id) {
         Area byId = iAreaServicel.getById(id);
-        if (byId.equals(null)){
+        if (byId == null){
             return JsonBean.success(ResultEnum.NOTHINGNESS);
         }
         return JsonBean.success(byId);
@@ -55,32 +46,42 @@ public class AreaController {
 
     @ApiOperation("插入数据")
     @PostMapping("add")
-    public JsonBean<String> addArea(Area area,String code){
-        Long count = iAreaServicel.add(area, code);
-        System.out.println("count = " + count);
-        if (count <= 0){
+    public JsonBean<String> addArea(Area area){
+        boolean flag = iAreaServicel.save(area);
+        if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
         }
         return JsonBean.success(ResultEnum.FAILURE);
     }
 
     @ApiOperation("根据ID删除数据")
-    @PutMapping("deleteById")
+    @DeleteMapping()
     public JsonBean<String> deleteById(Long id) {
-        Area byId = iAreaServicel.getById(id);
-        if (byId == null){
-            return JsonBean.success(ResultEnum.NOT_DELETE);
-        }else {
-            iAreaServicel.deleteById(id);
+        boolean flag = iAreaServicel.deleteById(id);
+        if (flag){
             return JsonBean.success(ResultEnum.SUCCESS);
         }
+        return JsonBean.success(ResultEnum.NOT_DELETE);
     }
 
     @ApiOperation("根据ID修改用户数据")
-    @PostMapping("updateById")
+    @PutMapping("updateById")
     public JsonBean updateById(Area area){
-        iAreaServicel.updateById(area);
-        return JsonBean.success("修改成功!");
+        boolean flag = iAreaServicel.updateById(area);
+        if (flag){
+            return JsonBean.success(ResultEnum.SUCCESS);
+        }
+        return JsonBean.success(ResultEnum.NOT_DELETE);
+    }
+
+    /*
+     * 分页查询
+     * */
+    @ApiOperation("分页查询")
+    @PostMapping("getAreaList")
+    public JsonBean<IPage<Area>> getAreaList(AreaVO areaVO){
+        IPage<Area> pageList = iAreaServicel.getAreaList(areaVO);
+        return JsonBean.success(pageList);
     }
 
 }

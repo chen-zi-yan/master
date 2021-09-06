@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  *
@@ -16,8 +19,12 @@ import lombok.Data;
 @Data
 public class PageWhere {
 
+    @NotNull
+    @NotEmpty
     @ApiModelProperty(value = "每页条数", required = true)
     private long size;
+    @NotNull
+    @NotEmpty
     @ApiModelProperty(value = "当前页", required = true)
     private long current;
 

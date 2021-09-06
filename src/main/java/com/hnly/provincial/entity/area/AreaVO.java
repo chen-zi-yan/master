@@ -24,7 +24,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_area")
 @ApiModel(value="Area对象", description="地区表")
-public class AreaVO extends PageWhere implements Serializable {
+public class AreaVO extends PageWhere<Area> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

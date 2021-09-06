@@ -1,10 +1,8 @@
 package com.hnly.provincial.service.area.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.dao.area.AreaMapper;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
@@ -12,7 +10,6 @@ import com.hnly.provincial.service.area.IAreaService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * <p>
@@ -31,11 +28,8 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     @Override
     public boolean deleteById(Long id) {
         Area byId = areaMapper.selectById(id);
-        String code = byId.getCode();
-        QueryWrapper<Area> wrapper = new QueryWrapper<>();
-        wrapper.eq("father_code",code);
-        List<Area> areaList = areaMapper.selectList(wrapper);
-        if (areaList.size()<=0 || areaList == null ){
+        Integer count = lambdaQuery().eq(Area::getFatherCode, byId.getCode()).count();
+        if (count == 0 ){
             areaMapper.deleteById(id);
             return true;
         }
@@ -44,13 +38,8 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
 
     @Override
     public IPage<Area> getAreaList(AreaVO areaVO) {
-        Area area = Conversion.changeOne(areaVO, Area.class);
-        //条件构造器，并且传入area中存在的条件
-        QueryWrapper<Area> wrapper = new QueryWrapper<>(area);
-        //获取当前页和每页显示条数
-        IPage<Area> page = new Page(areaVO.getCurrent(),areaVO.getSize());
-        IPage<Area> pageList = areaMapper.selectPage(page,wrapper);
-        return pageList;
+        Page<Area> page1 = lambdaQuery().page(areaVO.page());
+        return page1;
     }
 
 }

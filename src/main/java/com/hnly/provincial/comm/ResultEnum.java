@@ -26,6 +26,7 @@ public enum ResultEnum {
     TOKEN_EXPIRED(40010, "验证错误"),
     NOTHINGNESS(40011,"不存在"),
     FAILURE(40012,"失败"),
+    CHANGEFAILED(40012,"修改失败"),
             ;
     /**
      * 状态码

@@ -11,7 +11,7 @@ import com.hnly.provincial.entity.area.AreaVO;
  * 地区表 服务类
  * </p>
  *
- * @author maqh
+ * @author czy
  * @since 2021-09-01
  */
 public interface IAreaService extends IService<Area> {

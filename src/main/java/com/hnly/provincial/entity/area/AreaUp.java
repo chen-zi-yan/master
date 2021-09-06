@@ -25,16 +25,20 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_area")
 @ApiModel(value="Area对象", description="地区表")
-public class Area implements Serializable {
+public class AreaUp extends Area implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull
+    @NotEmpty(message = "不能为空")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @ApiModelProperty(value = "名称")
     private String name;
 
+    @NotNull
+    @NotEmpty(message = "不能为空")
     @NotNull
     @NotEmpty(message = "区域号不能为空")
     @ApiModelProperty(value = "区域号")

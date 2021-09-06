@@ -20,11 +20,11 @@ import javax.validation.constraints.NotNull;
 public class PageWhere {
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "不能为空")
     @ApiModelProperty(value = "每页条数", required = true)
     private long size;
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "不能为空")
     @ApiModelProperty(value = "当前页", required = true)
     private long current;
 

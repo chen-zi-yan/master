@@ -25,6 +25,14 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionHandle {
 
+
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    public JsonBean<Object> exception(Exception e) {
+        log.error(e.getMessage(), e);
+        return JsonBean.err(ResultEnum.UNKNOWN_ERR);
+    }
+
     @ResponseBody
     @ExceptionHandler(value = MyException.class)
     public JsonBean<Object> handle(Exception e) {

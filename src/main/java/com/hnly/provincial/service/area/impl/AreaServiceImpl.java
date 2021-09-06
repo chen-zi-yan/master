@@ -42,4 +42,17 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         return page1;
     }
 
+    @Override
+    public boolean saveArea(Area area) {
+        String code = area.getCode();
+        QueryWrapper<Area> wrapper = new QueryWrapper<>();
+        wrapper.eq("code",code);
+        List<Area> areaList = areaMapper.selectList(wrapper);
+        if (areaList.size()<=0){
+            areaMapper.insert(area);
+            return true;
+        }
+        return false;
+    }
+
 }

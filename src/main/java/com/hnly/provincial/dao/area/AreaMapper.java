@@ -1,7 +1,7 @@
 package com.hnly.provincial.dao.area;
 
-import com.hnly.provincial.entity.area.Area;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hnly.provincial.entity.area.Area;
 
 /**
  * <p>
@@ -13,5 +13,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface AreaMapper extends BaseMapper<Area> {
 
-    Area selectByCode(String code);
 }

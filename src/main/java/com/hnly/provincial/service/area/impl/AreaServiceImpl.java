@@ -1,12 +1,12 @@
 package com.hnly.provincial.service.area.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.utils.Conversion;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.area.AreaMapper;
 import com.hnly.provincial.entity.area.Area;
+import com.hnly.provincial.entity.area.AreaUp;
 import com.hnly.provincial.entity.area.AreaVO;
 import com.hnly.provincial.service.area.IAreaService;
 import org.springframework.stereotype.Service;
@@ -25,45 +25,80 @@ import java.util.List;
 @Service
 public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IAreaService {
 
-    @Resource
-    private AreaMapper areaMapper;
+    @Override
+    public boolean saveArea(Area area) {
+        //根据code查询数据库是否存在相同的code
+        Integer countCode = lambdaQuery().eq(Area::getCode, area.getCode()).count();
+        //查询fatherCode是否已存在code中(查询是否存在上级)
+        Integer count = lambdaQuery().eq(Area::getCode, area.getFatherCode()).count();
+        if (countCode == 0 && count == 0 && area.getFatherCode() == null){
+            area.setCreateTime(new Date());
+            baseMapper.insert(area);
+            return true;
+        }else if(countCode == 0 && count > 0){
+            Area one = lambdaQuery().eq(Area::getCode, area.getFatherCode()).one();
+            if (one.getStatus()==null){
+                area.setStatus("0");
+            }else {
+                Integer status = Integer.valueOf(one.getStatus());
+                area.setStatus(String.valueOf(status+1));
+            }
+            area.setCreateTime(new Date());
+            baseMapper.insert(area);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean deleteById(Long id) {
-        Area byId = areaMapper.selectById(id);
-        String code = byId.getCode();
-        QueryWrapper<Area> wrapper = new QueryWrapper<>();
-        wrapper.eq("father_code",code);
-        List<Area> areaList = areaMapper.selectList(wrapper);
-        if (areaList.size()<=0 || areaList == null ){
-            areaMapper.deleteById(id);
+        Area area = baseMapper.selectById(id);
+        Integer count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
+        if (count <= 0){
+            baseMapper.deleteById(id);
             return true;
         }
         return false;
     }
 
     @Override
-    public IPage<Area> getAreaList(AreaVO areaVO) {
-        Area area = Conversion.changeOne(areaVO, Area.class);
-        //条件构造器，并且传入area中存在的条件
-        QueryWrapper<Area> wrapper = new QueryWrapper<>(area);
-        //获取当前页和每页显示条数
-        IPage<Area> page = new Page(areaVO.getCurrent(),areaVO.getSize());
-        IPage<Area> pageList = areaMapper.selectPage(page,wrapper);
-        return pageList;
+    public boolean updateArea(AreaUp areaUp) {
+        Area area = baseMapper.selectById(areaUp.getId());
+        //根据code查询数据库是否存在相同的code
+        Integer countCode = lambdaQuery().eq(Area::getCode, areaUp.getCode()).count();
+        //是否有下级
+        Integer count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
+        if (countCode == 0){
+            if (area.getFatherCode() == null && count == 0){
+                areaUp.setStatus(area.getStatus());
+                areaUp.setUpdateTime(new Date());
+                baseMapper.updateById(areaUp);
+                return true;
+            }else if (areaUp.getFatherCode() == null && count ==0){
+                areaUp.setStatus(area.getStatus());
+                areaUp.setUpdateTime(new Date());
+                baseMapper.updateById(areaUp);
+                return true;
+            }
+
+        }
+        return false;
     }
 
     @Override
-    public boolean saveArea(Area area) {
-        String code = area.getCode();
-        QueryWrapper<Area> wrapper = new QueryWrapper<>();
-        wrapper.eq("code",code);
-        List<Area> areaList = areaMapper.selectList(wrapper);
-        if (areaList.size()<=0){
-            areaMapper.insert(area);
-            return true;
-        }
-        return false;
+    public TableDataUtils<List<AreaVO>> getAreaList(AreaVO areaVO) {
+        Page<Area> page = lambdaQuery()
+                .eq(areaVO.getStatus() != null, Area::getStatus, areaVO.getStatus())
+                .eq(areaVO.getCode()!=null,Area::getCode,areaVO.getCode())
+                .page(areaVO.page());
+        List<AreaVO> list = Conversion.changeList(page.getRecords(), AreaVO.class);
+        return TableDataUtils.success(page.getTotal(), list);
+    }
+
+    @Override
+    public List<Area> getAllAreaSubordinate(String code) {
+            List<Area> list = lambdaQuery().eq(Area::getFatherCode, code).list();
+            return list;
     }
 
 }

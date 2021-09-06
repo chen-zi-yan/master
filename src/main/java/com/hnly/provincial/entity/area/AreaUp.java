@@ -2,7 +2,6 @@ package com.hnly.provincial.entity.area;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,7 +22,6 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_area")
 @ApiModel(value="Area对象", description="地区表")
 public class AreaUp extends Area implements Serializable {
 
@@ -37,8 +35,6 @@ public class AreaUp extends Area implements Serializable {
     @ApiModelProperty(value = "名称")
     private String name;
 
-    @NotNull
-    @NotEmpty(message = "区域号不能为空")
     @ApiModelProperty(value = "区域号")
     private String code;
 

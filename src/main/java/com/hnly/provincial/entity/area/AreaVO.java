@@ -2,7 +2,6 @@ package com.hnly.provincial.entity.area;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.hnly.provincial.comm.utils.PageWhere;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,12 +16,11 @@ import java.util.Date;
  * 地区表
  * </p>
  *
- * @author maqh
+ * @author czy
  * @since 2021-09-01
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_area")
 @ApiModel(value="Area对象", description="地区表")
 public class AreaVO extends PageWhere<Area> implements Serializable {
 

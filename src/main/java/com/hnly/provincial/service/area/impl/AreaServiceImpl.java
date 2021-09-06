@@ -25,40 +25,18 @@ import java.util.List;
 @Service
 public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IAreaService {
 
-    @Override
-    public boolean saveArea(Area area) {
-        //根据code查询数据库是否存在相同的code
-        Integer countCode = lambdaQuery().eq(Area::getCode, area.getCode()).count();
-        //查询fatherCode是否已存在code中(查询是否存在上级)
-        Integer count = lambdaQuery().eq(Area::getCode, area.getFatherCode()).count();
-        if (countCode == 0 && count == 0 && area.getFatherCode() == null){
-            area.setCreateTime(new Date());
-            baseMapper.insert(area);
-            return true;
-        }else if(countCode == 0 && count > 0){
-            Area one = lambdaQuery().eq(Area::getCode, area.getFatherCode()).one();
-            if (one.getStatus()==null){
-                area.setStatus("0");
-            }else {
-                Integer status = Integer.valueOf(one.getStatus());
-                area.setStatus(String.valueOf(status+1));
-            }
-            area.setCreateTime(new Date());
-            baseMapper.insert(area);
-            return true;
-        }
-        return false;
-    }
+    @Resource
+    private AreaMapper areaMapper;
 
     @Override
     public boolean deleteById(Long id) {
-        Area byId = baseMapper.selectById(id);
+        Area byId = areaMapper.selectById(id);
         String code = byId.getCode();
         QueryWrapper<Area> wrapper = new QueryWrapper<>();
         wrapper.eq("father_code",code);
-        List<Area> areaList = baseMapper.selectList(wrapper);
+        List<Area> areaList = areaMapper.selectList(wrapper);
         if (areaList.size()<=0 || areaList == null ){
-            baseMapper.deleteById(id);
+            areaMapper.deleteById(id);
             return true;
         }
         return false;
@@ -71,8 +49,21 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         QueryWrapper<Area> wrapper = new QueryWrapper<>(area);
         //获取当前页和每页显示条数
         IPage<Area> page = new Page(areaVO.getCurrent(),areaVO.getSize());
-        IPage<Area> pageList = baseMapper.selectPage(page,wrapper);
+        IPage<Area> pageList = areaMapper.selectPage(page,wrapper);
         return pageList;
+    }
+
+    @Override
+    public boolean saveArea(Area area) {
+        String code = area.getCode();
+        QueryWrapper<Area> wrapper = new QueryWrapper<>();
+        wrapper.eq("code",code);
+        List<Area> areaList = areaMapper.selectList(wrapper);
+        if (areaList.size()<=0){
+            areaMapper.insert(area);
+            return true;
+        }
+        return false;
     }
 
 }

@@ -40,7 +40,7 @@ public class AreaController {
         return JsonBean.success(byId);
     }
 
-    @ApiOperation("插入数据")
+    @ApiOperation("插入数据(条件:该区域号唯一)")
     @PostMapping()
     public JsonBean<String> addArea(Area area){
         boolean flag = iAreaServicel.saveArea(area);
@@ -50,7 +50,7 @@ public class AreaController {
         return JsonBean.success(ResultEnum.FAILURE);
     }
 
-    @ApiOperation("根据ID删除数据")
+    @ApiOperation("根据ID删除数据(条件:该数据不能含有下级)")
     @DeleteMapping()
     public JsonBean<String> deleteById(Long id) {
         boolean flag = iAreaServicel.deleteById(id);
@@ -60,7 +60,7 @@ public class AreaController {
         return JsonBean.success(ResultEnum.NOT_DELETE);
     }
 
-    @ApiOperation("根据ID修改用户数据")
+    @ApiOperation("根据ID修改用户数据(条件:区域号唯一,且不能含有下级)")
     @PutMapping()
     public JsonBean<String> updateById(AreaUp areaUp){
         boolean flag = iAreaServicel.updateArea(areaUp);

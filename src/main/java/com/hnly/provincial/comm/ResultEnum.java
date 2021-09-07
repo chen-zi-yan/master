@@ -31,7 +31,9 @@ public enum ResultEnum {
     CODE_SUBORDINATE_EXIST(40015, "本条信息存在下级单位,不能修改行政区划代码"),
     CODE_SUPERIOR_EXIST(40015, "本条信息不存在上级单位,不能插入行政区划代码"),
     CODENOTEMPTY(40015, "行政区划代码不能为空"),
-            ;;
+
+
+    ;
     /**
      * 状态码
      */

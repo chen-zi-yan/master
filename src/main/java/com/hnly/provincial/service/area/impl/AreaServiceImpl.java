@@ -2,11 +2,12 @@ package com.hnly.provincial.service.area.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.area.AreaMapper;
 import com.hnly.provincial.entity.area.Area;
-import com.hnly.provincial.entity.area.AreaUp;
 import com.hnly.provincial.entity.area.AreaVO;
 import com.hnly.provincial.service.area.IAreaService;
 import org.springframework.stereotype.Service;
@@ -28,32 +29,27 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
 
     @Override
     public boolean saveArea(Area area) {
-        //根据code查询数据库是否存在相同的code
-        Integer countCode = lambdaQuery().eq(Area::getCode, area.getCode()).count();
-        //查询fatherCode是否已存在code中(查询是否存在上级)
-        Integer count = lambdaQuery().eq(Area::getCode, area.getFatherCode()).count();
-        if (countCode == 0 && count == 0 && area.getFatherCode() == null){
-            area.setFatherCode("0");
-            area.setCreateTime(new Date());
-            baseMapper.insert(area);
-            return true;
-        }else if(countCode == 0 && count > 0){
-            Area one = lambdaQuery().eq(Area::getCode, area.getFatherCode()).one();
-            if (one.getStatus()==null){
-                area.setStatus("0");
-            }else {
-                Integer status = Integer.valueOf(one.getStatus());
-                area.setStatus(String.valueOf(status+1));
-            }
-            area.setCreateTime(new Date());
-            baseMapper.insert(area);
-            return true;
+        if (area.getCode() == null) {
+            throw new MyException(ResultEnum.CODENOTEMPTY);
         }
-        return false;
+        //验证code是否已经存在
+        checkCode(area.getCode());
+        //验证是否存在上级
+        checkSubordinate(area.getFatherCode());
+        Area one = lambdaQuery().eq(Area::getCode, area.getFatherCode()).one();
+        if (one.getStatus() == null) {
+            area.setStatus("0");
+        } else {
+            Integer status = Integer.valueOf(one.getStatus());
+            area.setStatus(String.valueOf(status + 1));
+        }
+        area.setCreateTime(new Date());
+        baseMapper.insert(area);
+        return true;
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deleteAreaById(Long id) {
         Area area = baseMapper.selectById(id);
         Integer count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
         if (count <= 0) {
@@ -64,19 +60,27 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     }
 
     @Override
-    public boolean updateArea(AreaUp areaUp) {
-        Area area = baseMapper.selectById(areaUp.getId());
-        //根据code查询数据库是否存在相同的code
-        Integer countCode = lambdaQuery().eq(Area::getCode, areaUp.getCode()).count();
-        //是否有下级
-        Integer count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
-        if (area.getFatherCode() == "0" || areaUp.getFatherCode() == null && countCode == 0 && count == 0){
-            areaUp.setStatus(area.getStatus());
-            areaUp.setUpdateTime(new Date());
-            baseMapper.updateById(areaUp);
+    public boolean updateAreaById(Area area) {
+        Area area1 = baseMapper.selectById(area.getId());
+        //输入的上级单位必须存在
+        if (area.getFatherCode() != null) {
+            checkSubordinate(area.getFatherCode());
+        }
+        if (area.getCode() == null) {
+            baseMapper.updateById(area);
             return true;
         }
-        return false;
+        //验证输入的区域码是否和该正在修改的code信息相同
+        if (area.getCode().equals(area1.getCode())) {
+            baseMapper.updateById(area);
+            return true;
+        }
+        //验证code是否已经存在
+        checkCode(area.getCode());
+        //验证是否存在下级
+        checkSuperior(area1.getCode());
+        baseMapper.updateById(area);
+        return true;
     }
 
     @Override
@@ -91,8 +95,46 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
 
     @Override
     public List<Area> getAllAreaSubordinate(String code) {
-            List<Area> list = lambdaQuery().eq(Area::getFatherCode, code).list();
-            return list;
+        if (code == null) {
+            return lambdaQuery().eq(Area::getStatus, 0).list();
+        }
+        return lambdaQuery().eq(Area::getFatherCode, code).list();
+    }
+
+    /**
+     * 校验该区域码是否存在
+     *
+     * @param code
+     */
+    public void checkCode(String code) {
+        Integer count = lambdaQuery().eq(Area::getCode, code).count();
+        if (count != 0) {
+            throw new MyException(ResultEnum.CODE_EXIST);
+        }
+    }
+
+    /**
+     * 检验该区域码是否存在下级单位
+     *
+     * @param code
+     */
+    public void checkSuperior(String code) {
+        Integer count = lambdaQuery().eq(Area::getFatherCode, code).count();
+        if (count != 0) {
+            throw new MyException(ResultEnum.CODE_SUPERIOR_EXIST);
+        }
+    }
+
+    /**
+     * 检验该区域码是否存在上级单位,若存在则通过
+     *
+     * @param fatherCode
+     */
+    public void checkSubordinate(String fatherCode) {
+        Integer count = lambdaQuery().eq(Area::getCode, fatherCode).count();
+        if (count == 0) {
+            throw new MyException(ResultEnum.CODE_SUPERIOR_EXIST);
+        }
     }
 
 }

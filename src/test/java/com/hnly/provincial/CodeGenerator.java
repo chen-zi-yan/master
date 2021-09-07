@@ -46,7 +46,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir") ;
         gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setAuthor("maqh");
+        gc.setAuthor("czy");
         gc.setOpen(false);
         gc.setFileOverride(true);//是否覆盖文件
         gc.setBaseResultMap(true); // xml resultmap

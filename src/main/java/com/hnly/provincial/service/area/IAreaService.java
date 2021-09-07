@@ -3,7 +3,6 @@ package com.hnly.provincial.service.area;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.area.Area;
-import com.hnly.provincial.entity.area.AreaUp;
 import com.hnly.provincial.entity.area.AreaVO;
 
 import java.util.List;
@@ -33,15 +32,15 @@ public interface IAreaService extends IService<Area> {
      * @param id 地区id
      * @return true  删除成功    <br/> false  删除失败
      */
-    boolean deleteById(Long id);
+    boolean deleteAreaById(Long id);
 
     /**
      * 修改数据
      *
-     * @param areaUp 修改地区对象信息
+     * @param area 地区对象信息
      * @return true  修改成功    <br/> false   修改失败
      */
-    boolean updateArea(AreaUp areaUp);
+    boolean updateAreaById(Area area);
 
     /**
      * 分页查询

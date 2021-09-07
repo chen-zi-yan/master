@@ -8,8 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -32,13 +30,9 @@ public class Area implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @NotNull
-    @NotEmpty(message = "不能为空")
     @ApiModelProperty(value = "名称")
     private String name;
 
-    @NotNull
-    @NotEmpty(message = "区域号不能为空")
     @ApiModelProperty(value = "区域号")
     private String code;
 

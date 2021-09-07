@@ -32,6 +32,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         //查询fatherCode是否已存在code中(查询是否存在上级)
         Integer count = lambdaQuery().eq(Area::getCode, area.getFatherCode()).count();
         if (countCode == 0 && count == 0 && area.getFatherCode() == null){
+            area.setFatherCode("0");
             area.setCreateTime(new Date());
             baseMapper.insert(area);
             return true;
@@ -68,19 +69,11 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         Integer countCode = lambdaQuery().eq(Area::getCode, areaUp.getCode()).count();
         //是否有下级
         Integer count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
-        if (countCode == 0){
-            if (area.getFatherCode() == null && count == 0){
-                areaUp.setStatus(area.getStatus());
-                areaUp.setUpdateTime(new Date());
-                baseMapper.updateById(areaUp);
-                return true;
-            }else if (areaUp.getFatherCode() == null && count ==0){
-                areaUp.setStatus(area.getStatus());
-                areaUp.setUpdateTime(new Date());
-                baseMapper.updateById(areaUp);
-                return true;
-            }
-
+        if (area.getFatherCode() == "0" || areaUp.getFatherCode() == null && countCode == 0 && count == 0){
+            areaUp.setStatus(area.getStatus());
+            areaUp.setUpdateTime(new Date());
+            baseMapper.updateById(areaUp);
+            return true;
         }
         return false;
     }

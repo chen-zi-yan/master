@@ -22,12 +22,14 @@ public enum ResultEnum {
     HIVE_NOT_DELETE(40007, "已经被使用,无法被删除"),
     OLDPASSWORD_ERROR(40008, "老密码错误"),
     VALIDATION_ERR(40009, "验证错误"),
-    UNKNOWN_ERR(-1,"未知错误"),
+    UNKNOWN_ERR(-1, "未知错误"),
     TOKEN_EXPIRED(40010, "验证错误"),
-    NOTHINGNESS(40011,"不存在"),
-    FAILURE(40012,"失败"),
-    CHANGEFAILED(40012,"修改失败"),
-            ;
+    NOTHINGNESS(40011, "不存在"),
+    FAILURE(40012, "失败"),
+    CHANGEFAILED(40013, "修改失败"),
+    CODE_EXIST(40014, "行政区划已经存在"),
+    CODE_SUBORDINATE_EXIST(40015, "本条信息存在下级单位,不能修改行政区划代码"),
+    ;
     /**
      * 状态码
      */

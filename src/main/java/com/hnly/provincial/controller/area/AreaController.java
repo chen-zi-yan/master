@@ -34,15 +34,15 @@ public class AreaController {
     @GetMapping()
     public JsonBean<Area> getAreaById(Long id) {
         Area byId = iAreaServicel.getById(id);
-        if (byId == null){
+        if (byId == null) {
             return JsonBean.success(ResultEnum.NOTHINGNESS);
         }
         return JsonBean.success(byId);
     }
 
-    @ApiOperation("插入数据(条件:该区域号唯一)")
+    @ApiOperation(value = "插入数据", notes = "(条件:该区域号唯一)")
     @PostMapping()
-    public JsonBean<String> addArea(Area area){
+    public JsonBean<String> addArea(Area area) {
         boolean flag = iAreaServicel.saveArea(area);
         if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
@@ -50,21 +50,21 @@ public class AreaController {
         return JsonBean.success(ResultEnum.FAILURE);
     }
 
-    @ApiOperation("根据ID删除数据(条件:该数据不能含有下级)")
+    @ApiOperation(value = "根据ID删除数据", notes = "(条件:该数据不能含有下级)")
     @DeleteMapping()
-    public JsonBean<String> deleteById(Long id) {
+    public JsonBean<String> deleteArea(Long id) {
         boolean flag = iAreaServicel.deleteById(id);
-        if (flag){
+        if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
         }
         return JsonBean.success(ResultEnum.NOT_DELETE);
     }
 
-    @ApiOperation("根据ID修改用户数据(条件:区域号唯一,且不能含有下级)")
+    @ApiOperation(value = "根据ID修改用户数据", notes = "(条件:区域号唯一,且不能含有下级)")
     @PutMapping()
-    public JsonBean<String> updateById(AreaUp areaUp){
+    public JsonBean<String> updateArea(AreaUp areaUp) {
         boolean flag = iAreaServicel.updateArea(areaUp);
-        if (flag){
+        if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
         }
         return JsonBean.success(ResultEnum.CHANGEFAILED);
@@ -72,14 +72,14 @@ public class AreaController {
 
     @ApiOperation("分页查询")
     @PostMapping("/getAreaList")
-    public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(AreaVO areaVO){
+    public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(AreaVO areaVO) {
         TableDataUtils<List<AreaVO>> areaList = iAreaServicel.getAreaList(areaVO);
         return JsonBean.success(areaList);
     }
 
-    @ApiOperation("查询子单位")
+    @ApiOperation(value = "查询子单位", notes = "code 不传,返回所有市的数据, 需要查下级数据, 需要本机的code")
     @GetMapping("/getAllAreaSubordinate")
-    public JsonBean<List<Area>> getAllAreaSubordinate(String code){
+    public JsonBean<List<Area>> getAllAreaSubordinate(String code) {
         List<Area> areaList = iAreaServicel.getAllAreaSubordinate(code);
         return JsonBean.success(areaList);
     }

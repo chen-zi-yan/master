@@ -4,6 +4,7 @@ import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.area.Area;
+import com.hnly.provincial.entity.area.AreaUp;
 import com.hnly.provincial.entity.area.AreaVO;
 import com.hnly.provincial.service.area.IAreaService;
 import io.swagger.annotations.Api;
@@ -39,7 +40,7 @@ public class AreaController {
         return JsonBean.success(byId);
     }
 
-    @ApiOperation(value = "插入数据",notes = "条件:该区域号唯一")
+    @ApiOperation("插入数据(条件:该区域号唯一)")
     @PostMapping()
     public JsonBean<String> addArea(Area area){
         boolean flag = iAreaServicel.saveArea(area);
@@ -49,20 +50,20 @@ public class AreaController {
         return JsonBean.success(ResultEnum.FAILURE);
     }
 
-    @ApiOperation(value = "根据ID删除数据",notes = "条件:该数据不能含有下级")
+    @ApiOperation("根据ID删除数据(条件:该数据不能含有下级)")
     @DeleteMapping()
-    public JsonBean<String> deleteAreaById(Long id) {
-        boolean flag = iAreaServicel.deleteAreaById(id);
+    public JsonBean<String> deleteById(Long id) {
+        boolean flag = iAreaServicel.deleteById(id);
         if (flag){
             return JsonBean.success(ResultEnum.SUCCESS);
         }
         return JsonBean.success(ResultEnum.NOT_DELETE);
     }
 
-    @ApiOperation(value = "根据ID修改用户数据",notes = "条件:区域号唯一,且不能含有下级")
+    @ApiOperation("根据ID修改用户数据(条件:区域号唯一,且不能含有下级)")
     @PutMapping()
-    public JsonBean<String> updateAreaById(Area area){
-        boolean flag = iAreaServicel.updateAreaById(area);
+    public JsonBean<String> updateById(AreaUp areaUp){
+        boolean flag = iAreaServicel.updateArea(areaUp);
         if (flag){
             return JsonBean.success(ResultEnum.SUCCESS);
         }

@@ -25,6 +25,7 @@ import java.util.List;
 @Service
 public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IAreaService {
 
+
     @Override
     public boolean saveArea(Area area) {
         //根据code查询数据库是否存在相同的code
@@ -55,7 +56,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     public boolean deleteById(Long id) {
         Area area = baseMapper.selectById(id);
         Integer count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
-        if (count <= 0){
+        if (count <= 0) {
             baseMapper.deleteById(id);
             return true;
         }
@@ -82,7 +83,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     public TableDataUtils<List<AreaVO>> getAreaList(AreaVO areaVO) {
         Page<Area> page = lambdaQuery()
                 .eq(areaVO.getStatus() != null, Area::getStatus, areaVO.getStatus())
-                .eq(areaVO.getCode()!=null,Area::getCode,areaVO.getCode())
+                .eq(areaVO.getCode() != null, Area::getCode, areaVO.getCode())
                 .page(areaVO.page());
         List<AreaVO> list = Conversion.changeList(page.getRecords(), AreaVO.class);
         return TableDataUtils.success(page.getTotal(), list);

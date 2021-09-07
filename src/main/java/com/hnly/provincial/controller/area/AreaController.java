@@ -60,7 +60,8 @@ public class AreaController {
         return JsonBean.success(ResultEnum.NOT_DELETE);
     }
 
-    @ApiOperation("根据ID修改用户数据(条件:区域号唯一,且不能含有下级)")
+
+    @ApiOperation(value = "根据ID修改用户数据", notes = "条件:区域号唯一,且不能含有下级")
     @PutMapping()
     public JsonBean<String> updateById(AreaUp areaUp){
         boolean flag = iAreaServicel.updateArea(areaUp);

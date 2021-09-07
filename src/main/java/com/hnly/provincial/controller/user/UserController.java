@@ -77,9 +77,6 @@ public class UserController {
     }
 
     @ApiOperation("添加用户")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "ddd", response = UserVO.class)
-    })
     @PostMapping
     public JsonBean<String> addUser(@Validated({Add.class, Default.class}) UserVO user) {
         if (userService.add(user)) {

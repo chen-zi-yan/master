@@ -9,7 +9,9 @@ import com.hnly.provincial.comm.validation.Update;
 import com.hnly.provincial.entity.user.User;
 import com.hnly.provincial.entity.user.UserVO;
 import com.hnly.provincial.service.user.IUserService;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("user")
-@Api(tags = "系统用户管理接口")
+@Tag(name = "系统用户管理接口")
 public class UserController {
 
     @Resource
@@ -41,11 +43,12 @@ public class UserController {
     private static final String TYPE_ONE = "1";
     private static final String TYPE_ZERO = "0";
 
-    @ApiOperation("登陆接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userName", required = true, value = "用户名"),
-            @ApiImplicitParam(name = "password", required = true, value = "用户密码")
-    })
+    @Operation(summary = "登陆接口",
+            parameters = {
+                    @Parameter(name = "userName", required = true, description = "用户名"),
+                    @Parameter(name = "password", required = true, description = "用户密码"),
+            }
+    )
     @PostMapping("login")
     public JsonBean<String> login(String userName, String password) {
         if (userService.login(userName, password)) {
@@ -57,14 +60,14 @@ public class UserController {
         return JsonBean.err(ResultEnum.USER_USERNAME_PASSWORD_EXISTS);
     }
 
-    @ApiOperation("获取所有用户")
+    @Operation(summary = "获取所有用户")
     @PostMapping("getList")
     public JsonBean<List<User>> getList() {
         List<User> list = userService.list();
         return JsonBean.success(list);
     }
 
-    @ApiOperation("刷新token")
+    @Operation(summary = "刷新token")
     @PostMapping("refreshToken")
     public JsonBean<Map<String, String>> refreshToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
@@ -76,7 +79,7 @@ public class UserController {
         return JsonBean.success(tokenMap);
     }
 
-    @ApiOperation("添加用户")
+    @Operation(summary = "添加用户")
     @PostMapping
     public JsonBean<String> addUser(@Validated({Add.class, Default.class}) UserVO user) {
         if (userService.add(user)) {
@@ -85,7 +88,7 @@ public class UserController {
         return JsonBean.err(ResultEnum.SAVE_ERROR);
     }
 
-    @ApiOperation(value = "修改用户", notes = "只支持修改用户信息<br/> 不能修改账号和密码>")
+    @Operation(summary = "修改用户", description = "只支持修改用户信息<br/> 不能修改账号和密码>")
     @PutMapping
     public JsonBean<String> updateUser(@Validated({Update.class}) UserVO userVO) {
         if (userService.updateUser(userVO)) {
@@ -94,7 +97,7 @@ public class UserController {
         return JsonBean.err(ResultEnum.SAVE_ERROR);
     }
 
-    @ApiOperation(value = "禁用用户")
+    @Operation(summary = "禁用用户")
     @PutMapping("{id}")
     public JsonBean<String> disableUser(@PathVariable Long id) {
         if (userService.disableUser(id, TYPE_ONE)) {
@@ -103,7 +106,7 @@ public class UserController {
         return JsonBean.err();
     }
 
-    @ApiOperation(value = "启用用户")
+    @Operation(summary = "启用用户")
     @PutMapping("enableUser/{id}")
     public JsonBean<String> enableUser(@PathVariable Long id) {
         if (userService.disableUser(id, TYPE_ZERO)) {

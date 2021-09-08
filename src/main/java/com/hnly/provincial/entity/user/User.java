@@ -1,14 +1,14 @@
 package com.hnly.provincial.entity.user;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_user")
-@ApiModel(value="User对象", description="系统用户表")
+@Schema(name = "User对象", description = "系统用户表")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,49 +29,49 @@ public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "账号")
+    @Schema(description = "账号")
     private String username;
 
-    @ApiModelProperty(value = "用户名")
+    @Schema(description = "用户名")
     private String name;
 
-    @ApiModelProperty(value = "密码")
+    @Schema(description = "密码")
     private String password;
 
-    @ApiModelProperty(value = "0 启用 1禁用")
+    @Schema(description = "0 启用 1禁用")
     private String status;
 
-    @ApiModelProperty(value = "管理范围")
+    @Schema(description = "管理范围")
     private String ange;
 
-    @ApiModelProperty(value = "单位名称")
+    @Schema(description = "单位名称")
     private String unitName;
 
-    @ApiModelProperty(value = "单位地址")
+    @Schema(description = "单位地址")
     private String unitAddress;
 
-    @ApiModelProperty(value = "手机号")
+    @Schema(description = "手机号")
     private String phone;
 
-    @ApiModelProperty(value = "联系电话")
+    @Schema(description = "联系电话")
     private String contactNumber;
 
-    @ApiModelProperty(value = "邮箱")
+    @Schema(description = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "行政区划")
+    @Schema(description = "行政区划")
     private String code;
 
-    @ApiModelProperty(value = "权限id")
+    @Schema(description = "权限id")
     private Long quanxian;
 
-    @ApiModelProperty(value = "创建时间")
+    @Schema(description = "创建时间")
     private Date createtime;
 
-    @ApiModelProperty(value = "修改时间")
+    @Schema(description = "修改时间")
     private Date updatetime;
 
-    @ApiModelProperty(value = "协会人员 1")
+    @Schema(description = "协会人员 1")
     private String association;
 
 

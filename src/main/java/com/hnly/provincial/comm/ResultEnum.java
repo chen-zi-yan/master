@@ -29,8 +29,8 @@ public enum ResultEnum {
     CHANGEFAILED(40013, "修改失败"),
     CODE_EXIST(40014, "行政区划已经存在"),
     CODE_SUBORDINATE_EXIST(40015, "该行政区划码存在下级单位,不能修改行政区划码!"),
-    CODE_SUPERIOR_EXIST(40015, "该行政区划码不存在上级单位,请查询后再试!"),
-    CODENOTEMPTY(40015, "行政区划代码不能为空"),
+    CODE_SUPERIOR_EXIST(40016, "该行政区划码不存在上级单位,请查询后再试!"),
+    CODENOTEMPTY(40017, "行政区划代码不能为空"),
 
 
     ;

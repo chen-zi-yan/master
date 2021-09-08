@@ -66,12 +66,9 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         if (area.getFatherCode() != null) {
             checkSubordinate(area.getFatherCode());
         }
-        if (area.getCode() == null) {
-            baseMapper.updateById(area);
-            return true;
-        }
         //验证输入的区域码是否和该正在修改的code信息相同
-        if (area.getCode().equals(area1.getCode())) {
+        if (area.getCode() == null || area.getCode().equals(area1.getCode())) {
+            area.setUpdateTime(new Date());
             baseMapper.updateById(area);
             return true;
         }
@@ -79,6 +76,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         checkCode(area.getCode());
         //验证是否存在下级
         checkSuperior(area1.getCode());
+        area.setUpdateTime(new Date());
         baseMapper.updateById(area);
         return true;
     }
@@ -102,7 +100,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     }
 
     /**
-     * 校验该区域码是否存在
+     * 校验该区域码是否存在 不存在通过
      *
      * @param code
      */
@@ -114,14 +112,14 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     }
 
     /**
-     * 检验该区域码是否存在下级单位
+     * 检验该区域码是否存在下级单位,若存在则通过
      *
      * @param code
      */
     public void checkSuperior(String code) {
         Integer count = lambdaQuery().eq(Area::getFatherCode, code).count();
         if (count != 0) {
-            throw new MyException(ResultEnum.CODE_SUPERIOR_EXIST);
+            throw new MyException(ResultEnum.CODE_SUBORDINATE_EXIST);
         }
     }
 

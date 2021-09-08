@@ -30,7 +30,7 @@ public class AreaController {
     private IAreaService iAreaServicel;
 
     @ApiOperation("根据ID查询")
-    @GetMapping()
+    @GetMapping("/getAreaById")
     public JsonBean<Area> getAreaById(Long id) {
         Area byId = iAreaServicel.getById(id);
         if (byId == null){
@@ -71,7 +71,7 @@ public class AreaController {
     }
 
     @ApiOperation("分页查询")
-    @PostMapping("/getAreaList")
+    @GetMapping("")
     public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(AreaVO areaVO){
         TableDataUtils<List<AreaVO>> areaList = iAreaServicel.getAreaList(areaVO);
         return JsonBean.success(areaList);

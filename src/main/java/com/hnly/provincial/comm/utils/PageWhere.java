@@ -16,13 +16,12 @@ import lombok.Data;
 @Data
 public class PageWhere<T> {
 
-    @ApiModelProperty(value = "每页条数")
+    @Schema(description = "每页条数,分页时使用")
     private long size;
-
-    @ApiModelProperty(value = "当前页")
+    @Schema(description = "当前页,分页时使用")
     private long current;
 
-    @ApiModelProperty(value = "", hidden = true)
+    @Schema(name = "", hidden = true)
     public Page<T> page() {
         return new Page<T>(current, size);
     }

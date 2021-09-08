@@ -2,11 +2,17 @@ package com.hnly.provincial.entity.user;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.hnly.provincial.comm.utils.PageWhere;
+import com.hnly.provincial.comm.validation.Add;
+import com.hnly.provincial.comm.validation.Update;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,21 +26,27 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_user")
-@Schema(name = "User对象", description = "系统用户表")
-public class User implements Serializable {
+@Schema(name = "UserVO", description = "系统用户表VO")
+public class UserVO extends PageWhere<User> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull(message = "id不能为空", groups = {Update.class})
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @Null(groups = {Update.class})
+    @NotEmpty(message = "账号不能为空", groups = {Add.class})
+    @Size(min = 4, max = 12, message = "账号长度大于4字符小于12字符")
     @Schema(description = "账号")
     private String username;
 
     @Schema(description = "用户名")
     private String name;
 
+    @Null(message = "不能修改密码", groups = {Update.class})
+    @NotEmpty(message = "密码不能为空", groups = {Add.class})
+    @Size(min = 4, max = 16, message = "账号长度大于4字符小于12字符")
     @Schema(description = "密码")
     private String password;
 

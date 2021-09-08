@@ -1,4 +1,6 @@
 /.idea/
+/.mvn/
 /log/
+/HELP.md
 /provincial-platform.iml
 /target/

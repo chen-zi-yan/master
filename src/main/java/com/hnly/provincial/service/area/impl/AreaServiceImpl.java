@@ -40,7 +40,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         if (one.getStatus() == null) {
             area.setStatus("0");
         } else {
-            Integer status = Integer.valueOf(one.getStatus());
+            int status = Integer.parseInt(one.getStatus());
             area.setStatus(String.valueOf(status + 1));
         }
         area.setCreateTime(new Date());
@@ -102,7 +102,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     /**
      * 校验该区域码是否存在 不存在通过
      *
-     * @param code
+     * @param code code
      */
     public void checkCode(String code) {
         Integer count = lambdaQuery().eq(Area::getCode, code).count();
@@ -114,7 +114,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     /**
      * 检验该区域码是否存在下级单位,若存在则通过
      *
-     * @param code
+     * @param code code
      */
     public void checkSuperior(String code) {
         Integer count = lambdaQuery().eq(Area::getFatherCode, code).count();
@@ -126,7 +126,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     /**
      * 检验该区域码是否存在上级单位,若存在则通过
      *
-     * @param fatherCode
+     * @param fatherCode 上级行政区划
      */
     public void checkSubordinate(String fatherCode) {
         Integer count = lambdaQuery().eq(Area::getCode, fatherCode).count();

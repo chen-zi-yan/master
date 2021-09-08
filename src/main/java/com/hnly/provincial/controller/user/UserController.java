@@ -81,7 +81,7 @@ public class UserController {
 
     @Operation(summary = "添加用户")
     @PostMapping
-    public JsonBean<String> addUser(@Validated({Add.class, Default.class}) UserVO user) {
+    public JsonBean<String> addUser(@RequestBody @Validated({Add.class, Default.class}) UserVO user) {
         if (userService.add(user)) {
             return JsonBean.success();
         }
@@ -90,7 +90,7 @@ public class UserController {
 
     @Operation(summary = "修改用户", description = "只支持修改用户信息<br/> 不能修改账号和密码>")
     @PutMapping
-    public JsonBean<String> updateUser(@Validated({Update.class}) UserVO userVO) {
+    public JsonBean<String> updateUser(@RequestBody @Validated({Update.class}) UserVO userVO) {
         if (userService.updateUser(userVO)) {
             return JsonBean.success();
         }

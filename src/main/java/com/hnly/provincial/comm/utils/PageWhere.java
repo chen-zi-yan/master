@@ -16,9 +16,9 @@ import lombok.Data;
 @Data
 public class PageWhere<T> {
 
-    @Schema(name = "每页条数,分页时使用")
+    @Schema(description = "每页条数,分页时使用")
     private long size;
-    @Schema(name = "当前页,分页时使用")
+    @Schema(description = "当前页,分页时使用")
     private long current;
 
     @Schema(name = "", hidden = true)

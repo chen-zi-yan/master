@@ -33,7 +33,7 @@ public class AreaController {
     @GetMapping("/getAreaById")
     public JsonBean<Area> getAreaById(Long id) {
         Area byId = iAreaServicel.getById(id);
-        if (byId == null){
+        if (byId == null) {
             return JsonBean.success(ResultEnum.NOTHINGNESS);
         }
         return JsonBean.success(byId);
@@ -79,7 +79,7 @@ public class AreaController {
 
     @Operation(summary = "查询子单位")
     @GetMapping("/getAllAreaSubordinate")
-    public JsonBean<List<Area>> getAllAreaSubordinate(String code){
+    public JsonBean<List<Area>> getAllAreaSubordinate(String code) {
         List<Area> areaList = iAreaServicel.getAllAreaSubordinate(code);
         return JsonBean.success(areaList);
     }

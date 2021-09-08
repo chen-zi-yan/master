@@ -24,7 +24,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 
     @Override
     public TableDataUtils<List<${entity}VO>> findListByPage(${entity}VO ${entity?uncap_first}VO){
-        Page<${entity}> page = lambdaQuery().page(areaVO.page());
+        Page<${entity}> page = lambdaQuery().page(${entity?uncap_first}VO.page());
         List<${entity}VO> ${entity?uncap_first}VOs = Conversion.changeList(page.getRecords(), ${entity}VO.class);
         return TableDataUtils.success(page.getTotal(), ${entity?uncap_first}VOs);
     }

@@ -22,24 +22,21 @@ import java.util.List;
 @Service
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
 
-@Override
-public TableDataUtils
-<List
-<${entity}VO>> findListByPage(${entity}VO ${entity?uncap_first}VO){
-             Page<${entity}> page = lambdaQuery().page(areaVO.page());
-             List
-    <${entity}VO> ${entity?uncap_first}VOs = Conversion.changeList(page.getRecords(), ${entity}VO.class);
-                                       return TableDataUtils.success(page.getTotal(), ${entity?uncap_first}VOs);
-                                       }
+    @Override
+    public TableDataUtils<List<${entity}VO>> findListByPage(${entity}VO ${entity?uncap_first}VO){
+        Page<${entity}> page = lambdaQuery().page(areaVO.page());
+        List<${entity}VO> ${entity?uncap_first}VOs = Conversion.changeList(page.getRecords(), ${entity}VO.class);
+        return TableDataUtils.success(page.getTotal(), ${entity?uncap_first}VOs);
+    }
 
-                                       @Override
-                                       public boolean add(${entity}VO ${entity?uncap_first}VO){
+    @Override
+    public boolean add(${entity}VO ${entity?uncap_first}VO){
         ${entity} ${entity?uncap_first} = Conversion.changeOne(${entity?uncap_first}VO, ${entity}.class);
-                                       baseMapper.insert(${entity?uncap_first});
-                                       return true;
-                                       }
+        baseMapper.insert(${entity?uncap_first});
+        return true;
+    }
 
-                                       @Override
+    @Override
     public boolean delete(Long id){
         baseMapper.deleteById(id);
         return true;

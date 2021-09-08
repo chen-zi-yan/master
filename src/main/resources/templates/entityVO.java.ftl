@@ -5,7 +5,7 @@ import com.hnly.provincial.comm.utils.PageWhere;
 import ${pkg};
 </#list>
 <#if swagger2>
-    import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
 @TableName("${table.name}")
 </#if>
 <#if swagger2>
-    @Schema(name="${entity}VO", description="${table.comment!}")
+@Schema(name="${entity}VO", description="${table.comment!}")
 </#if>
 <#if superEntityClass??>
 public class ${entity}VO extends PageWhere<${entity}><#if activeRecord><${entity}></#if> {
@@ -55,11 +55,11 @@ public class ${entity}VO extends PageWhere<${entity}> implements Serializable {
 
     <#if field.comment!?length gt 0>
         <#if swagger2>
-            @Schema(description = "${field.comment}")
+    @Schema(description = "${field.comment}")
         <#else>
-            /**
-            * ${field.comment}
-            */
+        /**
+        * ${field.comment}
+        */
         </#if>
     </#if>
     <#if field.keyFlag>

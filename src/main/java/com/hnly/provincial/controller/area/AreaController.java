@@ -6,8 +6,8 @@ import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
 import com.hnly.provincial.service.area.IAreaService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,13 +23,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/area")
-@Api(tags = "区域号管理接口")
+@Tag(name = "区域号管理接口")
 public class AreaController {
 
     @Resource
     private IAreaService iAreaServicel;
 
-    @ApiOperation("根据ID查询")
+    @Operation(summary = "根据ID查询")
     @GetMapping("/getAreaById")
     public JsonBean<Area> getAreaById(Long id) {
         Area byId = iAreaServicel.getById(id);
@@ -39,9 +39,9 @@ public class AreaController {
         return JsonBean.success(byId);
     }
 
-    @ApiOperation(value = "插入数据", notes = "条件:该区域号唯一")
+    @Operation(summary = "插入数据", description = "条件:该区域号唯一")
     @PostMapping()
-    public JsonBean<String> addArea(Area area){
+    public JsonBean<String> addArea(@RequestBody Area area) {
         boolean flag = iAreaServicel.saveArea(area);
         if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
@@ -49,7 +49,7 @@ public class AreaController {
         return JsonBean.success(ResultEnum.FAILURE);
     }
 
-    @ApiOperation(value = "根据ID删除数据", notes = "条件:该数据不能含有下级")
+    @Operation(summary = "根据ID删除数据", description = "条件:该数据不能含有下级")
     @DeleteMapping()
     public JsonBean<String> deleteAreaById(Long id) {
         boolean flag = iAreaServicel.deleteAreaById(id);
@@ -60,9 +60,9 @@ public class AreaController {
     }
 
 
-    @ApiOperation(value = "根据ID修改用户数据", notes = "条件:区域号唯一,且不能含有下级")
+    @Operation(summary = "根据ID修改用户数据", description = "条件:区域号唯一,且不能含有下级")
     @PutMapping()
-    public JsonBean<String> updateAreaById(Area area) {
+    public JsonBean<String> updateAreaById(@RequestBody Area area) {
         boolean flag = iAreaServicel.updateAreaById(area);
         if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
@@ -70,14 +70,14 @@ public class AreaController {
         return JsonBean.success(ResultEnum.CHANGEFAILED);
     }
 
-    @ApiOperation("分页查询")
+    @Operation(summary = "分页查询")
     @GetMapping("")
-    public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(AreaVO areaVO){
+    public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(@RequestBody AreaVO areaVO) {
         TableDataUtils<List<AreaVO>> areaList = iAreaServicel.getAreaList(areaVO);
         return JsonBean.success(areaList);
     }
 
-    @ApiOperation("查询子单位")
+    @Operation(summary = "查询子单位")
     @GetMapping("/getAllAreaSubordinate")
     public JsonBean<List<Area>> getAllAreaSubordinate(String code){
         List<Area> areaList = iAreaServicel.getAllAreaSubordinate(code);

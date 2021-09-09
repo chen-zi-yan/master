@@ -65,7 +65,7 @@ import java.util.List;
     }
 
     @Operation(summary = "查询${table.comment!}分页数据")
-    @GetMapping()
+    @PostMapping()
     public JsonBean<TableDataUtils<List<${entity}VO>>> findListByPage(@RequestBody ${entity}VO ${entity?uncap_first}VO){
         return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}.findListByPage(${entity?uncap_first}VO));
     }

@@ -35,23 +35,23 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull(message = "id不能为空", groups = {Update.class})
+    @NotNull(message = "id不能null", groups = {Update.class})
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @Schema(description = "姓名")
     private String name;
 
-    @NotNull(message = "行政区划不能为空", groups = {Add.class})
+    @NotNull(message = "行政区划不能null", groups = {Add.class})
     @NotEmpty(message = "行政区划不能为空", groups = {Add.class})
     @Schema(description = "行政区划")
     private String code;
 
-    @Pattern(regexp = "^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$", message = "手机号输入错误")
+    @Pattern(regexp = "/^1[345678]\\d{9}$/", message = "手机号输入错误")
     @Schema(description = "手机号")
     private String phone;
 
-    @NotNull(message = "身份证号不能为空", groups = {Add.class})
+    @NotNull(message = "身份证号不能null", groups = {Add.class})
     @NotEmpty(message = "身份证号不能为空", groups = {Add.class})
     @Pattern(regexp = "\\d{15}|\\d{17}[\\dxX]", message = "身份证号输入错误")
     @Schema(description = "身份证号")

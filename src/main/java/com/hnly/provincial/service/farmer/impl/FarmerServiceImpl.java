@@ -32,12 +32,12 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     @Override
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
         Page<Farmer> page = lambdaQuery()
-                .eq(farmerVO.getName() != null, Farmer::getName, farmerVO.getName())
-                .eq(farmerVO.getCode() != null, Farmer::getCode, farmerVO.getCode())
-                .eq(farmerVO.getPhone() != null, Farmer::getPhone, farmerVO.getPhone())
-                .eq(farmerVO.getIdCard() != null, Farmer::getIdCard, farmerVO.getIdCard())
-                .eq(farmerVO.getIcCode() != null, Farmer::getIcCode, farmerVO.getIcCode())
-                .eq(farmerVO.getStatus() != null, Farmer::getStatus, farmerVO.getStatus())
+                .eq(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
+                .eq(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
+                .eq(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
+                .eq(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
+                .eq(!StringUtils.isEmpty(farmerVO.getIcCode()), Farmer::getIcCode, farmerVO.getIcCode())
+                .eq(!StringUtils.isEmpty(farmerVO.getStatus()), Farmer::getStatus, farmerVO.getStatus())
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         return TableDataUtils.success(page.getTotal(), farmerVOs);
@@ -100,11 +100,11 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         }
         //校验行政区划和校验ic卡号-不为空的时候同区域规划内的ic卡号必须唯一
         Farmer farmerData = baseMapper.selectById(farmerVO.getId());
-        if (farmerVO.getIcCode() != null && farmerVO.getCode() != null) {
+        if (!StringUtils.isEmpty(farmerVO.getIcCode()) && !StringUtils.isEmpty(farmerVO.getCode())) {
             checkIcCodeAndCode(farmerData.getId(), farmerVO.getIcCode(), farmerVO.getCode());
-        } else if (farmerVO.getIcCode() != null) {
+        } else if (!StringUtils.isEmpty(farmerVO.getIcCode())) {
             checkIcCode(farmerData.getId(), farmerData.getCode(), farmerVO.getIcCode());
-        } else if (farmerVO.getCode() != null) {
+        } else if (!StringUtils.isEmpty(farmerVO.getCode())) {
             checkCode(farmerData.getId(), farmerData.getIcCode(), farmerVO.getCode());
         }
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);

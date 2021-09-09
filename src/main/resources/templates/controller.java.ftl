@@ -47,40 +47,33 @@ import java.util.List;
     @PostMapping()
     public JsonBean<String> add(@RequestBody ${entity}VO ${entity?uncap_first}VO){
         ${(table.serviceName?substring(1))?uncap_first}.add(${entity?uncap_first}VO);
-    return JsonBean.success();
+        return JsonBean.success();
     }
 
     @Operation(summary = "删除${table.comment!}")
     @DeleteMapping("{id}")
-    public JsonBean
-    <String> delete(@PathVariable("id") Long id){
+    public JsonBean<String> delete(@PathVariable("id") Long id){
         ${(table.serviceName?substring(1))?uncap_first}.delete(id);
         return JsonBean.success();
-        }
+    }
 
-        @Operation(summary = "更新${table.comment!}")
-        @PutMapping()
-        public JsonBean
-        <String> update(@RequestBody ${entity}VO ${entity?uncap_first}VO){
-            ${(table.serviceName?substring(1))?uncap_first}.updateData(${entity?uncap_first}VO);
-            return JsonBean.success();
-            }
+    @Operation(summary = "更新${table.comment!}")
+    @PutMapping()
+    public JsonBean<String> update(@RequestBody ${entity}VO ${entity?uncap_first}VO){
+        ${(table.serviceName?substring(1))?uncap_first}.updateData(${entity?uncap_first}VO);
+        return JsonBean.success();
+    }
 
-            @Operation(summary = "查询${table.comment!}分页数据")
-            @GetMapping()
-            public JsonBean
-            <TableDataUtils
-            <List
-            <${entity}VO>>> findListByPage(@RequestBody ${entity}VO ${entity?uncap_first}VO){
-                return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}
-                .findListByPage(${entity?uncap_first}VO));
-                }
+    @Operation(summary = "查询${table.comment!}分页数据")
+    @PostMapping()
+    public JsonBean<TableDataUtils<List<${entity}VO>>> findListByPage(@RequestBody ${entity}VO ${entity?uncap_first}VO){
+        return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}.findListByPage(${entity?uncap_first}VO));
+    }
 
-                @Operation(summary = "id查询${table.comment!}")
-                @GetMapping("{id}")
-                public JsonBean
-                <${entity}VO> findById(@PathVariable Long id){
-                    return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}.findById(id));
-                    }
-                    }
+    @Operation(summary = "id查询${table.comment!}")
+    @GetMapping("{id}")
+    public JsonBean<${entity}VO> findById(@PathVariable Long id){
+        return JsonBean.success(${(table.serviceName?substring(1))?uncap_first}.findById(id));
+    }
+}
 </#if>

@@ -72,7 +72,7 @@ public class AreaController {
 
     @Operation(summary = "分页查询")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(@RequestBody AreaVO areaVO) {
+    public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(AreaVO areaVO) {
         TableDataUtils<List<AreaVO>> areaList = iAreaServicel.getAreaList(areaVO);
         return JsonBean.success(areaList);
     }

@@ -47,7 +47,7 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "行政区划")
     private String code;
 
-    @Pattern(regexp = "/^1[345678]\\d{9}$/", message = "手机号输入错误")
+    @Pattern(regexp = "^1[3|4|5|7|8][0-9]{9}$", message = "手机号输入错误")
     @Schema(description = "手机号")
     private String phone;
 

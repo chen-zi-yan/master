@@ -70,8 +70,8 @@ public class ProjectController {
     }
 
     @Operation(summary = "查询项目管理分页数据")
-    @PostMapping("/findListByPage")
-    public JsonBean<TableDataUtils<List<ProjectVO>>> findListByPage(@RequestBody ProjectVO projectVO){
+    @GetMapping("")
+    public JsonBean<TableDataUtils<List<ProjectVO>>> findListByPage( ProjectVO projectVO){
         return JsonBean.success(projectService.findListByPage(projectVO));
     }
 

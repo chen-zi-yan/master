@@ -1,5 +1,6 @@
 package com.hnly.provincial.service.project.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.entity.area.Area;
@@ -32,17 +33,24 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public TableDataUtils<List<ProjectVO>> findListByPage(ProjectVO projectVO) {
+        String cityCode="";
+        if(!StringUtils.isEmpty(projectVO.getCity())){
+            cityCode=projectVO.getCity().substring(0,4);
+        }
         Page<Project> page = lambdaQuery()
-                .eq(projectVO.getCode() != null, Project::getCode, projectVO.getCode())
-                .eq(projectVO.getName() != null, Project::getName, projectVO.getName())
-                .eq(projectVO.getUnit() != null, Project::getUnit, projectVO.getUnit())
-                .eq(projectVO.getType() != null, Project::getType, projectVO.getType())
-                .eq(projectVO.getManufacturers() != null, Project::getManufacturers, projectVO.getManufacturers())
+                .likeRight(!StringUtils.isEmpty(projectVO.getCity()),Project::getCode, cityCode)
+                .eq(!StringUtils.isEmpty(projectVO.getCode()), Project::getCode, projectVO.getCode())
+                .eq(!StringUtils.isEmpty(projectVO.getName()), Project::getName, projectVO.getName())
+                .eq(!StringUtils.isEmpty(projectVO.getUnit()), Project::getUnit, projectVO.getUnit())
+                .eq(!StringUtils.isEmpty(projectVO.getType()), Project::getType, projectVO.getType())
+                .eq(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
                 .page(projectVO.page());
         List<ProjectVO> projectVOs = Conversion.changeList(page.getRecords(), ProjectVO.class);
         for (ProjectVO vo : projectVOs) {
-            Area one = iAreaService.lambdaQuery().eq(Area::getCode, vo.getCode()).one();
-            vo.setCodeName(one.getName());
+            Area xian = iAreaService.lambdaQuery().eq(Area::getCode, vo.getCode()).one();
+            Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getFatherCode()).one();
+            vo.setCodeName(xian.getName());
+            vo.setCityName(shi.getName());
             getType(vo.getType(), vo);
             getUnit(vo.getUnit(), vo);
         }
@@ -75,8 +83,10 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     public ProjectVO findById(Long id) {
         Project project = baseMapper.selectById(id);
         ProjectVO projectVO = Conversion.changeOne(project, ProjectVO.class);
-        Area one = iAreaService.lambdaQuery().eq(Area::getCode, projectVO.getCode()).one();
-        projectVO.setCodeName(one.getName());
+        Area xian = iAreaService.lambdaQuery().eq(Area::getCode, projectVO.getCode()).one();
+        Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getFatherCode()).one();
+        projectVO.setCodeName(xian.getName());
+        projectVO.setCityName(shi.getName());
         getType(projectVO.getType(), projectVO);
         getUnit(projectVO.getUnit(), projectVO);
         return projectVO;

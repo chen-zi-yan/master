@@ -36,9 +36,13 @@ public class ProjectVO extends PageWhere<Project> implements Serializable {
 
     @NotEmpty
     @NotNull
-    @Schema(description = "行政区划")
+    @Schema(description = "县级行政区划")
     private String code;
     private String codeName;
+
+    @Schema(description = "市级行政区划")
+    private String city;
+    private String cityName;
 
     @NotEmpty
     @NotNull

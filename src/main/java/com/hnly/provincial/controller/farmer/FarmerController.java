@@ -56,7 +56,7 @@ public class FarmerController {
 
     @Operation(summary = "查询农户表分页数据")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<FarmerVO>>> findListByPage(@RequestBody FarmerVO farmerVO) {
+    public JsonBean<TableDataUtils<List<FarmerVO>>> findListByPage(FarmerVO farmerVO) {
         return JsonBean.success(farmerService.findListByPage(farmerVO));
     }
 

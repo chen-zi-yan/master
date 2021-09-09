@@ -101,11 +101,11 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         //校验行政区划和校验ic卡号-不为空的时候同区域规划内的ic卡号必须唯一
         Farmer farmerData = baseMapper.selectById(farmerVO.getId());
         if (farmerVO.getIcCode() != null && farmerVO.getCode() != null) {
-            checkIcCodeAndCode(farmerData, farmerVO.getIcCode(), farmerVO.getCode());
+            checkIcCodeAndCode(farmerData.getId(), farmerVO.getIcCode(), farmerVO.getCode());
         } else if (farmerVO.getIcCode() != null) {
-            checkIcCode(farmerData, farmerVO.getIcCode());
+            checkIcCode(farmerData.getId(), farmerData.getCode(), farmerVO.getIcCode());
         } else if (farmerVO.getCode() != null) {
-            checkCode(farmerData, farmerVO.getCode());
+            checkCode(farmerData.getId(), farmerData.getIcCode(), farmerVO.getCode());
         }
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
         farmer.setUpdateTime(new Date());
@@ -116,14 +116,15 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     /**
      * 当区域规划有值的时候,校验该ic卡号是否存在该行政区划中
      *
-     * @param farmerData 该id的整条数据
-     * @param code       区域规划
-     * @throws MyException 已存在抛出异常
+     * @param id     id
+     * @param icCode 原数据的ic卡号
+     * @param code   传入进来的行政区划码
+     * @throws MyException
      */
-    private void checkCode(Farmer farmerData, String code) throws MyException {
-        int count = lambdaQuery().eq(Farmer::getIcCode, farmerData.getIcCode())
+    private void checkCode(Long id, String icCode, String code) throws MyException {
+        int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
                 .eq(Farmer::getCode, code)
-                .ne(Farmer::getId, farmerData.getId()).count();
+                .ne(Farmer::getId, id).count();
         log.debug("数量{}", count);
         if (count != 0) {
             throw new MyException(ResultEnum.IC_EXIST);
@@ -133,14 +134,15 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     /**
      * 当ic卡号有值的时候,校验该ic卡号是否存在该行政区划中
      *
-     * @param farmerData 该id的整条数据
-     * @param icCode
+     * @param id     id
+     * @param code   原数据中的区域规划码
+     * @param icCode 传入进来的ic卡号
      * @throws MyException 已存在抛出异常
      */
-    private void checkIcCode(Farmer farmerData, String icCode) throws MyException {
+    private void checkIcCode(Long id, String code, String icCode) throws MyException {
         int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
-                .eq(Farmer::getCode, farmerData.getCode())
-                .ne(Farmer::getId, farmerData.getId()).count();
+                .eq(Farmer::getCode, code)
+                .ne(Farmer::getId, id).count();
         log.debug("数量{}", count);
         if (count != 0) {
             throw new MyException(ResultEnum.IC_EXIST);
@@ -150,15 +152,15 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     /**
      * 在icCode(ic卡号)和code(行政区划)有值时,校验该ic卡号是否存在该行政区划中
      *
-     * @param farmerData 该id的整条数据
-     * @param icCode     ic卡号
-     * @param code       行政区划
+     * @param id     id
+     * @param icCode 传入进来的ic卡号
+     * @param code   传入进来的行政区划码
      * @throws MyException 已存在抛出异常
      */
-    private void checkIcCodeAndCode(Farmer farmerData, String icCode, String code) throws MyException {
+    private void checkIcCodeAndCode(Long id, String icCode, String code) throws MyException {
         int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
                 .eq(Farmer::getCode, code)
-                .ne(Farmer::getId, farmerData.getId()).count();
+                .ne(Farmer::getId, id).count();
         log.debug("数量{}", count);
         if (count != 0) {
             throw new MyException(ResultEnum.IC_EXIST);

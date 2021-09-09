@@ -3,7 +3,6 @@ package com.hnly.provincial.controller.farmer;
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.validation.Add;
-import com.hnly.provincial.comm.validation.Update;
 import com.hnly.provincial.entity.farmer.FarmerVO;
 import com.hnly.provincial.service.farmer.IFarmerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +48,7 @@ public class FarmerController {
 
     @Operation(summary = "更新农户表")
     @PutMapping()
-    public JsonBean<String> update(@RequestBody @Validated({Update.class, Default.class}) FarmerVO farmerVO) {
+    public JsonBean<String> update(@RequestBody FarmerVO farmerVO) {
         farmerService.updateData(farmerVO);
         return JsonBean.success();
     }

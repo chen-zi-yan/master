@@ -31,7 +31,14 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
 
     @Override
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
-        Page<Farmer> page = lambdaQuery().page(farmerVO.page());
+        Page<Farmer> page = lambdaQuery()
+                .eq(farmerVO.getName() != null, Farmer::getName, farmerVO.getName())
+                .eq(farmerVO.getCode() != null, Farmer::getCode, farmerVO.getCode())
+                .eq(farmerVO.getPhone() != null, Farmer::getPhone, farmerVO.getPhone())
+                .eq(farmerVO.getIdCard() != null, Farmer::getIdCard, farmerVO.getIdCard())
+                .eq(farmerVO.getIcCode() != null, Farmer::getIcCode, farmerVO.getIcCode())
+                .eq(farmerVO.getStatus() != null, Farmer::getStatus, farmerVO.getStatus())
+                .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         return TableDataUtils.success(page.getTotal(), farmerVOs);
     }

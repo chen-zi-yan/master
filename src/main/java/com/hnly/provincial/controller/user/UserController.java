@@ -49,7 +49,7 @@ public class UserController {
                     @Parameter(name = "password", required = true, description = "用户密码"),
             }
     )
-    @PostMapping("login")
+    @GetMapping("login")
     public JsonBean<String> login(String userName, String password) {
         if (userService.login(userName, password)) {
             User user = new User();

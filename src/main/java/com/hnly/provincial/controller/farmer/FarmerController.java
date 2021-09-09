@@ -49,7 +49,7 @@ public class FarmerController {
 
     @Operation(summary = "更新农户表")
     @PutMapping()
-    public JsonBean<String> update(@RequestBody @Validated({Update.class}) FarmerVO farmerVO) {
+    public JsonBean<String> update(@RequestBody @Validated({Update.class, Default.class}) FarmerVO farmerVO) {
         farmerService.updateData(farmerVO);
         return JsonBean.success();
     }

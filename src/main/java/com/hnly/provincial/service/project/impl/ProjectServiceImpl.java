@@ -43,8 +43,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         for (ProjectVO vo : projectVOs) {
             Area one = iAreaService.lambdaQuery().eq(Area::getCode, vo.getCode()).one();
             vo.setCodeName(one.getName());
-            getType(vo.getType(),vo);
-            getUnit(vo.getUnit(),vo);
+            getType(vo.getType(), vo);
+            getUnit(vo.getUnit(), vo);
         }
         return TableDataUtils.success(page.getTotal(), projectVOs);
     }
@@ -77,8 +77,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         ProjectVO projectVO = Conversion.changeOne(project, ProjectVO.class);
         Area one = iAreaService.lambdaQuery().eq(Area::getCode, projectVO.getCode()).one();
         projectVO.setCodeName(one.getName());
-        getType(projectVO.getType(),projectVO);
-        getUnit(projectVO.getUnit(),projectVO);
+        getType(projectVO.getType(), projectVO);
+        getUnit(projectVO.getUnit(), projectVO);
         return projectVO;
     }
 
@@ -110,8 +110,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     /**
      * 获取单位的名称
-     * @param unit  类型标识码
-     * @param projectVO  项目管理对象
+     *
+     * @param unit      类型标识码
+     * @param projectVO 项目管理对象
      */
     private void getUnit(String unit, ProjectVO projectVO) {
         if ("1".equals(unit)) {
@@ -125,8 +126,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     /**
      * 获取灌溉类型
-     * @param type 灌溉类型标识码
-     * @param projectVO  项目管理对象
+     *
+     * @param type      灌溉类型标识码
+     * @param projectVO 项目管理对象
      */
     private void getType(String type, ProjectVO projectVO) {
         if ("0".equals(type)) {

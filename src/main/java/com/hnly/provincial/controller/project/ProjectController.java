@@ -3,7 +3,6 @@ package com.hnly.provincial.controller.project;
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.ResultEnum;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.hnly.provincial.service.project.IProjectService;
@@ -11,7 +10,6 @@ import com.hnly.provincial.entity.project.Project;
 import com.hnly.provincial.entity.project.ProjectVO;
 import lombok.extern.slf4j.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.annotation.Resource;
 
@@ -37,7 +35,7 @@ public class ProjectController {
 
     @Operation(summary = "新增项目管理")
     @PostMapping()
-    public JsonBean<String> add(@RequestBody ProjectVO projectVO){
+    public JsonBean<String> add(@RequestBody @Validated ProjectVO projectVO){
         boolean project = projectService.addCheckProject(projectVO);
         if(project){
             return JsonBean.err(ResultEnum.CODE_EXIST);
@@ -62,7 +60,7 @@ public class ProjectController {
 
     @Operation(summary = "更新项目管理",description = "id不能为空")
     @PutMapping()
-    public JsonBean<String> update(@RequestBody ProjectVO projectVO){
+    public JsonBean<String> update(@RequestBody @Validated ProjectVO projectVO){
         boolean tag = projectService.updateCheck(projectVO);
         if(tag){
             return JsonBean.err(ResultEnum.CODE_EXIST);

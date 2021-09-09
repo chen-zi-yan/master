@@ -45,10 +45,14 @@ public class ProjectVO extends PageWhere<Project> implements Serializable {
     @Schema(description = "项目名")
     private String name;
 
+    @NotEmpty
+    @NotNull
     @Schema(description = "负责单位 1 农业 2 水利  3 发改")
     private String unit;
     private String unitName;
 
+    @NotEmpty
+    @NotNull
     @Schema(description = "项目类型 0 井灌 1 渠灌")
     private String type;
     private String typeName;

@@ -101,6 +101,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
             checkCode(farmerData, farmerVO.getCode());
         }
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
+        farmer.setUpdateTime(new Date());
         baseMapper.updateById(farmer);
         return true;
     }

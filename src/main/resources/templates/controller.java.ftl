@@ -47,12 +47,13 @@ import java.util.List;
     @PostMapping()
     public JsonBean<String> add(@RequestBody ${entity}VO ${entity?uncap_first}VO){
         ${(table.serviceName?substring(1))?uncap_first}.add(${entity?uncap_first}VO);
-        return JsonBean.success();
+    return JsonBean.success();
     }
 
     @Operation(summary = "删除${table.comment!}")
     @DeleteMapping("{id}")
-    public JsonBean<String> delete(@PathVariable("id") Long id){
+    public JsonBean
+    <String> delete(@PathVariable("id") Long id){
         ${(table.serviceName?substring(1))?uncap_first}.delete(id);
         return JsonBean.success();
         }

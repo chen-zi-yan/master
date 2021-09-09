@@ -71,7 +71,7 @@ public class AreaController {
     }
 
     @Operation(summary = "分页查询")
-    @PostMapping("/getAreaList")
+    @GetMapping()
     public JsonBean<TableDataUtils<List<AreaVO>>> getAreaList(@RequestBody AreaVO areaVO) {
         TableDataUtils<List<AreaVO>> areaList = iAreaServicel.getAreaList(areaVO);
         return JsonBean.success(areaList);

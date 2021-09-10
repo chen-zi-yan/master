@@ -8,12 +8,15 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.farmer.FarmerMapper;
+import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.farmer.Farmer;
 import com.hnly.provincial.entity.farmer.FarmerVO;
+import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.farmer.IFarmerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +32,9 @@ import java.util.List;
 @Service
 public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> implements IFarmerService {
 
+    @Resource
+    private IAreaService iAreaService;
+
     @Override
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
         Page<Farmer> page = lambdaQuery()
@@ -40,6 +46,18 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .eq(!StringUtils.isEmpty(farmerVO.getStatus()), Farmer::getStatus, farmerVO.getStatus())
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
+        for (FarmerVO vo : farmerVOs) {
+            Area village = iAreaService.getAreaByFatherCode(vo.getCode());
+            vo.setName(village.getName());
+            Area township = iAreaService.getAreaByFatherCode(village.getFatherCode());
+            vo.setTownshipName(township.getName());
+            Area county = iAreaService.getAreaByFatherCode(township.getFatherCode());
+            vo.setCountyName(county.getName());
+            Area city = iAreaService.getAreaByFatherCode(county.getFatherCode());
+            vo.setCityName(city.getName());
+            Area province = iAreaService.getAreaByFatherCode(city.getFatherCode());
+            vo.setProvinceName(province.getName());
+        }
         return TableDataUtils.success(page.getTotal(), farmerVOs);
     }
 

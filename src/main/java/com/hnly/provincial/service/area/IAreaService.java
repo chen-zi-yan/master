@@ -58,5 +58,11 @@ public interface IAreaService extends IService<Area> {
      */
     List<Area> getAllAreaSubordinate(String code);
 
-
+    /**
+     * 查询上级单位,对象信息 <br/>该方法在农户查询上级单位名称用到
+     *
+     * @param code  区域码
+     * @return  Area  查询出来的对象信息
+     */
+    Area getAreaByFatherCode(String code);
 }

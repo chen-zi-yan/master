@@ -22,8 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id
-        , name, code, phone, id_card, user_registration_no, ic_code, money, dev_sn, dev_registration_no, status, land_area, create_time, update_time
+        id, name, code, phone, id_card, user_registration_no, ic_code, money, dev_sn, dev_registration_no, status, land_area, create_time, update_time
     </sql>
 
 </mapper>

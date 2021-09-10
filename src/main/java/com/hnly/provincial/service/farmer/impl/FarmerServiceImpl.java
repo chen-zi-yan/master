@@ -47,6 +47,10 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     public boolean add(FarmerVO farmerVO) {
         //校验该区划里面是否存在该身份证(在同一个行政区划中,身份证号不能存在相同的)
         checkIdCard(farmerVO.getIdCard());
+        //农户编号唯一
+        if(StringUtils.isEmpty(farmerVO.getUserRegistrationNo())){
+            checkUserRegistrationNo(farmerVO.getUserRegistrationNo());
+        }
         //校验卡号,同一个行政区划中只能存在一个
         if (!StringUtils.isEmpty(farmerVO.getIcCode())) {
             checkCodeAndIcCode(farmerVO.getIcCode(), farmerVO.getCode());
@@ -56,6 +60,34 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         farmerVO.setStatus("0");
         baseMapper.insert(farmer);
         return true;
+    }
+
+    /**
+     * 添加时该农户编号需唯一
+     * 
+     * @param UserRegistrationNo 农户编号
+     * @throws MyException 已存在抛出异常
+     */
+    private void checkUserRegistrationNo(String UserRegistrationNo) throws MyException {
+        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, UserRegistrationNo).count();
+        if (count != 0){
+            throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
+        }
+    }
+
+    /**
+     * 添加数据时校验该ic卡号是否存在该行政区划中
+     *
+     * @param icCode ic卡号
+     * @throws MyException 已存在抛出异常
+     */
+    private void checkCodeAndIcCode(String icCode, String code) throws MyException {
+        int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
+                .eq(Farmer::getCode, code).count();
+        log.debug("{},{}长度{}", icCode, code, count);
+        if (count != 0) {
+            throw new MyException(ResultEnum.IC_EXIST);
+        }
     }
 
     /**
@@ -71,21 +103,6 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         }
     }
 
-    /**
-     * 校验该ic卡号是否存在该行政区划中
-     *
-     * @param icCode ic卡号
-     * @throws MyException 已存在抛出异常
-     */
-    private void checkCodeAndIcCode(String icCode, String code) throws MyException {
-        int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
-                .eq(Farmer::getCode, code).count();
-        log.debug("{},{}长度{}", icCode, code, count);
-        if (count != 0) {
-            throw new MyException(ResultEnum.IC_EXIST);
-        }
-    }
-
     @Override
     public boolean delete(Long id) {
         baseMapper.deleteById(id);
@@ -95,8 +112,10 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     @Override
     public boolean updateData(FarmerVO farmerVO) {
         //校验身份证号更新
-        if (farmerVO.getIdCard() != null) {
-            checkIdCardDivideId(farmerVO.getIdCard(), farmerVO.getId());
+        checkIdCardDivideId(farmerVO.getIdCard(), farmerVO.getId());
+        //农户编号需唯一
+        if (StringUtils.isEmpty(farmerVO.getUserRegistrationNo())){
+            checkUserRegistrationNoDivideId(farmerVO.getUserRegistrationNo(),farmerVO.getId());
         }
         //校验行政区划和校验ic卡号-不为空的时候同区域规划内的ic卡号必须唯一
         Farmer farmerData = baseMapper.selectById(farmerVO.getId());
@@ -111,6 +130,21 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         farmer.setUpdateTime(new Date());
         baseMapper.updateById(farmer);
         return true;
+    }
+
+    /**
+     * 修改时排除自身,校验农户编号是否唯一
+     *
+     * @param userRegistrationNo 农户编号
+     * @param id id
+     * @throws MyException 存在则抛出异常
+     */
+    private void checkUserRegistrationNoDivideId(String userRegistrationNo, Long id) throws MyException {
+        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo)
+                .ne(Farmer::getId, id).count();
+        if (count != 0){
+            throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
+        }
     }
 
     /**
@@ -168,7 +202,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     }
 
     /**
-     * 排除自身,校验身份证
+     * 修改时排除自身,校验身份证是否唯一
      *
      * @param idCard 身份证
      * @param id     id

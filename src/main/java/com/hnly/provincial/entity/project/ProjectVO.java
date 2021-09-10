@@ -32,16 +32,21 @@ public class ProjectVO extends PageWhere<Project> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
+    @Schema(description = "自增主键,添加时不填")
     private Long id;
 
     @NotEmpty
     @NotNull
     @Schema(description = "县级行政区划")
     private String code;
+
+    @Schema(description = "县级行政区名称,添加/修改时不填")
     private String codeName;
 
     @Schema(description = "市级行政区划")
     private String city;
+
+    @Schema(description = "市级行政区名称,添加/修改时不填")
     private String cityName;
 
     @NotEmpty
@@ -53,12 +58,16 @@ public class ProjectVO extends PageWhere<Project> implements Serializable {
     @NotNull
     @Schema(description = "负责单位 1 农业 2 水利  3 发改")
     private String unit;
+
+    @Schema(description = "负责单位名称,添加/修改时不填")
     private String unitName;
 
     @NotEmpty
     @NotNull
     @Schema(description = "项目类型 0 井灌 1 渠灌")
     private String type;
+
+    @Schema(description = "项目类型,添加/修改时不填")
     private String typeName;
 
     @NotEmpty

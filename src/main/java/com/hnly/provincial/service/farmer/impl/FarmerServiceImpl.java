@@ -57,7 +57,6 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         }
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
         farmerVO.setCreateTime(new Date());
-        farmerVO.setStatus("0");
         baseMapper.insert(farmer);
         return true;
     }

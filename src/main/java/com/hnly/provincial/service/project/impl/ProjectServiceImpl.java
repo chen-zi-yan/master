@@ -16,6 +16,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -33,28 +35,28 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public TableDataUtils<List<ProjectVO>> findListByPage(ProjectVO projectVO) {
-        String cityCode="";
-        if(!StringUtils.isEmpty(projectVO.getCity())){
-            cityCode=projectVO.getCity().substring(0,4);
+        String cityCode = "";
+        if (!StringUtils.isEmpty(projectVO.getCity())) {
+            cityCode = projectVO.getCity().substring(0, 4);
         }
         Page<Project> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(projectVO.getCity()),Project::getCode, cityCode)
+                .likeRight(!StringUtils.isEmpty(projectVO.getCity()), Project::getCode, cityCode)
                 .eq(!StringUtils.isEmpty(projectVO.getCode()), Project::getCode, projectVO.getCode())
                 .eq(!StringUtils.isEmpty(projectVO.getName()), Project::getName, projectVO.getName())
                 .eq(!StringUtils.isEmpty(projectVO.getUnit()), Project::getUnit, projectVO.getUnit())
                 .eq(!StringUtils.isEmpty(projectVO.getType()), Project::getType, projectVO.getType())
                 .eq(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
                 .page(projectVO.page());
-        List<ProjectVO> projectVOs = Conversion.changeList(page.getRecords(), ProjectVO.class);
-        for (ProjectVO vo : projectVOs) {
-            Area xian = iAreaService.lambdaQuery().eq(Area::getCode, vo.getCode()).one();
-            Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getFatherCode()).one();
+        List<ProjectVO> projectVOS = Conversion.changeList(page.getRecords(), ProjectVO.class);
+        for (ProjectVO vo : projectVOS) {
+            Area xian = iAreaService.getByCode(vo.getCode());
+            Area shi = iAreaService.getByCode(xian.getFatherCode());
             vo.setCodeName(xian.getName());
             vo.setCityName(shi.getName());
             getType(vo.getType(), vo);
             getUnit(vo.getUnit(), vo);
         }
-        return TableDataUtils.success(page.getTotal(), projectVOs);
+        return TableDataUtils.success(page.getTotal(), projectVOS);
     }
 
     @Override
@@ -83,8 +85,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     public ProjectVO findById(Long id) {
         Project project = baseMapper.selectById(id);
         ProjectVO projectVO = Conversion.changeOne(project, ProjectVO.class);
-        Area xian = iAreaService.lambdaQuery().eq(Area::getCode, projectVO.getCode()).one();
-        Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getFatherCode()).one();
+        Area xian = iAreaService.getByCode(projectVO.getCode());
+        Area shi = iAreaService.getByCode(xian.getFatherCode());
         projectVO.setCodeName(xian.getName());
         projectVO.setCityName(shi.getName());
         getType(projectVO.getType(), projectVO);

@@ -70,8 +70,8 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         if (!StringUtils.isEmpty(farmerVO.getIcCode())) {
             checkCodeAndIcCode(farmerVO.getIcCode(), farmerVO.getCode());
         }
-        Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
         farmerVO.setCreateTime(new Date());
+        Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
         baseMapper.insert(farmer);
         return true;
     }
@@ -140,8 +140,8 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         } else if (!StringUtils.isEmpty(farmerVO.getCode())) {
             checkIcCodeAndCode(farmerData.getId(), farmerData.getIcCode(), farmerVO.getCode());
         }
+        farmerVO.setUpdateTime(new Date());
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
-        farmer.setUpdateTime(new Date());
         baseMapper.updateById(farmer);
         return true;
     }

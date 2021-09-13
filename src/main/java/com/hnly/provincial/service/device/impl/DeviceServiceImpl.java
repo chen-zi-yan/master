@@ -1,17 +1,17 @@
 package com.hnly.provincial.service.device.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
-import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.Conversion;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
+import com.hnly.provincial.dao.device.DeviceMapper;
 import com.hnly.provincial.entity.device.Device;
 import com.hnly.provincial.entity.device.DeviceVO;
-import com.hnly.provincial.dao.device.DeviceMapper;
 import com.hnly.provincial.service.device.IDeviceService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -38,11 +38,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean add(DeviceVO deviceVO){
-        checkCode(deviceVO.getCode());
-        if (StringUtils.isEmpty(deviceVO.getDevRegistrationNo())){
-            Device device = lambdaQuery().eq(Device::getId, deviceVO.getId()).last("1").one();
-            checkDevRegistrationNo(deviceVO.getId(),deviceVO.getDevRegistrationNo(),device.getCode());
-        }
+        checkCodeAndDev(deviceVO.getCode(),deviceVO.getDevRegistrationNo());
         deviceVO.setCreateTime(new Date());
         Device device = Conversion.changeOne(deviceVO, Device.class);
         baseMapper.insert(device);
@@ -50,32 +46,16 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     /**
-     * 校验设备注册号是否已经存在,不存在则通过
+     * 校验注册号是否已经存在于该区域规划内,不存在则通过
      *
-     * @param id id
+     * @param code 区域规划
      * @param devRegistrationNo 设备注册号
-     * @param code 区域号
      * @throws MyException 自定义异常
      */
-    private void checkDevRegistrationNo(Long id, String devRegistrationNo, String code) throws MyException {
-        int count = lambdaQuery().eq(Device::getDevRegistrationNo, devRegistrationNo)
-                .eq(Device::getCode, code)
-                .ne(Device::getId, id).count();
+    private void checkCodeAndDev(String code, String devRegistrationNo) throws MyException {
+        int count = lambdaQuery().eq(Device::getCode, code).eq(Device::getDevRegistrationNo, devRegistrationNo).count();
         if (count != 0){
             throw new MyException(ResultEnum.DEVREGISTRATIONNO_EXIST);
-        }
-    }
-
-    /**
-     * 校验code是否已经存在,不存在则通过
-     *
-     * @param code 行政区划
-     * @throws MyException 自定义异常
-     */
-    private void checkCode(String code) throws MyException {
-        int count = lambdaQuery().eq(Device::getCode, code).count();
-        if (count != 0){
-            throw new MyException(ResultEnum.CODE_EXIST);
         }
     }
 
@@ -87,8 +67,9 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean updateData(DeviceVO deviceVO){
-        if (StringUtils.isEmpty(deviceVO.getCode())){
-
+        if (!StringUtils.isEmpty(deviceVO.getCode()) && !StringUtils.isEmpty(deviceVO.getDevRegistrationNo())){
+            lambdaQuery().eq(Device::getCode,deviceVO.getCode())
+                    .eq(Device::getDevRegistrationNo,deviceVO.getDevRegistrationNo());
         }
         Device device = Conversion.changeOne(deviceVO, Device.class);
         baseMapper.updateById(device);

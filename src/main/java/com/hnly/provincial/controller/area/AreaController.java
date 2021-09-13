@@ -53,8 +53,8 @@ public class AreaController {
     }
 
     @Operation(summary = "根据ID删除数据", description = "条件:该数据不能含有下级")
-    @DeleteMapping()
-    public JsonBean<String> deleteAreaById(Long id) {
+    @DeleteMapping("{id}")
+    public JsonBean<String> deleteAreaById(@PathVariable Long id) {
         boolean flag = iAreaServicel.deleteAreaById(id);
         if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
@@ -81,8 +81,8 @@ public class AreaController {
     }
 
     @Operation(summary = "查询子单位")
-    @GetMapping("/getAllAreaSubordinate")
-    public JsonBean<List<Area>> getAllAreaSubordinate(String code) {
+    @GetMapping("/getAllAreaSubordinate/{code}")
+    public JsonBean<List<Area>> getAllAreaSubordinate(@PathVariable String code) {
         List<Area> areaList = iAreaServicel.getAllAreaSubordinate(code);
         return JsonBean.success(areaList);
     }

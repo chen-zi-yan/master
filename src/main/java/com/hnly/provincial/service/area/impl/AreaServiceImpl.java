@@ -91,6 +91,12 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         return TableDataUtils.success(page.getTotal(), list);
     }
 
+    /**
+     *根据区域号:查询子单位列表
+     *
+     * @param code 区域号
+     * @return 子集单位列表
+     */
     @Override
     public List<Area> getAllAreaSubordinate(String code) {
         if (code == null) {

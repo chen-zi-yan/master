@@ -40,13 +40,15 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         Page<Farmer> page = lambdaQuery()
                 .eq(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
                 .likeRight(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
-                .eq(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
+                .likeRight(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
                 .eq(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
                 .eq(!StringUtils.isEmpty(farmerVO.getIcCode()), Farmer::getIcCode, farmerVO.getIcCode())
                 .eq(!StringUtils.isEmpty(farmerVO.getStatus()), Farmer::getStatus, farmerVO.getStatus())
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOs) {
+            vo.setPhone(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+            vo.setIdCard(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})","$1*****$2"));
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setName(allAreaName.get("cun"));
             vo.setTownshipName(allAreaName.get("xiang"));

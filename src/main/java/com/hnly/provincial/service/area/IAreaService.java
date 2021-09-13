@@ -6,6 +6,7 @@ import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -59,10 +60,8 @@ public interface IAreaService extends IService<Area> {
     List<Area> getAllAreaSubordinate(String code);
 
     /**
-     * 查询上级单位,对象信息 <br/>该方法在农户查询上级单位名称用到
-     *
-     * @param code  区域码
-     * @return  Area  查询出来的对象信息
+     * 行政区划获取上级所有的名字
+     * @return 上级所有名字
      */
-    Area getAreaByFatherCode(String code);
+    Map<String, String> getAllAreaName(String code);
 }

@@ -1,5 +1,6 @@
 package com.hnly.provincial.service.area.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
@@ -85,7 +86,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     public TableDataUtils<List<AreaVO>> getAreaList(AreaVO areaVO) {
         Page<Area> page = lambdaQuery()
                 .eq(areaVO.getStatus() != null, Area::getStatus, areaVO.getStatus())
-                .eq(areaVO.getCode() != null, Area::getCode, areaVO.getCode())
+                .eq(StringUtils.isNotBlank(areaVO.getCode()), Area::getFatherCode, areaVO.getCode())
                 .page(areaVO.page());
         List<AreaVO> list = Conversion.changeList(page.getRecords(), AreaVO.class);
         return TableDataUtils.success(page.getTotal(), list);

@@ -50,13 +50,13 @@ public class AreaController {
     }
 
     @Operation(summary = "根据ID删除数据", description = "条件:该数据不能含有下级")
-    @DeleteMapping()
-    public JsonBean<String> deleteAreaById(Long id) {
+    @DeleteMapping("{id}")
+    public JsonBean<String> deleteAreaById(@PathVariable Long id) {
         boolean flag = iAreaServicel.deleteAreaById(id);
         if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
         }
-        return JsonBean.success(ResultEnum.NOT_DELETE);
+        return JsonBean.success(ResultEnum.HIVE_NOT_DELETE);
     }
 
 

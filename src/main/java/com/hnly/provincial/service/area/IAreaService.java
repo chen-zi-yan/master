@@ -60,24 +60,6 @@ public interface IAreaService extends IService<Area> {
     List<Area> getAllAreaSubordinate(String code);
 
     /**
-     * @param code 行政区划
-     * @return Area 地址
-     * @author ymd
-     * @create 2021.09.10 8:17
-     * @desc 根据code查询地址信息
-     **/
-    Area getByCode(String code);
-
-
-    /**
-     * 查询上级单位,对象信息 <br/>该方法在农户查询上级单位名称用到
-     *
-     * @param code  区域码
-     * @return  Area  查询出来的对象信息
-     */
-    Area getAreaByFatherCode(String code);
-
-    /**
      * 行政区划获取上级所有的名字
      * @return 上级所有名字
      */

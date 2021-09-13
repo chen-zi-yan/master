@@ -40,18 +40,23 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         Page<Farmer> page = lambdaQuery()
                 .eq(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
                 .likeRight(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
-                .eq(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
+                .likeRight(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
                 .eq(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
                 .eq(!StringUtils.isEmpty(farmerVO.getIcCode()), Farmer::getIcCode, farmerVO.getIcCode())
                 .eq(!StringUtils.isEmpty(farmerVO.getStatus()), Farmer::getStatus, farmerVO.getStatus())
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOs) {
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setName(allAreaName.get("cun"));
-            vo.setTownshipName(allAreaName.get("xiang"));
-            vo.setCountyName(allAreaName.get("xian"));
-            vo.setCityName(allAreaName.get("shi"));
+            Area village = iAreaService.getAreaByFatherCode(vo.getCode());
+            vo.setName(village.getName());
+            Area township = iAreaService.getAreaByFatherCode(village.getFatherCode());
+            vo.setTownshipName(township.getName());
+            Area county = iAreaService.getAreaByFatherCode(township.getFatherCode());
+            vo.setCountyName(county.getName());
+            Area city = iAreaService.getAreaByFatherCode(county.getFatherCode());
+            vo.setCityName(city.getName());
+            Area province = iAreaService.getAreaByFatherCode(city.getFatherCode());
+            vo.setProvinceName(province.getName());
         }
         return TableDataUtils.success(page.getTotal(), farmerVOs);
     }
@@ -81,7 +86,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
      * @throws MyException 已存在抛出异常
      */
     private void checkUserRegistrationNo(String userRegistrationNo) throws MyException {
-        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo).count();
+        int count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
         }
@@ -152,7 +157,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
      * @throws MyException 存在则抛出异常
      */
     private void checkUserRegistrationNoDivideId(String userRegistrationNo, Long id) throws MyException {
-        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo)
+        int count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo)
                 .ne(Farmer::getId, id).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);

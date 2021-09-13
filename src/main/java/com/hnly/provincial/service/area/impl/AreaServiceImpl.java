@@ -91,6 +91,12 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         return TableDataUtils.success(page.getTotal(), list);
     }
 
+    /**
+     *根据区域号:查询子单位列表
+     *
+     * @param code 区域号
+     * @return 子集单位列表
+     */
     @Override
     public List<Area> getAllAreaSubordinate(String code) {
         if (code == null) {
@@ -140,15 +146,30 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         }
     }
 
-
-    /**
-     *
-     * @param code  区域码
-     * @return 返回对象信息
-     */
     @Override
-    public Area getAreaByFatherCode(String code){
-        return  lambdaQuery().eq(Area::getCode, code).one();
+    public Map<String, String> getAllAreaName(String code) {
+        Area one = lambdaQuery().eq(Area::getCode, code).last("limit 1").one();
+        Map<String, String> returnMap = new HashMap<>();
+        setName(one,returnMap);
+        Area xiang = lambdaQuery().eq(Area::getCode, one==null?"":one.getFatherCode()).last("limit 1").one();
+        setName(xiang, returnMap);
+        Area xian = lambdaQuery().eq(Area::getCode, xiang==null?"":xiang.getFatherCode()).last("limit 1").one();
+        setName(xian, returnMap);
+        Area shi = lambdaQuery().eq(Area::getCode, xian==null?"":xian.getFatherCode()).last("limit 1").one();
+        setName(shi, returnMap);
+        return returnMap;
+    }
+
+    public void setName(Area area,Map<String,String> map) {
+        if (area.getStatus().equals("0")){
+            map.put("shi", area.getName());
+        } else if (area.getStatus().equals("1")) {
+            map.put("xian", area.getName());
+        } else if (area.getStatus().equals("2")) {
+            map.put("xiang", area.getName());
+        }else {
+            map.put("cun", area.getName());
+        }
     }
 
     @Override

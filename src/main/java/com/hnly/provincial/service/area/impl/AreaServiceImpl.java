@@ -14,7 +14,9 @@ import com.hnly.provincial.service.area.IAreaService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -147,6 +149,32 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     @Override
     public Area getAreaByFatherCode(String code){
         return  lambdaQuery().eq(Area::getCode, code).one();
+    }
+
+    @Override
+    public Map<String, String> getAllAreaName(String code) {
+        Area one = lambdaQuery().eq(Area::getCode, code).last("limit 1").one();
+        Map<String, String> returnMap = new HashMap<>();
+        setName(one,returnMap);
+        Area xiang = lambdaQuery().eq(Area::getCode, one==null?"":one.getFatherCode()).last("limit 1").one();
+        setName(xiang, returnMap);
+        Area xian = lambdaQuery().eq(Area::getCode, xiang==null?"":xiang.getFatherCode()).last("limit 1").one();
+        setName(xian, returnMap);
+        Area shi = lambdaQuery().eq(Area::getCode, xian==null?"":xian.getFatherCode()).last("limit 1").one();
+        setName(shi, returnMap);
+        return returnMap;
+    }
+
+    public void setName(Area area,Map<String,String> map) {
+        if (area.getStatus().equals("0")){
+            map.put("shi", area.getName());
+        } else if (area.getStatus().equals("1")) {
+            map.put("xian", area.getName());
+        } else if (area.getStatus().equals("2")) {
+            map.put("xiang", area.getName());
+        }else {
+            map.put("cun", area.getName());
+        }
     }
 
 }

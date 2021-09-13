@@ -97,6 +97,11 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         return lambdaQuery().eq(Area::getFatherCode, code).list();
     }
 
+    @Override
+    public Area getByCode(String code) {
+        return lambdaQuery().eq(Area::getCode, code).one();
+    }
+
     /**
      * 校验该区域码是否存在 不存在通过
      *

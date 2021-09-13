@@ -27,13 +27,14 @@ public enum ResultEnum {
     NOTHINGNESS(40011, "不存在"),
     FAILURE(40012, "失败"),
     CHANGEFAILED(40013, "修改失败"),
-    CODE_EXIST(40014, "行政区划已经存在"),
-    CODE_SUBORDINATE_EXIST(40015, "该行政区划码存在下级单位,不能修改行政区划码!"),
-    CODE_SUPERIOR_EXIST(40016, "该行政区划码不存在上级单位,请查询后再试!"),
+    CODE_EXIST(40014, "已经存在"),
+    CODE_SUBORDINATE_EXIST(40015, "存在下级"),
+    CODE_SUPERIOR_EXIST(40016, "无上级单位"),
     CODENOTEMPTY(40017, "行政区划代码不能为空"),
     IDCODE_EXIST(40018, "该身份证号已经存在"),
     IC_EXIST(40019, "IC已存在"),
     GETUSERREGISTRATIONNO_EXIST(40020, "该农户编号已存在"),
+
 
 
     ;

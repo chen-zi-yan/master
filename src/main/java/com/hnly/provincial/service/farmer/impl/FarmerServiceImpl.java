@@ -83,7 +83,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
      * @throws MyException 已存在抛出异常
      */
     private void checkUserRegistrationNo(String userRegistrationNo) throws MyException {
-        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo).count();
+        int count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
         }
@@ -154,7 +154,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
      * @throws MyException 存在则抛出异常
      */
     private void checkUserRegistrationNoDivideId(String userRegistrationNo, Long id) throws MyException {
-        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo)
+        int count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo)
                 .ne(Farmer::getId, id).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);

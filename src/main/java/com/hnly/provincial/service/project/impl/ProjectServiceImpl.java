@@ -35,13 +35,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public TableDataUtils<List<ProjectVO>> findListByPage(ProjectVO projectVO) {
-        String cityCode = "";
-        if (!StringUtils.isEmpty(projectVO.getCity())) {
-            cityCode = projectVO.getCity().substring(0, 4);
-        }
         Page<Project> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(projectVO.getCity()), Project::getCode, cityCode)
-                .eq(!StringUtils.isEmpty(projectVO.getCode()), Project::getCode, projectVO.getCode())
+                .likeRight(!StringUtils.isEmpty(projectVO.getCode()), Project::getCode, projectVO.getCode())
                 .eq(!StringUtils.isEmpty(projectVO.getName()), Project::getName, projectVO.getName())
                 .eq(!StringUtils.isEmpty(projectVO.getUnit()), Project::getUnit, projectVO.getUnit())
                 .eq(!StringUtils.isEmpty(projectVO.getType()), Project::getType, projectVO.getType())
@@ -53,8 +48,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             Area shi = iAreaService.getByCode(xian.getFatherCode());
             vo.setCodeName(xian.getName());
             vo.setCityName(shi.getName());
-            getType(vo.getType(), vo);
-            getUnit(vo.getUnit(), vo);
+            vo.setTypeName(vo.getTypeName());
+            vo.setUnitName(vo.getUnitName());
         }
         return TableDataUtils.success(page.getTotal(), projectVOS);
     }
@@ -89,8 +84,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         Area shi = iAreaService.getByCode(xian.getFatherCode());
         projectVO.setCodeName(xian.getName());
         projectVO.setCityName(shi.getName());
-        getType(projectVO.getType(), projectVO);
-        getUnit(projectVO.getUnit(), projectVO);
+        projectVO.setTypeName(projectVO.getTypeName());
+        projectVO.setUnitName(projectVO.getUnitName());
         return projectVO;
     }
 
@@ -120,34 +115,5 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     }
 
 
-    /**
-     * 获取单位的名称
-     *
-     * @param unit      类型标识码
-     * @param projectVO 项目管理对象
-     */
-    private void getUnit(String unit, ProjectVO projectVO) {
-        if ("1".equals(unit)) {
-            projectVO.setUnitName("农业局");
-        } else if ("2".equals(unit)) {
-            projectVO.setUnitName("水利局");
-        } else if ("3".equals(unit)) {
-            projectVO.setUnitName("发改委");
-        }
-    }
-
-    /**
-     * 获取灌溉类型
-     *
-     * @param type      灌溉类型标识码
-     * @param projectVO 项目管理对象
-     */
-    private void getType(String type, ProjectVO projectVO) {
-        if ("0".equals(type)) {
-            projectVO.setTypeName("井灌");
-        } else if ("1".equals(type)) {
-            projectVO.setTypeName("渠灌");
-        }
-    }
 
 }

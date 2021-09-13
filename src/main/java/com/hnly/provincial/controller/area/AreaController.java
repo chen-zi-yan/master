@@ -81,8 +81,8 @@ public class AreaController {
     }
 
     @Operation(summary = "查询子单位")
-    @GetMapping("/getAllAreaSubordinate/{code}")
-    public JsonBean<List<Area>> getAllAreaSubordinate(@PathVariable String code) {
+    @GetMapping("/getAllAreaSubordinate")
+    public JsonBean<List<Area>> getAllAreaSubordinate(String code) {
         List<Area> areaList = iAreaServicel.getAllAreaSubordinate(code);
         return JsonBean.success(areaList);
     }

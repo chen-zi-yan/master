@@ -82,11 +82,11 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     /**
      * 添加时该农户编号需唯一
      * 
-     * @param UserRegistrationNo 农户编号
+     * @param userRegistrationNo 农户编号
      * @throws MyException 已存在抛出异常
      */
-    private void checkUserRegistrationNo(String UserRegistrationNo) throws MyException {
-        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, UserRegistrationNo).count();
+    private void checkUserRegistrationNo(String userRegistrationNo) throws MyException {
+        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
         }

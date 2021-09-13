@@ -39,7 +39,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
         Page<Farmer> page = lambdaQuery()
                 .eq(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
-                .eq(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
+                .likeRight(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
                 .eq(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
                 .eq(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
                 .eq(!StringUtils.isEmpty(farmerVO.getIcCode()), Farmer::getIcCode, farmerVO.getIcCode())
@@ -82,11 +82,11 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     /**
      * 添加时该农户编号需唯一
      * 
-     * @param UserRegistrationNo 农户编号
+     * @param userRegistrationNo 农户编号
      * @throws MyException 已存在抛出异常
      */
-    private void checkUserRegistrationNo(String UserRegistrationNo) throws MyException {
-        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, UserRegistrationNo).count();
+    private void checkUserRegistrationNo(String userRegistrationNo) throws MyException {
+        Integer count = lambdaQuery().eq(Farmer::getUserRegistrationNo, userRegistrationNo).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
         }
@@ -139,9 +139,9 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         if (!StringUtils.isEmpty(farmerVO.getIcCode()) && !StringUtils.isEmpty(farmerVO.getCode())) {
             checkIcCodeAndCode(farmerData.getId(), farmerVO.getIcCode(), farmerVO.getCode());
         } else if (!StringUtils.isEmpty(farmerVO.getIcCode())) {
-            checkIcCode(farmerData.getId(), farmerData.getCode(), farmerVO.getIcCode());
+            checkIcCodeAndCode(farmerData.getId(), farmerVO.getIcCode(), farmerData.getCode());
         } else if (!StringUtils.isEmpty(farmerVO.getCode())) {
-            checkCode(farmerData.getId(), farmerData.getIcCode(), farmerVO.getCode());
+            checkIcCodeAndCode(farmerData.getId(), farmerData.getIcCode(), farmerVO.getCode());
         }
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
         farmer.setUpdateTime(new Date());
@@ -161,42 +161,6 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .ne(Farmer::getId, id).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
-        }
-    }
-
-    /**
-     * 当区域规划有值的时候,校验该ic卡号是否存在该行政区划中
-     *
-     * @param id     id
-     * @param icCode 原数据的ic卡号
-     * @param code   传入进来的行政区划码
-     * @throws MyException
-     */
-    private void checkCode(Long id, String icCode, String code) throws MyException {
-        int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
-                .eq(Farmer::getCode, code)
-                .ne(Farmer::getId, id).count();
-        log.debug("数量{}", count);
-        if (count != 0) {
-            throw new MyException(ResultEnum.IC_EXIST);
-        }
-    }
-
-    /**
-     * 当ic卡号有值的时候,校验该ic卡号是否存在该行政区划中
-     *
-     * @param id     id
-     * @param code   原数据中的区域规划码
-     * @param icCode 传入进来的ic卡号
-     * @throws MyException 已存在抛出异常
-     */
-    private void checkIcCode(Long id, String code, String icCode) throws MyException {
-        int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
-                .eq(Farmer::getCode, code)
-                .ne(Farmer::getId, id).count();
-        log.debug("数量{}", count);
-        if (count != 0) {
-            throw new MyException(ResultEnum.IC_EXIST);
         }
     }
 

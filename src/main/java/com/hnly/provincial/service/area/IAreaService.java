@@ -58,14 +58,4 @@ public interface IAreaService extends IService<Area> {
      */
     List<Area> getAllAreaSubordinate(String code);
 
-    /**
-     * @param code 行政区划
-     * @return Area 地址
-     * @author ymd
-     * @create 2021.09.10 8:17
-     * @desc 根据code查询地址信息
-     **/
-    Area getByCode(String code);
-
-
 }

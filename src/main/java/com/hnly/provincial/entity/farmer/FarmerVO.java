@@ -89,6 +89,9 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "卡状态：0 正常，1挂失，2失效")
     private String status;
 
+    @Schema(description = "状态名字")
+    private String statusName;
+
     @Schema(description = "土地面积")
     private BigDecimal landArea;
 
@@ -98,5 +101,15 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "修改时间")
     private Date updateTime;
 
-
+    public String getStatusName() {
+        if (status.equals("0")){
+            return String.valueOf(setStatusName("正常"));
+        }else if (status.equals("1")){
+            return String.valueOf(setStatusName("挂失"));
+        }else if (status.equals("2")){
+            return String.valueOf(setStatusName("失效"));
+        }else {
+            return String.valueOf(setStatusName("无状态"));
+        }
+    }
 }

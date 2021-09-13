@@ -1,4 +1,4 @@
-package com.hnly.provincial.entity.project;
+package com.hnly.provincial.entity.device;
 
 import com.hnly.provincial.comm.utils.PageWhere;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,48 +11,44 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 /**
 * <p>
-* 项目管理
+* 设备信息表
 * </p>
 *
-* @author ymd
-* @since 2021-09-08
+* @author czy
+* @since 2021-09-13
 */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("t_project")
-@Schema(name="Project", description="项目管理")
-public class Project  implements Serializable {
+@TableName("t_device")
+@Schema(name="Device", description="设备信息表")
+public class Device  implements Serializable {
 
+    private static final long serialVersionUID = 1L;
 
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @NotEmpty
-    @NotNull
+    @Schema(description = "类型：1 充值机，2 灌溉机 3 非标准设备")
+    private String type;
+
     @Schema(description = "行政区划")
     private String code;
 
-    @NotEmpty
-    @NotNull
-    @Schema(description = "项目名")
-    private String name;
+    @Schema(description = "设备序列号")
+    private String devSn;
 
-    @Schema(description = "负责单位 1 农业 2 水利  3 发改")
-    private String unit;
+    @Schema(description = "设备注册号")
+    private String devRegistrationNo;
 
-    @Schema(description = "项目类型 0 井灌 1 渠灌")
-    private String type;
+    @Schema(description = "纬度")
+    private String latitude;
 
-    @NotEmpty
-    @NotNull
-    @Schema(description = "厂家")
-    private String manufacturers;
+    @Schema(description = "经度")
+    private String longitude;
 
     @Schema(description = "创建时间")
     private Date createTime;

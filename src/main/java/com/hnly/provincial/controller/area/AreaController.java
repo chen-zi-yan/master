@@ -3,14 +3,17 @@ package com.hnly.provincial.controller.area;
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.comm.validation.Add;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
 import com.hnly.provincial.service.area.IAreaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.groups.Default;
 import java.util.List;
 
 /**
@@ -41,7 +44,7 @@ public class AreaController {
 
     @Operation(summary = "插入数据", description = "条件:该区域号唯一")
     @PostMapping()
-    public JsonBean<String> addArea(@RequestBody Area area) {
+    public JsonBean<String> addArea(@RequestBody @Validated({Add.class, Default.class}) Area area) {
         boolean flag = iAreaServicel.saveArea(area);
         if (flag) {
             return JsonBean.success(ResultEnum.SUCCESS);
@@ -78,8 +81,8 @@ public class AreaController {
     }
 
     @Operation(summary = "查询子单位")
-    @GetMapping("/getAllAreaSubordinate")
-    public JsonBean<List<Area>> getAllAreaSubordinate(String code) {
+    @GetMapping("/getAllAreaSubordinate/{code}")
+    public JsonBean<List<Area>> getAllAreaSubordinate(@PathVariable String code) {
         List<Area> areaList = iAreaServicel.getAllAreaSubordinate(code);
         return JsonBean.success(areaList);
     }

@@ -3,10 +3,13 @@ package com.hnly.provincial.entity.area;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.hnly.provincial.comm.utils.PageWhere;
+import com.hnly.provincial.comm.validation.Add;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,9 +31,13 @@ public class AreaVO extends PageWhere<Area> implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @NotNull(message = "名称不能null", groups = {Add.class})
+    @NotEmpty(message = "名称为空", groups = {Add.class})
     @Schema(description = "名称")
     private String name;
 
+    @NotNull(message = "行政区划不能null", groups = {Add.class})
+    @NotEmpty(message = "行政区划不能为空", groups = {Add.class})
     @Schema(description = "区域号")
     private String code;
 

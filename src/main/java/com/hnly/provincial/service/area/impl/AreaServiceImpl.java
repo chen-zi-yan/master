@@ -30,9 +30,6 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
 
     @Override
     public boolean saveArea(Area area) {
-        if (area.getCode() == null) {
-            throw new MyException(ResultEnum.CODENOTEMPTY);
-        }
         //验证code是否已经存在
         checkCode(area.getCode());
         //验证是否存在上级
@@ -103,7 +100,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     /**
      * 校验该区域码是否存在 不存在通过
      *
-     * @param code code
+     * @param code 区域码
      */
     public void checkCode(String code) {
         Integer count = lambdaQuery().eq(Area::getCode, code).count();
@@ -115,7 +112,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     /**
      * 检验该区域码是否存在下级单位,若存在则通过
      *
-     * @param code code
+     * @param code 区域码
      */
     public void checkSuperior(String code) {
         Integer count = lambdaQuery().eq(Area::getFatherCode, code).count();
@@ -134,6 +131,17 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         if (count == 0) {
             throw new MyException(ResultEnum.CODE_SUPERIOR_EXIST);
         }
+    }
+
+
+    /**
+     *
+     * @param code  区域码
+     * @return 返回对象信息
+     */
+    @Override
+    public Area getAreaByFatherCode(String code){
+        return  lambdaQuery().eq(Area::getCode, code).one();
     }
 
 }

@@ -31,6 +31,9 @@ public enum ResultEnum {
     CODE_SUBORDINATE_EXIST(40015, "该行政区划码存在下级单位,不能修改行政区划码!"),
     CODE_SUPERIOR_EXIST(40016, "该行政区划码不存在上级单位,请查询后再试!"),
     CODENOTEMPTY(40017, "行政区划代码不能为空"),
+    IDCODE_EXIST(40018, "该身份证号已经存在"),
+    IC_EXIST(40019, "IC已存在"),
+    GETUSERREGISTRATIONNO_EXIST(40020, "该农户编号已存在"),
 
 
     ;

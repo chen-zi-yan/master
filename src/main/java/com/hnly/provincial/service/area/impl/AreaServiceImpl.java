@@ -10,6 +10,7 @@ import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.area.AreaMapper;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
+import com.hnly.provincial.entity.area.CascadeVO;
 import com.hnly.provincial.service.area.IAreaService;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +93,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     }
 
     /**
-     *根据区域号:查询子单位列表
+     * 根据区域号:查询子单位列表
      *
      * @param code 区域号
      * @return 子集单位列表
@@ -143,27 +144,55 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
 
     @Override
     public Map<String, String> getAllAreaName(String code) {
-        Area one = lambdaQuery().eq(Area::getCode, code).last("limit 1").one();
-        Map<String, String> returnMap = new HashMap<>();
-        setName(one,returnMap);
-        Area xiang = lambdaQuery().eq(Area::getCode, one==null?"":one.getFatherCode()).last("limit 1").one();
-        setName(xiang, returnMap);
-        Area xian = lambdaQuery().eq(Area::getCode, xiang==null?"":xiang.getFatherCode()).last("limit 1").one();
-        setName(xian, returnMap);
-        Area shi = lambdaQuery().eq(Area::getCode, xian==null?"":xian.getFatherCode()).last("limit 1").one();
-        setName(shi, returnMap);
-        return returnMap;
+        Map<String, String> map = new HashMap<>();
+        recursionAreaName(code, map);
+        return map;
     }
 
-    public void setName(Area area,Map<String,String> map) {
-        if (area.getStatus().equals("0")){
-            map.put("shi", area.getName());
-        } else if (area.getStatus().equals("1")) {
-            map.put("xian", area.getName());
-        } else if (area.getStatus().equals("2")) {
-            map.put("xiang", area.getName());
-        }else {
-            map.put("cun", area.getName());
+    @Override
+    public List<CascadeVO> getList(String code) {
+        List<Area> list = lambdaQuery().eq(Area::getFatherCode, code).list();
+        List<AreaVO> areaVOS = Conversion.changeList(list, AreaVO.class);
+        List<CascadeVO> cascadeVOS = Conversion.changeList(areaVOS, CascadeVO.class);
+        getChildren(cascadeVOS);
+        return cascadeVOS;
+    }
+
+    public void getChildren(List<CascadeVO> list){
+        for (CascadeVO areaVO : list) {
+            List<Area> list1 = lambdaQuery().eq(Area::getFatherCode, areaVO.getValue()).list();
+            List<AreaVO> areaVOS = Conversion.changeList(list1, AreaVO.class);
+            List<CascadeVO> cascadeVOS = Conversion.changeList(areaVOS, CascadeVO.class);
+            areaVO.setChildren(cascadeVOS);
+            getChildren(cascadeVOS);
+        }
+    }
+
+    /**
+     * 递归查询name
+     */
+    public void recursionAreaName(String code, Map<String, String> map) {
+        Area one = lambdaQuery().eq(Area::getCode, code).last("limit 1").one();
+        if (one != null && one.getStatus() != null) {
+            setName(one, map);
+            recursionAreaName(one.getFatherCode(), map);
+        }
+    }
+
+    public void setName(Area area, Map<String, String> map) {
+        switch (area.getStatus()) {
+            case "0":
+                map.put("shi", area.getName());
+                break;
+            case "1":
+                map.put("xian", area.getName());
+                break;
+            case "2":
+                map.put("xiang", area.getName());
+                break;
+            default:
+                map.put("cun", area.getName());
+                break;
         }
     }
 

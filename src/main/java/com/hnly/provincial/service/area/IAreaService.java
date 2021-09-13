@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
+import com.hnly.provincial.entity.area.CascadeVO;
 
 import java.util.List;
 import java.util.Map;
@@ -64,4 +65,11 @@ public interface IAreaService extends IService<Area> {
      * @return 上级所有名字
      */
     Map<String, String> getAllAreaName(String code);
+
+    /**
+     * 获取级联数据
+     * @param code  行政区划
+     * @return 级联数据
+     */
+    List<CascadeVO> getList(String code);
 }

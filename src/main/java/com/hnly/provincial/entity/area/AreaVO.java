@@ -12,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -53,5 +54,22 @@ public class AreaVO extends PageWhere<Area> implements Serializable {
     @Schema(description = "0 市 1 县区 2 乡镇 3 村庄")
     private String status;
 
+    private List<AreaVO> children;
+
+    public String getLabel(){
+        return name;
+    }
+
+    public String getValue(){
+        return code;
+    }
+
+    public List<AreaVO> getChildren(){
+        if (children.size() ==0){
+            return null;
+        }else {
+            return children;
+        }
+    }
 
 }

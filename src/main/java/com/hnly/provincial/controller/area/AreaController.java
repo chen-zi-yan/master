@@ -6,6 +6,7 @@ import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.validation.Add;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
+import com.hnly.provincial.entity.area.CascadeVO;
 import com.hnly.provincial.service.area.IAreaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -87,4 +88,9 @@ public class AreaController {
         return JsonBean.success(areaList);
     }
 
+    @Operation(summary = "获取级联数据")
+    @GetMapping("{code}")
+    public JsonBean<List<CascadeVO>> getList(@PathVariable("code") String code){
+        return JsonBean.success(iAreaServicel.getList(code));
+    }
 }

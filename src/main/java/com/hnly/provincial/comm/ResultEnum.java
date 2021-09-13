@@ -31,6 +31,8 @@ public enum ResultEnum {
     CODE_SUBORDINATE_EXIST(40015, "存在下级"),
     CODE_SUPERIOR_EXIST(40016, "无上级单位"),
     CODENOTEMPTY(40017, "行政区划代码不能为空"),
+    IDCODE_EXIST(40018, "该身份证号已经存在"),
+    IC_EXIST(40019, "IC已存在"),
 
 
 

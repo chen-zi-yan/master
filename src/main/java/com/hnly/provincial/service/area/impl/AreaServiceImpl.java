@@ -29,9 +29,6 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
 
     @Override
     public boolean saveArea(Area area) {
-        if (area.getCode() == null) {
-            throw new MyException(ResultEnum.CODENOTEMPTY);
-        }
         //验证code是否已经存在
         checkCode(area.getCode());
         //验证是否存在上级

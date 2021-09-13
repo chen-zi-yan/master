@@ -47,16 +47,13 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOs) {
-            Area village = iAreaService.getAreaByFatherCode(vo.getCode());
-            vo.setName(village.getName());
-            Area township = iAreaService.getAreaByFatherCode(village.getFatherCode());
-            vo.setTownshipName(township.getName());
-            Area county = iAreaService.getAreaByFatherCode(township.getFatherCode());
-            vo.setCountyName(county.getName());
-            Area city = iAreaService.getAreaByFatherCode(county.getFatherCode());
-            vo.setCityName(city.getName());
-            Area province = iAreaService.getAreaByFatherCode(city.getFatherCode());
-            vo.setProvinceName(province.getName());
+            vo.setPhone(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+            vo.setIdCard(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})","$1*****$2"));
+            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
+            vo.setName(allAreaName.get("cun"));
+            vo.setTownshipName(allAreaName.get("xiang"));
+            vo.setCountyName(allAreaName.get("xian"));
+            vo.setCityName(allAreaName.get("shi"));
         }
         return TableDataUtils.success(page.getTotal(), farmerVOs);
     }

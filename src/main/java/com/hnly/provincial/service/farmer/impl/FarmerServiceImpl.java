@@ -39,7 +39,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
         Page<Farmer> page = lambdaQuery()
                 .eq(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
-                .eq(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
+                .likeRight(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
                 .eq(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
                 .eq(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
                 .eq(!StringUtils.isEmpty(farmerVO.getIcCode()), Farmer::getIcCode, farmerVO.getIcCode())
@@ -48,15 +48,15 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOs) {
             Area village = iAreaService.getAreaByFatherCode(vo.getCode());
-            vo.setName(village.getName());
+            vo.setName(village==null?"":village.getName());
             Area township = iAreaService.getAreaByFatherCode(village.getFatherCode());
-            vo.setTownshipName(township.getName());
+            vo.setTownshipName(township==null?"":township.getName());
             Area county = iAreaService.getAreaByFatherCode(township.getFatherCode());
-            vo.setCountyName(county.getName());
+            vo.setCountyName(county==null?"":county.getName());
             Area city = iAreaService.getAreaByFatherCode(county.getFatherCode());
-            vo.setCityName(city.getName());
+            vo.setCityName(city==null?"":city.getName());
             Area province = iAreaService.getAreaByFatherCode(city.getFatherCode());
-            vo.setProvinceName(province.getName());
+            vo.setProvinceName(province==null?"":province.getName());
         }
         return TableDataUtils.success(page.getTotal(), farmerVOs);
     }
@@ -141,7 +141,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         } else if (!StringUtils.isEmpty(farmerVO.getIcCode())) {
             checkIcCode(farmerData.getId(), farmerData.getCode(), farmerVO.getIcCode());
         } else if (!StringUtils.isEmpty(farmerVO.getCode())) {
-            checkCode(farmerData.getId(), farmerData.getIcCode(), farmerVO.getCode());
+            checkIcCodeAndCode(farmerData.getId(), farmerData.getIcCode(), farmerVO.getCode());
         }
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
         farmer.setUpdateTime(new Date());
@@ -161,24 +161,6 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .ne(Farmer::getId, id).count();
         if (count != 0){
             throw new MyException(ResultEnum.GETUSERREGISTRATIONNO_EXIST);
-        }
-    }
-
-    /**
-     * 当区域规划有值的时候,校验该ic卡号是否存在该行政区划中
-     *
-     * @param id     id
-     * @param icCode 原数据的ic卡号
-     * @param code   传入进来的行政区划码
-     * @throws MyException
-     */
-    private void checkCode(Long id, String icCode, String code) throws MyException {
-        int count = lambdaQuery().eq(Farmer::getIcCode, icCode)
-                .eq(Farmer::getCode, code)
-                .ne(Farmer::getId, id).count();
-        log.debug("数量{}", count);
-        if (count != 0) {
-            throw new MyException(ResultEnum.IC_EXIST);
         }
     }
 

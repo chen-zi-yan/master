@@ -47,6 +47,8 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOs) {
+            vo.setPhoneShow(vo.getPhone());
+            vo.setIdCardShow(vo.getIdCard());
             if (!StringUtils.isEmpty(vo.getPhone())){
                 vo.setPhone(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
             }

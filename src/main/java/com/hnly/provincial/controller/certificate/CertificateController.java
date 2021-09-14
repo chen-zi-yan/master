@@ -46,7 +46,7 @@ public class CertificateController {
 
     @Operation(summary = "更新产权证")
     @PutMapping()
-    public JsonBean<String> update(@RequestBody CertificateVO certificateVO){
+    public JsonBean<String> update(@RequestBody @Validated CertificateVO certificateVO){
         certificateService.updateData(certificateVO);
         return JsonBean.success();
     }

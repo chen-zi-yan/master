@@ -1,15 +1,15 @@
 package com.hnly.provincial.entity.device;
 
-import com.hnly.provincial.comm.utils.PageWhere;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
 * <p>
@@ -34,6 +34,9 @@ public class Device  implements Serializable {
 
     @Schema(description = "类型：1 充值机，2 灌溉机 3 非标准设备")
     private String type;
+
+    @Schema(description = "设备名称")
+    private String name;
 
     @Schema(description = "行政区划")
     private String code;

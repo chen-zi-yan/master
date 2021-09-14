@@ -62,14 +62,20 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     private String code;
 
     @Pattern(regexp = "^1[3|4|5|7|8][0-9]{9}$", message = "手机号输入错误")
-    @Schema(description = "手机号")
+    @Schema(description = "手机号(显示)")
     private String phone;
+
+    @Schema(description = "手机号(隐藏)")
+    private String phoneHidden;
 
     @NotNull(message = "身份证号不能null", groups = {Add.class})
     @NotEmpty(message = "身份证号不能为空", groups = {Add.class})
-    @Pattern(regexp = "\\d{15}|\\d{17}[\\dxX]", message = "身份证号输入错误")
-    @Schema(description = "身份证号")
+    @Pattern(regexp = "^(\\d{6})(18|19|20)?(\\d{2})([01]\\d)([0123]\\d)(\\d{3})(\\d|X|x)?$", message = "身份证号输入错误")
+    @Schema(description = "身份证号(显示)")
     private String idCard;
+
+    @Schema(description = "身份证(隐藏)")
+    private String idCardHidden;
 
     @Schema(description = "农户编号")
     private String userRegistrationNo;
@@ -103,13 +109,13 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
 
     public String getStatusName() {
         if (status.equals("0")){
-            return String.valueOf(setStatusName("正常"));
+            return "正常";
         }else if (status.equals("1")){
-            return String.valueOf(setStatusName("挂失"));
+            return "挂失";
         }else if (status.equals("2")){
-            return String.valueOf(setStatusName("失效"));
+            return "失效";
         }else {
-            return String.valueOf(setStatusName("无状态"));
+            return "状态错误";
         }
     }
 }

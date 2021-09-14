@@ -44,6 +44,9 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     @Schema(description = "类型名字：1 充值机，2 灌溉机 3 非标准设备")
     private String typeName;
 
+    @Schema(description = "设备名称")
+    private String name;
+
     @Schema(description = "市")
     private String cityName;
 
@@ -61,6 +64,8 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     @Schema(description = "行政区划")
     private String code;
 
+    @NotNull(message = "设备序列号不能null", groups = {Add.class})
+    @NotEmpty(message = "设备序列号不能为空", groups = {Add.class})
     @Schema(description = "设备序列号")
     private String devSn;
 

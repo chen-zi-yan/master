@@ -38,63 +38,63 @@ public class CertificateVO extends PageWhere<Certificate> implements Serializabl
     @Schema(description = "编号")
     private String code;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "设施名称不能null")
+    @NotEmpty(message = "设施名称不能为空")
     @Schema(description = "设施名称")
     private String name;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "设施地址不能null")
+    @NotEmpty(message = "设施地址不能为空")
     @Schema(description = "设施地址")
     private String address;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "设置管理模式不能null")
+    @NotEmpty(message = "设置管理模式不能为空")
     @Schema(description = "设置管理模式")
     private String mode;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "产权权利人不能null")
+    @NotEmpty(message = "产权权利人不能为空")
     @Schema(description = "产权权利人")
     private String propertyOwner;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "身份证号码或组织机构代码不能null")
+    @NotEmpty(message = "身份证号码或组织机构代码不能为空")
     @Schema(description = "身份证号码或组织机构代码")
     private String carId;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "设施整治或建设时间不能null")
+    @NotEmpty(message = "设施整治或建设时间不能为空")
     @Schema(description = "设施整治或建设时间")
     private String constructionTime;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "水源工程不能null")
+    @NotEmpty(message = "水源工程不能为空")
     @Schema(description = "水源工程")
     private String waterEngineering;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "渠道工程不能null")
+    @NotEmpty(message = "渠道工程不能为空")
     @Schema(description = "渠道工程")
     private String channelEngineering;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "排涝工程不能null")
+    @NotEmpty(message = "排涝工程不能为空")
     @Schema(description = "排涝工程")
     private String drainageProject;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "输水配电工程不能null")
+    @NotEmpty(message = "输水配电工程不能为空")
     @Schema(description = "输水配电工程")
     private String waterElectricity;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "田间灌溉设施不能null")
+    @NotEmpty(message = "田间灌溉设施不能为空")
     @Schema(description = "田间灌溉设施")
     private String fieldIrrigationFacilities;
 
-    @NotNull(message = "编号不能null")
-    @NotEmpty(message = "编号不能为空")
+    @NotNull(message = "配套建筑物不能null")
+    @NotEmpty(message = "配套建筑物不能为空")
     @Schema(description = "配套建筑物")
     private String supportingBuildings;
 

@@ -39,6 +39,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
                 .eq(!StringUtils.isEmpty(deviceVO.getType()), Device::getType, deviceVO.getType())
                 .likeRight(!StringUtils.isEmpty(deviceVO.getName()), Device::getName, deviceVO.getName())
                 .likeRight(!StringUtils.isEmpty(deviceVO.getCode()), Device::getCode, deviceVO.getCode())
+                .eq(!StringUtils.isEmpty(deviceVO.getDevSn()), Device::getDevSn, deviceVO.getDevSn())
                 .page(deviceVO.page());
         List<DeviceVO> deviceVOs = Conversion.changeList(page.getRecords(), DeviceVO.class);
         for (DeviceVO vo : deviceVOs) {

@@ -83,7 +83,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean updateData(DeviceVO deviceVO) {
-        checkCodeAndDevSn(deviceVO.getId(), deviceVO.getCode(), deviceVO.getDevSn());
+        checkCodeAndDevSnDivideId(deviceVO.getId(), deviceVO.getCode(), deviceVO.getDevSn());
         deviceVO.setUpdateTime(new Date());
         Device device = Conversion.changeOne(deviceVO, Device.class);
         baseMapper.updateById(device);
@@ -98,7 +98,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
      * @param devSn 设备序列号
      * @throws MyException 自定义异常
      */
-    private void checkCodeAndDevSn(Long id, String code, String devSn) throws MyException {
+    private void checkCodeAndDevSnDivideId(Long id, String code, String devSn) throws MyException {
         int count = lambdaQuery().eq(Device::getCode, code)
                 .eq(Device::getDevSn, devSn)
                 .ne(Device::getId, id).count();

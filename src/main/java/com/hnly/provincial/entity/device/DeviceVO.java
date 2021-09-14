@@ -84,14 +84,15 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     private Date updateTime;
 
     public String getTypeName() {
-        if (type.equals("1")) {
-            return "充值机";
-        } else if (type.equals("2")) {
-            return "灌溉机";
-        } else if (type.equals("3")) {
-            return "非标准设备";
-        } else {
-            return "";
+        switch (type) {
+            case "1":
+                return "充值机";
+            case "2":
+                return "灌溉机";
+            case "3":
+                return "非标准设备";
+            default:
+                return "";
         }
     }
 }

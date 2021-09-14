@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* <p>
-* 设备信息表 服务实现类
-* </p>
-*
-* @author czy
-* @since 2021-09-13
-*/
+ * <p>
+ * 设备信息表 服务实现类
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-13
+ */
 @Service
 public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> implements IDeviceService {
 
@@ -34,11 +34,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     private IAreaService iAreaService;
 
     @Override
-    public TableDataUtils<List<DeviceVO>> findListByPage(DeviceVO deviceVO){
+    public TableDataUtils<List<DeviceVO>> findListByPage(DeviceVO deviceVO) {
         Page<Device> page = lambdaQuery()
-                .eq(!StringUtils.isEmpty(deviceVO.getType()),Device::getType,deviceVO.getType())
-                .likeRight(!StringUtils.isEmpty(deviceVO.getName()),Device::getName,deviceVO.getName())
-                .likeRight(!StringUtils.isEmpty(deviceVO.getCode()),Device::getCode,deviceVO.getCode())
+                .eq(!StringUtils.isEmpty(deviceVO.getType()), Device::getType, deviceVO.getType())
+                .likeRight(!StringUtils.isEmpty(deviceVO.getName()), Device::getName, deviceVO.getName())
+                .likeRight(!StringUtils.isEmpty(deviceVO.getCode()), Device::getCode, deviceVO.getCode())
                 .page(deviceVO.page());
         List<DeviceVO> deviceVOs = Conversion.changeList(page.getRecords(), DeviceVO.class);
         for (DeviceVO vo : deviceVOs) {
@@ -52,9 +52,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     @Override
-    public boolean add(DeviceVO deviceVO){
-        checkCodeAndDevSn(deviceVO.getCode(),deviceVO.getDevSn());
-        if (StringUtils.isEmpty(deviceVO.getLongitude()) || StringUtils.isEmpty(deviceVO.getLatitude())){
+    public boolean add(DeviceVO deviceVO) {
+        checkCodeAndDevSn(deviceVO.getCode(), deviceVO.getDevSn());
+        if (!StringUtils.isEmpty(deviceVO.getLongitude()) || !StringUtils.isEmpty(deviceVO.getLatitude())) {
+            checkLatitudeAndLongitude(deviceVO.getLongitude(), deviceVO.getLatitude());
+        } else {
             throw new MyException(ResultEnum.LATITUDEANDLONGITUDE_NOTONLY);
         }
         deviceVO.setCreateTime(new Date());
@@ -64,21 +66,35 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     }
 
     /**
+     * 校验该经纬度是否已经存在,不存在通过
+     *
+     * @param longitude 经度
+     * @param latitude  纬度
+     * @throws MyException 自定义异常
+     */
+    private void checkLatitudeAndLongitude(String longitude, String latitude) throws MyException {
+        int count = lambdaQuery().eq(Device::getLongitude, longitude).eq(Device::getLatitude, latitude).count();
+        if (count != 0) {
+            throw new MyException(ResultEnum.LATITUDEANDLONGITUDE_EXIST);
+        }
+    }
+
+    /**
      * 校验设备序列号否已经存在于该区域规划内,不存在则通过
      *
-     * @param code 区域规划
+     * @param code  区域规划
      * @param devSn 设备序列号
      * @throws MyException 自定义异常
      */
     private void checkCodeAndDevSn(String code, String devSn) throws MyException {
         int count = lambdaQuery().eq(Device::getCode, code).eq(Device::getDevSn, devSn).count();
-        if (count != 0){
+        if (count != 0) {
             throw new MyException(ResultEnum.DEVSN_EXIST);
         }
     }
 
     @Override
-    public boolean delete(Long id){
+    public boolean delete(Long id) {
         baseMapper.deleteById(id);
         return true;
     }
@@ -91,10 +107,14 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         } else if (!StringUtils.isEmpty(deviceVO.getCode())) {
             checkCodeAndDevSn(deviceVO.getId(), deviceVO.getCode(), deviceData.getDevSn());
         } else if (!StringUtils.isEmpty(deviceVO.getDevSn())) {
-            checkCodeAndDevSn(deviceVO.getId(), deviceData.getCode(), deviceData.getDevSn());
+            checkCodeAndDevSn(deviceVO.getId(), deviceData.getCode(), deviceVO.getDevSn());
         }
-        if (StringUtils.isEmpty(deviceVO.getLongitude()) || StringUtils.isEmpty(deviceVO.getLatitude())){
-            throw new MyException(ResultEnum.LATITUDEANDLONGITUDE_NOTONLY);
+        if (!StringUtils.isEmpty(deviceVO.getLongitude()) && !StringUtils.isEmpty(deviceVO.getLatitude())) {
+            checkLongitudeAndLatitude(deviceVO.getId(), deviceVO.getLongitude(), deviceVO.getLatitude());
+        }else if (!StringUtils.isEmpty(deviceVO.getLongitude())){
+            checkLongitudeAndLatitude(deviceVO.getId(), deviceVO.getLongitude(), deviceData.getLatitude());
+        }else if (!StringUtils.isEmpty(deviceVO.getLatitude())){
+            checkLongitudeAndLatitude(deviceVO.getId(), deviceData.getLongitude(), deviceVO.getLatitude());
         }
         deviceVO.setUpdateTime(new Date());
         Device device = Conversion.changeOne(deviceVO, Device.class);
@@ -102,17 +122,42 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         return true;
     }
 
+    /**
+     * 校验经纬度是否存在,不存在通过
+     *
+     * @param id id
+     * @param longitude 经度
+     * @param latitude 纬度
+     * @throws MyException 自定义异常
+     */
+    private void checkLongitudeAndLatitude(Long id, String longitude, String latitude) throws MyException {
+        int count = lambdaQuery().eq(Device::getLongitude, longitude)
+                .eq(Device::getLatitude, latitude)
+                .ne(Device::getId, id).count();
+        if (count != 0) {
+            throw new MyException(ResultEnum.LATITUDEANDLONGITUDE_EXIST);
+        }
+    }
+
+    /**
+     * 在code(区域规划)和devSn(设备序列号)有值时,校验该设备序列号是否存在该行政区划中
+     *
+     * @param id    id
+     * @param code  区域规划
+     * @param devSn 设备序列号
+     * @throws MyException 自定义异常
+     */
     private void checkCodeAndDevSn(Long id, String code, String devSn) throws MyException {
         int count = lambdaQuery().eq(Device::getCode, code)
                 .eq(Device::getDevSn, devSn)
                 .ne(Device::getId, id).count();
-        if (count != 0){
+        if (count != 0) {
             throw new MyException(ResultEnum.DEVSN_EXIST);
         }
     }
 
     @Override
-    public DeviceVO findById(Long id){
+    public DeviceVO findById(Long id) {
         Device device = baseMapper.selectById(id);
         return Conversion.changeOne(device, DeviceVO.class);
     }

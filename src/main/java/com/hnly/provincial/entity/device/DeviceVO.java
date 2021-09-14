@@ -57,7 +57,7 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     private String townshipName;
 
     @Schema(description = "村")
-    private String VillageName;
+    private String villageName;
 
     @NotNull(message = "行政区划不能null", groups = {Add.class})
     @NotEmpty(message = "行政区划不能为空", groups = {Add.class})
@@ -87,14 +87,12 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     public String getTypeName() {
         if (type.equals("1")) {
             return "充值机";
-        }
-        if (type.equals("2")){
+        }else if (type.equals("2")){
             return "灌溉机";
-        }if (type.equals("3")){
+        }else if (type.equals("3")){
             return "非标准设备";
         }else {
             return "";
         }
     }
-
 }

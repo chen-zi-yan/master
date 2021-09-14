@@ -48,7 +48,7 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     private void checkCarId(String carId) throws MyException {
         int count = lambdaQuery().eq(Certificate::getCarId, carId).count();
         if (count != 0){
-            throw new MyException(ResultEnum.CHANGEFAILED);
+            throw new MyException(ResultEnum.carId_EXIST);
         }
     }
 
@@ -60,9 +60,18 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
 
     @Override
     public boolean updateData(CertificateVO certificateVO){
+        checkCarIdDivideId(certificateVO.getId(), certificateVO.getCarId());
         Certificate certificate = Conversion.changeOne(certificateVO, Certificate.class);
         baseMapper.updateById(certificate);
         return true;
+    }
+
+    private void checkCarIdDivideId(Long id, String carId) {
+        int count = lambdaQuery().eq(Certificate::getCarId, carId)
+                .ne(Certificate::getId, id).count();
+        if (count != 0){
+            throw new MyException(ResultEnum.carId_EXIST);
+        }
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hnly.provincial.comm.utils.PageWhere;
-import com.hnly.provincial.comm.validation.Add;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,18 +15,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
-* <p>
-* 设备信息表
-* </p>
-*
-* @author czy
-* @since 2021-09-13
-*/
+ * <p>
+ * 设备信息表
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-13
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_device")
-@Schema(name="DeviceVO", description="设备信息表")
+@Schema(name = "DeviceVO", description = "设备信息表")
 public class DeviceVO extends PageWhere<Device> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,8 +35,8 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @NotNull(message = "类型不能null", groups = {Add.class})
-    @NotEmpty(message = "类型不能为空", groups = {Add.class})
+    @NotNull(message = "类型不能null")
+    @NotEmpty(message = "类型不能为空")
     @Schema(description = "类型：1 充值机，2 灌溉机 3 非标准设备")
     private String type;
 
@@ -59,13 +58,13 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     @Schema(description = "村")
     private String villageName;
 
-    @NotNull(message = "行政区划不能null", groups = {Add.class})
-    @NotEmpty(message = "行政区划不能为空", groups = {Add.class})
+    @NotNull(message = "行政区划不能null")
+    @NotEmpty(message = "行政区划不能为空")
     @Schema(description = "行政区划")
     private String code;
 
-    @NotNull(message = "设备序列号不能null", groups = {Add.class})
-    @NotEmpty(message = "设备序列号不能为空", groups = {Add.class})
+    @NotNull(message = "设备序列号不能null")
+    @NotEmpty(message = "设备序列号不能为空")
     @Schema(description = "设备序列号")
     private String devSn;
 
@@ -87,11 +86,11 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     public String getTypeName() {
         if (type.equals("1")) {
             return "充值机";
-        }else if (type.equals("2")){
+        } else if (type.equals("2")) {
             return "灌溉机";
-        }else if (type.equals("3")){
+        } else if (type.equals("3")) {
             return "非标准设备";
-        }else {
+        } else {
             return "";
         }
     }

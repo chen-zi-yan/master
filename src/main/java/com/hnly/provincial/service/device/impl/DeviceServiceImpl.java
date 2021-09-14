@@ -55,29 +55,10 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     @Override
     public boolean add(DeviceVO deviceVO) {
         checkCodeAndDevSn(deviceVO.getCode(), deviceVO.getDevSn());
-        if (!StringUtils.isEmpty(deviceVO.getLongitude()) || !StringUtils.isEmpty(deviceVO.getLatitude())) {
-            checkLatitudeAndLongitude(deviceVO.getLongitude(), deviceVO.getLatitude());
-        } else {
-            throw new MyException(ResultEnum.LATITUDEANDLONGITUDE_NOTONLY);
-        }
         deviceVO.setCreateTime(new Date());
         Device device = Conversion.changeOne(deviceVO, Device.class);
         baseMapper.insert(device);
         return true;
-    }
-
-    /**
-     * 校验该经纬度是否已经存在,不存在通过
-     *
-     * @param longitude 经度
-     * @param latitude  纬度
-     * @throws MyException 自定义异常
-     */
-    private void checkLatitudeAndLongitude(String longitude, String latitude) throws MyException {
-        int count = lambdaQuery().eq(Device::getLongitude, longitude).eq(Device::getLatitude, latitude).count();
-        if (count != 0) {
-            throw new MyException(ResultEnum.LATITUDEANDLONGITUDE_EXIST);
-        }
     }
 
     /**
@@ -102,42 +83,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean updateData(DeviceVO deviceVO) {
-        Device deviceData = baseMapper.selectById(deviceVO.getId());
-        if (!StringUtils.isEmpty(deviceVO.getCode()) && !StringUtils.isEmpty(deviceVO.getDevSn())) {
-            checkCodeAndDevSn(deviceVO.getId(), deviceVO.getCode(), deviceVO.getDevSn());
-        } else if (!StringUtils.isEmpty(deviceVO.getCode())) {
-            checkCodeAndDevSn(deviceVO.getId(), deviceVO.getCode(), deviceData.getDevSn());
-        } else if (!StringUtils.isEmpty(deviceVO.getDevSn())) {
-            checkCodeAndDevSn(deviceVO.getId(), deviceData.getCode(), deviceVO.getDevSn());
-        }
-        if (!StringUtils.isEmpty(deviceVO.getLongitude()) && !StringUtils.isEmpty(deviceVO.getLatitude())) {
-            checkLongitudeAndLatitude(deviceVO.getId(), deviceVO.getLongitude(), deviceVO.getLatitude());
-        }else if (!StringUtils.isEmpty(deviceVO.getLongitude())){
-            checkLongitudeAndLatitude(deviceVO.getId(), deviceVO.getLongitude(), deviceData.getLatitude());
-        }else if (!StringUtils.isEmpty(deviceVO.getLatitude())){
-            checkLongitudeAndLatitude(deviceVO.getId(), deviceData.getLongitude(), deviceVO.getLatitude());
-        }
+        checkCodeAndDevSn(deviceVO.getId(), deviceVO.getCode(), deviceVO.getDevSn());
         deviceVO.setUpdateTime(new Date());
         Device device = Conversion.changeOne(deviceVO, Device.class);
         baseMapper.updateById(device);
         return true;
-    }
-
-    /**
-     * 校验经纬度是否存在,不存在通过
-     *
-     * @param id id
-     * @param longitude 经度
-     * @param latitude 纬度
-     * @throws MyException 自定义异常
-     */
-    private void checkLongitudeAndLatitude(Long id, String longitude, String latitude) throws MyException {
-        int count = lambdaQuery().eq(Device::getLongitude, longitude)
-                .eq(Device::getLatitude, latitude)
-                .ne(Device::getId, id).count();
-        if (count != 0) {
-            throw new MyException(ResultEnum.LATITUDEANDLONGITUDE_EXIST);
-        }
     }
 
     /**

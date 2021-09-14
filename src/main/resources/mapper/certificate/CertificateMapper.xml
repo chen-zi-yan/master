@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnly.provincial.dao.certificate.CertificateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.certificate.Certificate">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="address" property="address" />
+        <result column="mode" property="mode" />
+        <result column="property_owner" property="propertyOwner" />
+        <result column="car_id" property="carId" />
+        <result column="construction_time" property="constructionTime" />
+        <result column="water_engineering" property="waterEngineering" />
+        <result column="channel_engineering" property="channelEngineering" />
+        <result column="drainage_project" property="drainageProject" />
+        <result column="water_electricity" property="waterElectricity" />
+        <result column="field_irrigation_facilities" property="fieldIrrigationFacilities" />
+        <result column="supporting_buildings" property="supportingBuildings" />
+        <result column="other_facilities" property="otherFacilities" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, code, name, address, mode, property_owner, car_id, construction_time, water_engineering, channel_engineering, drainage_project, water_electricity, field_irrigation_facilities, supporting_buildings, other_facilities
+    </sql>
+
+</mapper>

@@ -145,6 +145,10 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     @Override
     public Map<String, String> getAllAreaName(String code) {
         Map<String, String> map = new HashMap<>();
+        map.put("shi", "");
+        map.put("xian", "");
+        map.put("xiang", "");
+        map.put("cun", "");
         recursionAreaName(code, map);
         return map;
     }

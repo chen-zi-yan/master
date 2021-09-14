@@ -39,9 +39,6 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @Schema(description = "省")
-    private String provinceName;
-
     @Schema(description = "市")
     private String cityName;
 

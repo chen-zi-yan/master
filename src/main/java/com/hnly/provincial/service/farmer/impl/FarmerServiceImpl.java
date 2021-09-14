@@ -38,10 +38,10 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     @Override
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
         Page<Farmer> page = lambdaQuery()
-                .eq(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
+                .likeRight(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
                 .likeRight(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
-                .eq(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
-                .eq(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
+                .likeRight(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
+                .likeRight(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
                 .eq(!StringUtils.isEmpty(farmerVO.getIcCode()), Farmer::getIcCode, farmerVO.getIcCode())
                 .eq(!StringUtils.isEmpty(farmerVO.getStatus()), Farmer::getStatus, farmerVO.getStatus())
                 .page(farmerVO.page());
@@ -56,7 +56,6 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
             vo.setTownshipName(allAreaName.get("xiang"));
             vo.setCountyName(allAreaName.get("xian"));
             vo.setCityName(allAreaName.get("shi"));
-            vo.setProvinceName("河南省");
         }
         return TableDataUtils.success(page.getTotal(), farmerVOs);
     }

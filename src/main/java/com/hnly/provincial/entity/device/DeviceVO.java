@@ -36,11 +36,25 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @NotNull(message = "类型不能null", groups = {Add.class})
+    @NotEmpty(message = "类型不能为空", groups = {Add.class})
     @Schema(description = "类型：1 充值机，2 灌溉机 3 非标准设备")
     private String type;
 
     @Schema(description = "类型名字：1 充值机，2 灌溉机 3 非标准设备")
     private String typeName;
+
+    @Schema(description = "市")
+    private String cityName;
+
+    @Schema(description = "县")
+    private String countyName;
+
+    @Schema(description = "乡")
+    private String townshipName;
+
+    @Schema(description = "村")
+    private String VillageName;
 
     @NotNull(message = "行政区划不能null", groups = {Add.class})
     @NotEmpty(message = "行政区划不能为空", groups = {Add.class})
@@ -50,8 +64,6 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     @Schema(description = "设备序列号")
     private String devSn;
 
-    @NotNull(message = "行政区划不能null", groups = {Add.class})
-    @NotEmpty(message = "行政区划不能为空", groups = {Add.class})
     @Schema(description = "设备注册号")
     private String devRegistrationNo;
 
@@ -69,14 +81,14 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
 
     public String getTypeName() {
         if (type.equals("1")) {
-            return String.valueOf(setTypeName("充值机"));
+            return "充值机";
         }
         if (type.equals("2")){
-            return String.valueOf(setTypeName("灌溉机"));
+            return "灌溉机";
         }if (type.equals("3")){
-            return String.valueOf(setTypeName("非标准设备"));
+            return "非标准设备";
         }else {
-            return String.valueOf(setTypeName(""));
+            return "";
         }
     }
 

@@ -35,7 +35,11 @@ public enum ResultEnum {
     IC_EXIST(40019, "IC已存在"),
     GETUSERREGISTRATIONNO_EXIST(40020, "该农户编号已存在"),
     DEVREGISTRATIONNO_EXIST(40021, "该设备注册号已存在"),
-
+    DEVREGISTRATIONNO_NOTEMPTY(40022, "该设备注册号不能为空"),
+    LATITUDEANDLONGITUDE_EXIST(40023, "该经纬度已存在"),
+    LATITUDEANDLONGITUDE_NOTONLY(40024, "经纬度不能只填经度或只填纬度"),
+    DEVSN_EXIST(40025, "该设备序列号已存在"),
+    DEVSN_NOTEMPTY(40026, "该设备序列号怒能为空"),
 
 
     ;

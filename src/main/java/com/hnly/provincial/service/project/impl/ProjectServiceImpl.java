@@ -38,7 +38,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                 .likeRight(!StringUtils.isEmpty(projectVO.getName()), Project::getName, projectVO.getName())
                 .eq(!StringUtils.isEmpty(projectVO.getUnit()), Project::getUnit, projectVO.getUnit())
                 .eq(!StringUtils.isEmpty(projectVO.getType()), Project::getType, projectVO.getType())
-                .eq(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
+                .likeRight(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
                 .page(projectVO.page());
         List<ProjectVO> projectVOS = Conversion.changeList(page.getRecords(), ProjectVO.class);
         for (ProjectVO vo : projectVOS) {
@@ -83,10 +83,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                 .eq(Project::getName, projectVO.getName())
                 .eq(Project::getType, projectVO.getType())
                 .count();
-        if (0 == count) {
-            return false;
-        }
-        return true;
+        return 0 != count;
     }
 
     @Override
@@ -96,10 +93,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                 .eq(Project::getType, projectVO.getType())
                 .ne(Project::getId, projectVO.getId())
                 .count();
-        if (0 == count) {
-            return false;
-        }
-        return true;
+        return 0 != count;
     }
 
     /**

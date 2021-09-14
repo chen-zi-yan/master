@@ -1,21 +1,17 @@
 package com.hnly.provincial.controller.project;
 
 import com.hnly.provincial.comm.JsonBean;
-import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.ResultEnum;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import com.hnly.provincial.service.project.IProjectService;
-import com.hnly.provincial.entity.project.Project;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.project.ProjectVO;
-import lombok.extern.slf4j.Slf4j;
+import com.hnly.provincial.service.project.IProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 /**
@@ -52,10 +48,6 @@ public class ProjectController {
     @Operation(summary = "删除项目管理")
     @DeleteMapping("{id}")
     public JsonBean<String> delete(@PathVariable("id") Long id) {
-        Project byId = projectService.getById(id);
-        if (null == byId) {
-            return JsonBean.err(ResultEnum.NOT_DELETE);
-        }
         projectService.delete(id);
         return JsonBean.success(ResultEnum.SUCCESS);
     }

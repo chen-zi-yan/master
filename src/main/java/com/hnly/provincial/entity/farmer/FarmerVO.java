@@ -59,22 +59,20 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     private String code;
 
     @Pattern(regexp = "^1[3|4|5|7|8][0-9]{9}$", message = "手机号输入错误")
-    @Schema(description = "手机号(被隐藏)")
+    @Schema(description = "手机号(显示)")
     private String phone;
 
-    @Pattern(regexp = "^1[3|4|5|7|8][0-9]{9}$", message = "手机号输入错误")
-    @Schema(description = "手机号(显示)")
-    private String phoneShow;
+    @Schema(description = "手机号(隐藏)")
+    private String phoneHidden;
 
     @NotNull(message = "身份证号不能null", groups = {Add.class})
     @NotEmpty(message = "身份证号不能为空", groups = {Add.class})
     @Pattern(regexp = "^(\\d{6})(18|19|20)?(\\d{2})([01]\\d)([0123]\\d)(\\d{3})(\\d|X|x)?$", message = "身份证号输入错误")
-    @Schema(description = "身份证号(被隐藏)")
+    @Schema(description = "身份证号(显示)")
     private String idCard;
 
-    @Pattern(regexp = "^(\\d{6})(18|19|20)?(\\d{2})([01]\\d)([0123]\\d)(\\d{3})(\\d|X|x)?$", message = "身份证号输入错误")
-    @Schema(description = "身份证(显示)")
-    private String idCardShow;
+    @Schema(description = "身份证(隐藏)")
+    private String idCardHidden;
 
     @Schema(description = "农户编号")
     private String userRegistrationNo;

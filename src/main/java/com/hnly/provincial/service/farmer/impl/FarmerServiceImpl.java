@@ -47,12 +47,10 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOs) {
-            vo.setPhoneShow(vo.getPhone());
-            vo.setIdCardShow(vo.getIdCard());
             if (!StringUtils.isEmpty(vo.getPhone())){
-                vo.setPhone(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+                vo.setPhoneHidden(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
             }
-            vo.setIdCard(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})","$1*****$2"));
+            vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})","$1*****$2"));
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setName(allAreaName.get("cun"));
             vo.setTownshipName(allAreaName.get("xiang"));

@@ -34,6 +34,9 @@ public enum ResultEnum {
     IDCODE_EXIST(40018, "该身份证号已经存在"),
     IC_EXIST(40019, "IC已存在"),
     GETUSERREGISTRATIONNO_EXIST(40020, "该农户编号已存在"),
+    AREA_EXIST(40021, "该设施所在行政区域已经存在"),
+    CARID_EXIST(40022, "该使用权人身份证或法人证书号码已经存在"),
+    NUMBER_EXIST(40023, "该号码已经存在"),
 
 
 

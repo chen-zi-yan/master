@@ -73,7 +73,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     public ProjectVO findById(Long id) {
         Project project = baseMapper.selectById(id);
         ProjectVO projectVO = Conversion.changeOne(project, ProjectVO.class);
-        replenishAreaName(projectVO);
+        projectVO.setCodeName(projectVO.getCode());
         return projectVO;
     }
 
@@ -102,15 +102,19 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
      * @param projectVO 项目管理对象
      */
     private void replenishAreaName(ProjectVO projectVO) {
-        try {
-            Area xian = iAreaService.lambdaQuery().eq(Area::getCode, projectVO.getCode()).last("limit 1").one();
-            Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getFatherCode()).last("limit 1").one();
-            projectVO.setCodeName(xian.getName());
-            projectVO.setCityName(shi.getName());
-        } catch (Exception e) {
+        Area xian = iAreaService.lambdaQuery().eq(Area::getCode, projectVO.getCode()).last("limit 1").one();
+        if (null == xian) {
             projectVO.setCodeName("");
             projectVO.setCityName("");
+            return;
         }
+        projectVO.setCodeName(xian.getName());
+        Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getFatherCode()).last("limit 1").one();
+        if (null != shi) {
+            projectVO.setCityName(shi.getName());
+            return;
+        }
+        projectVO.setCityName("");
     }
 
 }

@@ -1,5 +1,6 @@
 package com.hnly.provincial.service.shiyong.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
@@ -28,9 +29,9 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
     @Override
     public TableDataUtils<List<ShiyongVO>> findListByPage(ShiyongVO shiyongVO) {
         Page<Shiyong> page = lambdaQuery()
-                .likeRight(Shiyong::getNumber, shiyongVO.getNumber())
-                .likeRight(Shiyong::getArea, shiyongVO.getArea())
-                .likeRight(Shiyong::getIdNumber, shiyongVO.getIdNumber())
+                .likeRight(!StringUtils.isEmpty(shiyongVO.getNumber()), Shiyong::getNumber, shiyongVO.getNumber())
+                .likeRight(!StringUtils.isEmpty(shiyongVO.getArea()), Shiyong::getArea, shiyongVO.getArea())
+                .likeRight(!StringUtils.isEmpty(shiyongVO.getIdNumber()), Shiyong::getIdNumber, shiyongVO.getIdNumber())
                 .page(shiyongVO.page());
         List<ShiyongVO> shiyongVOs = Conversion.changeList(page.getRecords(), ShiyongVO.class);
         return TableDataUtils.success(page.getTotal(), shiyongVOs);

@@ -61,7 +61,8 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     }
 
     /**
-     * 校验该身份证号码或组织机构代码是否存在
+     * 校验该身份证号码或组织机构代码是否存在<br/>
+     *  添加数据时id不作为条件,修改数据时将校验id是不是本身
      *
      * @param id id
      * @param carId 身份证号码或组织机构代码
@@ -77,7 +78,8 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     }
 
     /**
-     *校验编号是否存在
+     *校验编号是否存在<br/>
+     * 添加数据时id不作为条件,修改数据时将校验id是不是本身
      *
      * @param id id
      * @param code 编号

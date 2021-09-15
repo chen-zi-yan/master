@@ -10,14 +10,11 @@ import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.area.AreaMapper;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.area.AreaVO;
-import com.hnly.provincial.entity.area.CascadeVO;
 import com.hnly.provincial.service.area.IAreaService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

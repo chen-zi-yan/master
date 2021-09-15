@@ -1,5 +1,6 @@
 package com.hnly.provincial.service.treatybook.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.utils.Conversion;
@@ -26,9 +27,9 @@ public class TreatyBookServiceImpl extends ServiceImpl<TreatyBookMapper, TreatyB
     @Override
     public TableDataUtils<List<TreatyBookVO>> findListByPage(TreatyBookVO treatyBookVO) {
         Page<TreatyBook> page = lambdaQuery()
-                .likeRight(TreatyBook::getPartya, treatyBookVO.getPartya())
-                .likeRight(TreatyBook::getPartyb, treatyBookVO.getPartyb())
-                .likeRight(TreatyBook::getName, treatyBookVO.getName())
+                .likeRight(!StringUtils.isEmpty(treatyBookVO.getPartya()), TreatyBook::getPartya, treatyBookVO.getPartya())
+                .likeRight(!StringUtils.isEmpty(treatyBookVO.getPartyb()), TreatyBook::getPartyb, treatyBookVO.getPartyb())
+                .likeRight(!StringUtils.isEmpty(treatyBookVO.getName()), TreatyBook::getName, treatyBookVO.getName())
                 .page(treatyBookVO.page());
         List<TreatyBookVO> treatyBookVOs = Conversion.changeList(page.getRecords(), TreatyBookVO.class);
         return TableDataUtils.success(page.getTotal(), treatyBookVOs);

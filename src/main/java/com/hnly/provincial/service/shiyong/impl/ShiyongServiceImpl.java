@@ -139,7 +139,7 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
      * @throws MyException 自定义异常
      */
     private void checkNumberDivideId(Long id, String number) throws MyException {
-        Integer count = lambdaQuery().eq(Shiyong::getNumber, number)
+        int count = lambdaQuery().eq(Shiyong::getNumber, number)
                 .ne(Shiyong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.NUMBER_EXIST);

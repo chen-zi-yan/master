@@ -16,18 +16,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
-* <p>
-* 协议书
-* </p>
-*
-* @author czy
-* @since 2021-09-15
-*/
+ * <p>
+ * 协议书
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-15
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_treaty_book")
-@Schema(name="TreatyBookVO", description="协议书")
+@Schema(name = "TreatyBookVO", description = "协议书")
 public class TreatyBookVO extends PageWhere<TreatyBook> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,13 +59,11 @@ public class TreatyBookVO extends PageWhere<TreatyBook> implements Serializable 
     private String manageconent;
 
     @NotNull(message = "开始时间不能为null")
-    @NotEmpty(message = "开始时间不能为空")
     @Schema(description = "开始时间")
     @TableField("beginTime")
     private Date begintime;
 
-    @NotNull(message = "结束不能为null")
-    @NotEmpty(message = "结束不能为空")
+    @NotNull(message = "结束时间不能为null")
     @Schema(description = "结束时间")
     @TableField("endTime")
     private Date endtime;

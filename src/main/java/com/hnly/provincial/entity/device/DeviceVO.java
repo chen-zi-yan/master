@@ -88,7 +88,7 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
             case "1":
                 return "充值机";
             case "2":
-                return "灌溉机";
+                return "标准设备";
             case "3":
                 return "非标准设备";
             default:

@@ -38,51 +38,12 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
 
     @Override
     public boolean add(ShiyongVO shiyongVO) {
-        checkNumber(shiyongVO.getNumber());
-        checkArea(shiyongVO.getArea());
-        checkIdNumber(shiyongVO.getIdNumber());
+        checkNumber(shiyongVO.getId(), shiyongVO.getNumber());
+        checkArea(shiyongVO.getId(), shiyongVO.getArea());
+        checkIdNumber(shiyongVO.getId(), shiyongVO.getIdNumber());
         Shiyong shiyong = Conversion.changeOne(shiyongVO, Shiyong.class);
         baseMapper.insert(shiyong);
         return true;
-    }
-
-    /**
-     * 校验使用权人身份证或法人证书号码是否存在,不存在则通过
-     *
-     * @param idNumber 使用权人身份证或法人证书号码
-     * @throws MyException 自定义异常
-     */
-    private void checkIdNumber(String idNumber) throws MyException {
-        int count1 = lambdaQuery().eq(Shiyong::getIdNumber, idNumber).count();
-        if (count1 != 0) {
-            throw new MyException(ResultEnum.CARID_EXIST);
-        }
-    }
-
-    /**
-     * 校验设施所在行政区域是否存在,不存在则通过
-     *
-     * @param area 设施所在行政区域
-     * @throws MyException 自定义异常
-     */
-    private void checkArea(String area) throws MyException {
-        int count = lambdaQuery().eq(Shiyong::getArea, area).count();
-        if (count != 0) {
-            throw new MyException(ResultEnum.AREA_EXIST);
-        }
-    }
-
-    /**
-     * 校验号码是否存在,不存在则通过
-     *
-     * @param number 号
-     * @throws MyException 自定义异常
-     */
-    private void checkNumber(String number) throws MyException {
-        int count = lambdaQuery().eq(Shiyong::getNumber, number).count();
-        if (count != 0) {
-            throw new MyException(ResultEnum.NUMBER_EXIST);
-        }
     }
 
     @Override
@@ -93,54 +54,57 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
 
     @Override
     public boolean updateData(ShiyongVO shiyongVO) {
-        checkNumberDivideId(shiyongVO.getId(), shiyongVO.getNumber());
-        checkAreaDivideId(shiyongVO.getId(), shiyongVO.getArea());
-        checkIDNumberDivideId(shiyongVO.getId(), shiyongVO.getIdNumber());
+        checkNumber(shiyongVO.getId(), shiyongVO.getNumber());
+        checkArea(shiyongVO.getId(), shiyongVO.getArea());
+        checkIdNumber(shiyongVO.getId(), shiyongVO.getIdNumber());
         Shiyong shiyong = Conversion.changeOne(shiyongVO, Shiyong.class);
         baseMapper.updateById(shiyong);
         return true;
     }
 
     /**
-     * 校验使用权人身份证或法人证书号码是否存在,不存在则通过
+     * 校验使用权人身份证或法人证书号码是否存在<br/>
+     * 添加数据时id不作为条件进行校验,修改数据时将校验id是不是本身
      *
      * @param id       id
      * @param idNumber 使用权人身份证或法人证书号码
      * @throws MyException 自定义异常
      */
-    private void checkIDNumberDivideId(Long id, String idNumber) throws MyException {
+    private void checkIdNumber(Long id, String idNumber) throws MyException {
         int count = lambdaQuery().eq(Shiyong::getIdNumber, idNumber)
-                .ne(Shiyong::getId, id).count();
+                .ne(id != null,Shiyong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.CARID_EXIST);
         }
     }
 
     /**
-     * 校验设施所在行政区域是否存在,不存在则通过
+     * 校验设施所在行政区域是否存在<br/>
+     * 添加数据时id不作为条件进行校验,修改数据时将校验id是不是本身
      *
      * @param id   id
      * @param area 设施所在行政区域
      * @throws MyException 自定义异常
      */
-    private void checkAreaDivideId(Long id, String area) throws MyException {
+    private void checkArea(Long id, String area) throws MyException {
         int count = lambdaQuery().eq(Shiyong::getArea, area)
-                .ne(Shiyong::getId, id).count();
+                .ne(id != null,Shiyong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.AREA_EXIST);
         }
     }
 
     /**
-     * 校验号码是否存在,不存在则通过
+     * 校验号码是否存在<br/>
+     * 添加数据时id不作为条件进行校验,修改数据时将校验id是不是本身
      *
      * @param id     id
      * @param number 号
      * @throws MyException 自定义异常
      */
-    private void checkNumberDivideId(Long id, String number) throws MyException {
+    private void checkNumber(Long id, String number) throws MyException {
         int count = lambdaQuery().eq(Shiyong::getNumber, number)
-                .ne(Shiyong::getId, id).count();
+                .ne(id != null,Shiyong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.NUMBER_EXIST);
         }

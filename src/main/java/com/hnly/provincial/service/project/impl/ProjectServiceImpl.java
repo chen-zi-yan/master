@@ -98,13 +98,19 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     /**
      * 获取县级和市级行政单位的名称
+     *
      * @param projectVO 项目管理对象
      */
     private void replenishAreaName(ProjectVO projectVO) {
+        try {
             Area xian = iAreaService.lambdaQuery().eq(Area::getCode, projectVO.getCode()).last("limit 1").one();
-            Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getCode()).last("limit 1").one();
+            Area shi = iAreaService.lambdaQuery().eq(Area::getCode, xian.getFatherCode()).last("limit 1").one();
             projectVO.setCodeName(xian.getName());
             projectVO.setCityName(shi.getName());
+        } catch (Exception e) {
+            projectVO.setCodeName("");
+            projectVO.setCityName("");
+        }
     }
 
 }

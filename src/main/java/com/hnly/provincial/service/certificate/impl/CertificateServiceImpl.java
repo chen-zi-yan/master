@@ -1,5 +1,6 @@
 package com.hnly.provincial.service.certificate.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
@@ -28,8 +29,8 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     @Override
     public TableDataUtils<List<CertificateVO>> findListByPage(CertificateVO certificateVO){
         Page<Certificate> page = lambdaQuery()
-                .likeRight(Certificate::getCode,certificateVO.getCode())
-                .likeRight(Certificate::getCarId,certificateVO.getCarId())
+                .likeRight(!StringUtils.isEmpty(certificateVO.getCode()), Certificate::getCode,certificateVO.getCode())
+                .likeRight(!StringUtils.isEmpty(certificateVO.getCarId()), Certificate::getCarId,certificateVO.getCarId())
                 .page(certificateVO.page());
         List<CertificateVO> certificateVOs = Conversion.changeList(page.getRecords(), CertificateVO.class);
         return TableDataUtils.success(page.getTotal(), certificateVOs);

@@ -73,7 +73,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     public ProjectVO findById(Long id) {
         Project project = baseMapper.selectById(id);
         ProjectVO projectVO = Conversion.changeOne(project, ProjectVO.class);
-        projectVO.setCodeName(projectVO.getCode());
+        replenishAreaName(projectVO);
         return projectVO;
     }
 

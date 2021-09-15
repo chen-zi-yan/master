@@ -1,16 +1,17 @@
 package com.hnly.provincial.service.certificate.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
-import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.Conversion;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
+import com.hnly.provincial.dao.certificate.CertificateMapper;
 import com.hnly.provincial.entity.certificate.Certificate;
 import com.hnly.provincial.entity.certificate.CertificateVO;
-import com.hnly.provincial.dao.certificate.CertificateMapper;
 import com.hnly.provincial.service.certificate.ICertificateService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import java.util.List;
 
 /**
@@ -36,37 +37,11 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
 
     @Override
     public boolean add(CertificateVO certificateVO){
-        checkCode(certificateVO.getCode());
-        checkCarId(certificateVO.getCarId());
+        checkCode(certificateVO.getId(), certificateVO.getCode());
+        checkCarId(certificateVO.getId(), certificateVO.getCarId());
         Certificate certificate = Conversion.changeOne(certificateVO, Certificate.class);
         baseMapper.insert(certificate);
         return true;
-    }
-
-    /**
-     * 校验该身份证号码或组织机构代码是否存在，不存在则通过
-     *
-     * @param carId 身份证号码或组织机构代码
-     * @throws MyException 自定义异常
-     */
-    private void checkCarId(String carId) throws MyException {
-        int count = lambdaQuery().eq(Certificate::getCarId, carId).count();
-        if (count != 0){
-            throw new MyException(ResultEnum.carId_EXIST);
-        }
-    }
-
-    /**
-     * 校验编号是否存在,不存在则通过
-     *
-     * @param code 编号
-     * @throws MyException 自定义异常
-     */
-    private void checkCode(String code) throws MyException {
-        int count = lambdaQuery().eq(Certificate::getCode, code).count();
-        if (count != 0){
-            throw new MyException(ResultEnum.CODE_EXIST);
-        }
     }
 
 
@@ -78,38 +53,39 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
 
     @Override
     public boolean updateData(CertificateVO certificateVO){
-        checkCodeDivideId(certificateVO.getId(), certificateVO.getCode());
-        checkCarIdDivideId(certificateVO.getId(), certificateVO.getCarId());
+        checkCode(certificateVO.getId(), certificateVO.getCode());
+        checkCarId(certificateVO.getId(), certificateVO.getCarId());
         Certificate certificate = Conversion.changeOne(certificateVO, Certificate.class);
         baseMapper.updateById(certificate);
         return true;
     }
 
     /**
-     * 校验该身份证号码或组织机构代码是否存在，不存在则通过
+     * 校验该身份证号码或组织机构代码是否存在
      *
      * @param id id
      * @param carId 身份证号码或组织机构代码
-     * @throws MyException 自定义异常
+     * @throws MyException 自定义异常:该身份证号码或组织机构代码已经存在
      */
-    private void checkCarIdDivideId(Long id, String carId) throws MyException {
+    private void checkCarId(Long id, String carId) throws MyException {
         int count = lambdaQuery().eq(Certificate::getCarId, carId)
-                .ne(Certificate::getId, id).count();
+                .ne(id != null,Certificate::getId, id)
+                .count();
         if (count != 0){
-            throw new MyException(ResultEnum.carId_EXIST);
+            throw new MyException(ResultEnum.CARID_EXIST);
         }
     }
 
     /**
-     *校验编号是否存在,不存在则通过
+     *校验编号是否存在
      *
      * @param id id
      * @param code 编号
-     * @throws MyException 自定义异常
+     * @throws MyException 自定义异常:已经存在
      */
-    private void checkCodeDivideId(Long id, String code) throws MyException {
+    private void checkCode(Long id, String code) throws MyException {
         int count = lambdaQuery().eq(Certificate::getCode, code)
-                .ne(Certificate::getId, id).count();
+                .ne(id != null,Certificate::getId, id).count();
         if (count != 0){
             throw new MyException(ResultEnum.CODE_EXIST);
         }

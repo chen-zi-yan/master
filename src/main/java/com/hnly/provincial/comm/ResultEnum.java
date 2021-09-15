@@ -27,14 +27,14 @@ public enum ResultEnum {
     NOTHINGNESS(40011, "不存在"),
     FAILURE(40012, "失败"),
     CHANGEFAILED(40013, "修改失败"),
-    CODE_EXIST(40014, "已经存在"),
+    CODE_EXIST(40014, "该码已经存在"),
     CODE_SUBORDINATE_EXIST(40015, "存在下级"),
     CODE_SUPERIOR_EXIST(40016, "无上级单位"),
     CODENOTEMPTY(40017, "行政区划代码不能为空"),
     IDCODE_EXIST(40018, "该身份证号已经存在"),
     IC_EXIST(40019, "IC已存在"),
     GETUSERREGISTRATIONNO_EXIST(40020, "该农户编号已存在"),
-    carId_EXIST(40021, "该身份证号码或组织机构代码已经存在"),
+    CARID_EXIST(40021, "该身份证号码或组织机构代码已经存在"),
 
 
 

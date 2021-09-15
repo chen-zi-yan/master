@@ -35,6 +35,7 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
 
     @Override
     public boolean add(CertificateVO certificateVO){
+        checkCode(certificateVO.getCode());
         checkCarId(certificateVO.getCarId());
         Certificate certificate = Conversion.changeOne(certificateVO, Certificate.class);
         baseMapper.insert(certificate);
@@ -54,6 +55,20 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
         }
     }
 
+    /**
+     * 校验编号是否存在,不存在则通过
+     *
+     * @param code 编号
+     * @throws MyException 自定义异常
+     */
+    private void checkCode(String code) throws MyException {
+        int count = lambdaQuery().eq(Certificate::getCode, code).count();
+        if (count != 0){
+            throw new MyException(ResultEnum.CODE_EXIST);
+        }
+    }
+
+
     @Override
     public boolean delete(Long id){
         baseMapper.deleteById(id);
@@ -62,17 +77,40 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
 
     @Override
     public boolean updateData(CertificateVO certificateVO){
+        checkCodeDivideId(certificateVO.getId(), certificateVO.getCode());
         checkCarIdDivideId(certificateVO.getId(), certificateVO.getCarId());
         Certificate certificate = Conversion.changeOne(certificateVO, Certificate.class);
         baseMapper.updateById(certificate);
         return true;
     }
 
-    private void checkCarIdDivideId(Long id, String carId) {
+    /**
+     * 校验该身份证号码或组织机构代码是否存在，不存在则通过
+     *
+     * @param id id
+     * @param carId 身份证号码或组织机构代码
+     * @throws MyException 自定义异常
+     */
+    private void checkCarIdDivideId(Long id, String carId) throws MyException {
         int count = lambdaQuery().eq(Certificate::getCarId, carId)
                 .ne(Certificate::getId, id).count();
         if (count != 0){
             throw new MyException(ResultEnum.carId_EXIST);
+        }
+    }
+
+    /**
+     *校验编号是否存在,不存在则通过
+     *
+     * @param id id
+     * @param code 编号
+     * @throws MyException 自定义异常
+     */
+    private void checkCodeDivideId(Long id, String code) throws MyException {
+        int count = lambdaQuery().eq(Certificate::getCode, code)
+                .ne(Certificate::getId, id).count();
+        if (count != 0){
+            throw new MyException(ResultEnum.CODE_EXIST);
         }
     }
 

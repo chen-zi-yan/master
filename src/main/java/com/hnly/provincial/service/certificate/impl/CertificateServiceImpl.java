@@ -27,6 +27,7 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     @Override
     public TableDataUtils<List<CertificateVO>> findListByPage(CertificateVO certificateVO){
         Page<Certificate> page = lambdaQuery()
+                .likeRight(Certificate::getCode,certificateVO.getCode())
                 .likeRight(Certificate::getCarId,certificateVO.getCarId())
                 .page(certificateVO.page());
         List<CertificateVO> certificateVOs = Conversion.changeList(page.getRecords(), CertificateVO.class);

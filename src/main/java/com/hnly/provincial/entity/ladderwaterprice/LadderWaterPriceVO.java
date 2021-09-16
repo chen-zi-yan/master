@@ -9,8 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,34 +40,42 @@ public class LadderWaterPriceVO extends PageWhere<LadderWaterPrice> implements S
     @Schema(description = "地区")
     private String area;
 
+    @Digits(integer = 2, fraction = 2)
     @NotNull(message = "基准水价不能为null")
     @Schema(description = "基准水价")
     private BigDecimal waterPrice;
 
+    @Digits(integer = 1, fraction = 2)
     @NotNull(message = "一阶倍数不能为null")
     @Schema(description = "一阶倍数")
     private BigDecimal firstMultiple;
 
+    @Digits(integer = 1, fraction = 2)
     @NotNull(message = "二阶倍数不能为null")
     @Schema(description = "二阶倍数")
     private BigDecimal secondMultiple;
 
+    @Digits(integer = 1, fraction = 2)
     @NotNull(message = "三阶倍数不能为null")
     @Schema(description = "三阶倍数")
     private BigDecimal thirdMultiple;
 
+    @Digits(integer = 2, fraction = 2)
     @NotNull(message = "一阶水价不能为null")
     @Schema(description = "一阶水价")
     private BigDecimal firstOrderWarterPrice;
 
+    @Digits(integer = 2, fraction = 2)
     @NotNull(message = "二阶水价不能为null")
     @Schema(description = "二阶水价")
     private BigDecimal secondOrderWarterPrice;
 
+    @Digits(integer = 2, fraction = 2)
     @NotNull(message = "三阶水价不能为null")
     @Schema(description = "三阶水价")
     private BigDecimal thirdOrderWarterPrice;
 
+    @Digits(integer = 4, fraction = 4)
     @NotNull(message = "电价不能为null")
     @Schema(description = "电价")
     private BigDecimal electrovalence;

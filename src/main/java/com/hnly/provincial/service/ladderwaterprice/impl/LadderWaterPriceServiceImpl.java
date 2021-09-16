@@ -1,17 +1,17 @@
 package com.hnly.provincial.service.ladderwaterprice.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
-import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.Conversion;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
+import com.hnly.provincial.dao.ladderwaterprice.LadderWaterPriceMapper;
 import com.hnly.provincial.entity.ladderwaterprice.LadderWaterPrice;
 import com.hnly.provincial.entity.ladderwaterprice.LadderWaterPriceVO;
-import com.hnly.provincial.dao.ladderwaterprice.LadderWaterPriceMapper;
 import com.hnly.provincial.service.ladderwaterprice.ILadderWaterPriceService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +38,6 @@ public class LadderWaterPriceServiceImpl extends ServiceImpl<LadderWaterPriceMap
 
     @Override
     public boolean add(LadderWaterPriceVO ladderWaterPriceVO) {
-        checkBigDecimal(ladderWaterPriceVO);
         checkArea(ladderWaterPriceVO.getId(), ladderWaterPriceVO.getArea());
         ladderWaterPriceVO.setCreateTime(new Date());
         LadderWaterPrice ladderWaterPrice = Conversion.changeOne(ladderWaterPriceVO, LadderWaterPrice.class);
@@ -54,7 +53,6 @@ public class LadderWaterPriceServiceImpl extends ServiceImpl<LadderWaterPriceMap
 
     @Override
     public boolean updateData(LadderWaterPriceVO ladderWaterPriceVO) {
-        checkBigDecimal(ladderWaterPriceVO);
         checkArea(ladderWaterPriceVO.getId(), ladderWaterPriceVO.getArea());
         ladderWaterPriceVO.setUpdateTime(new Date());
         LadderWaterPrice ladderWaterPrice = Conversion.changeOne(ladderWaterPriceVO, LadderWaterPrice.class);
@@ -62,34 +60,6 @@ public class LadderWaterPriceServiceImpl extends ServiceImpl<LadderWaterPriceMap
         return true;
     }
 
-    /**
-     * 校验输入的小数格式是否符合要求
-     *
-     * @param ladderWaterPriceVO 阶梯水价表对象
-     * @throws MyException 抛出输入的数据个数不正确
-     */
-    private void checkBigDecimal(LadderWaterPriceVO ladderWaterPriceVO) throws MyException {
-        String reg = "^(\\d{1,4}\\.\\d)$";
-        String reg1 = "^(\\d\\.\\d{1,2})$";
-        String reg2 = "^(\\d{1,2}\\.\\d{1,2})$";
-        boolean waterPrice = String.valueOf(ladderWaterPriceVO.getWaterPrice()).matches(reg2);
-        boolean firstMultiple = String.valueOf(ladderWaterPriceVO.getFirstMultiple()).matches(reg1);
-        boolean secondMultiple = String.valueOf(ladderWaterPriceVO.getSecondMultiple()).matches(reg1);
-        boolean thirdMultiple = String.valueOf(ladderWaterPriceVO.getThirdMultiple()).matches(reg1);
-        boolean firstOrderWarterPrice = String.valueOf(ladderWaterPriceVO.getFirstOrderWarterPrice()).matches(reg2);
-        boolean secondOrderWarterPrice = String.valueOf(ladderWaterPriceVO.getSecondOrderWarterPrice()).matches(reg2);
-        boolean thirdOrderWarterPrice = String.valueOf(ladderWaterPriceVO.getThirdOrderWarterPrice()).matches(reg2);
-        boolean electrovalence = String.valueOf(ladderWaterPriceVO.getElectrovalence()).matches(reg);
-        if (!firstMultiple || !secondMultiple || !thirdMultiple) {
-            throw new MyException(ResultEnum.BIGDECIMAL1_EXIST);
-        }
-        if (!waterPrice || !firstOrderWarterPrice || !secondOrderWarterPrice || !thirdOrderWarterPrice) {
-            throw new MyException(ResultEnum.BIGDECIMAL2_EXIST);
-        }
-        if (!electrovalence) {
-            throw new MyException(ResultEnum.BIGDECIMAL_EXIST);
-        }
-    }
 
     /**
      * 校验地区是否已经存在</br>

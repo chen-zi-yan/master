@@ -44,24 +44,6 @@ public class Farmer implements Serializable {
     @Schema(description = "身份证号")
     private String idCard;
 
-    @Schema(description = "农户编号")
-    private String userRegistrationNo;
-
-    @Schema(description = "非标准设备 ic卡号")
-    private String icCode;
-
-    @Schema(description = "余额")
-    private BigDecimal money;
-
-    @Schema(description = "设备序列号")
-    private String devSn;
-
-    @Schema(description = "设备注册号")
-    private String devRegistrationNo;
-
-    @Schema(description = "卡状态：0 正常，1挂失，2失效")
-    private String status;
-
     @Schema(description = "土地面积")
     private BigDecimal landArea;
 

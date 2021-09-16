@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hnly.provincial.comm.utils.PageWhere;
-import com.hnly.provincial.comm.validation.Add;
 import com.hnly.provincial.comm.validation.Update;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -48,13 +47,13 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "乡")
     private String townshipName;
 
-    @NotNull(message = "村名不能null", groups = {Add.class})
-    @NotEmpty(message = "村名不能为空", groups = {Add.class})
+    @NotNull(message = "村名不能null")
+    @NotEmpty(message = "村名不能为空")
     @Schema(description = "村")
     private String name;
 
-    @NotNull(message = "行政区划不能null", groups = {Add.class})
-    @NotEmpty(message = "行政区划不能为空", groups = {Add.class})
+    @NotNull(message = "行政区划不能null")
+    @NotEmpty(message = "行政区划不能为空")
     @Schema(description = "行政区划")
     private String code;
 
@@ -65,32 +64,14 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "手机号(隐藏)")
     private String phoneHidden;
 
-    @NotNull(message = "身份证号不能null", groups = {Add.class})
-    @NotEmpty(message = "身份证号不能为空", groups = {Add.class})
+    @NotNull(message = "身份证号不能null")
+    @NotEmpty(message = "身份证号不能为空")
     @Pattern(regexp = "^(\\d{6})(18|19|20)?(\\d{2})([01]\\d)([0123]\\d)(\\d{3})(\\d|X|x)?$", message = "身份证号输入错误")
     @Schema(description = "身份证号(显示)")
     private String idCard;
 
     @Schema(description = "身份证(隐藏)")
     private String idCardHidden;
-
-    @Schema(description = "农户编号")
-    private String userRegistrationNo;
-
-    @Schema(description = "非标准设备 ic卡号")
-    private String icCode;
-
-    @Schema(description = "余额")
-    private BigDecimal money;
-
-    @Schema(description = "设备序列号")
-    private String devSn;
-
-    @Schema(description = "设备注册号")
-    private String devRegistrationNo;
-
-    @Schema(description = "卡状态：0 正常，1挂失，2失效")
-    private String status;
 
     @Schema(description = "状态名字")
     private String statusName;
@@ -104,15 +85,4 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "修改时间")
     private Date updateTime;
 
-    public String getStatusName() {
-        if (status.equals("0")){
-            return "正常";
-        }else if (status.equals("1")){
-            return "挂失";
-        }else if (status.equals("2")){
-            return "失效";
-        }else {
-            return "状态错误";
-        }
-    }
 }

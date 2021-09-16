@@ -35,6 +35,9 @@ public enum ResultEnum {
     IC_EXIST(40019, "IC已存在"),
     GETUSERREGISTRATIONNO_EXIST(40020, "该农户编号已存在"),
     DEVSN_EXIST(40021, "该设备序列号已存在"),
+    BIGDECIMAL2_EXIST(40022, "必须为小数模式(且整数位最多两位,小数最多两位)"),
+    BIGDECIMAL1_EXIST(40023, "必须为小数模式(且整数位最多一位,小数最多两位)"),
+    BIGDECIMAL_EXIST(40024, "电价必须为小数模式(且整数位最多四位,小数不做限制)"),
 
     ;
     /**
@@ -59,4 +62,4 @@ public enum ResultEnum {
     public String getMsg() {
         return msg;
     }
-    }
+}

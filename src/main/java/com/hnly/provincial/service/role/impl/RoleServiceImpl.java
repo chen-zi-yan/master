@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public boolean add(RoleVO roleVO) {
+        roleVO.setCreateTime(new Date());
         Role role = Conversion.changeOne(roleVO, Role.class);
         baseMapper.insert(role);
         return true;
@@ -45,6 +47,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public boolean updateData(RoleVO roleVO) {
+        roleVO.setUpdateTime(new Date());
         Role role = Conversion.changeOne(roleVO, Role.class);
         baseMapper.updateById(role);
         return true;

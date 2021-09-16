@@ -54,25 +54,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean add(DeviceVO deviceVO) {
-        checkCodeAndDevSn(deviceVO.getCode(), deviceVO.getDevSn());
+        checkCodeAndDevSn(deviceVO.getId(), deviceVO.getCode(), deviceVO.getDevSn());
         deviceVO.setCreateTime(new Date());
         Device device = Conversion.changeOne(deviceVO, Device.class);
         baseMapper.insert(device);
         return true;
-    }
-
-    /**
-     * 校验设备序列号否已经存在于该区域规划内,不存在则通过
-     *
-     * @param code  区域规划
-     * @param devSn 设备序列号
-     * @throws MyException 自定义异常
-     */
-    private void checkCodeAndDevSn(String code, String devSn) throws MyException {
-        int count = lambdaQuery().eq(Device::getCode, code).eq(Device::getDevSn, devSn).count();
-        if (count != 0) {
-            throw new MyException(ResultEnum.DEVSN_EXIST);
-        }
     }
 
     @Override
@@ -83,7 +69,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public boolean updateData(DeviceVO deviceVO) {
-        checkCodeAndDevSnDivideId(deviceVO.getId(), deviceVO.getCode(), deviceVO.getDevSn());
+        checkCodeAndDevSn(deviceVO.getId(), deviceVO.getCode(), deviceVO.getDevSn());
         deviceVO.setUpdateTime(new Date());
         Device device = Conversion.changeOne(deviceVO, Device.class);
         baseMapper.updateById(device);
@@ -96,12 +82,12 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
      * @param id    id
      * @param code  区域规划
      * @param devSn 设备序列号
-     * @throws MyException 自定义异常
+     * @throws MyException 自定义异常抛出该设备序列号已存在
      */
-    private void checkCodeAndDevSnDivideId(Long id, String code, String devSn) throws MyException {
+    private void checkCodeAndDevSn(Long id, String code, String devSn) throws MyException {
         int count = lambdaQuery().eq(Device::getCode, code)
                 .eq(Device::getDevSn, devSn)
-                .ne(Device::getId, id).count();
+                .ne(id != null, Device::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.DEVSN_EXIST);
         }

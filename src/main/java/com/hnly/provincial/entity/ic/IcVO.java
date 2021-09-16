@@ -35,6 +35,8 @@ public class IcVO extends PageWhere<Ic> implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @NotNull(message = "ic卡号不能为null")
+    @NotEmpty(message = "ic卡号不能为空")
     @Schema(description = "农户id")
     private Long farmerId;
 

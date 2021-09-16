@@ -10,8 +10,10 @@ import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.farmer.FarmerMapper;
 import com.hnly.provincial.entity.farmer.Farmer;
 import com.hnly.provincial.entity.farmer.FarmerVO;
+import com.hnly.provincial.entity.ic.Ic;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.farmer.IFarmerService;
+import com.hnly.provincial.service.ic.IIcService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,9 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
 
     @Resource
     private IAreaService iAreaService;
+
+    @Resource
+    private IIcService icService;
 
     @Override
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
@@ -60,7 +65,6 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
 
     @Override
     public boolean add(FarmerVO farmerVO) {
-        //身份证号不能存在相同的
         checkIdCard(farmerVO.getIdCard(), farmerVO.getId());
         farmerVO.setCreateTime(new Date());
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);
@@ -70,13 +74,26 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
 
     @Override
     public boolean delete(Long id) {
+        checkFarmerId(id);
         baseMapper.deleteById(id);
         return true;
     }
 
+    /**
+     * 校验该用户是否有ic卡
+     *
+     * @param id id
+     * @throws MyException 异常抛出该用户持有ic卡
+     */
+    private void checkFarmerId(Long id) throws MyException {
+        int count = icService.lambdaQuery().eq(Ic::getFarmerId, id).count();
+        if (count != 0){
+            throw new MyException(ResultEnum.HOLDICCODE_EXIST);
+        }
+    }
+
     @Override
     public boolean updateData(FarmerVO farmerVO) {
-        //校验身份证号更新
         checkIdCard(farmerVO.getIdCard(), farmerVO.getId());
         farmerVO.setUpdateTime(new Date());
         Farmer farmer = Conversion.changeOne(farmerVO, Farmer.class);

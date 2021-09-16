@@ -1,5 +1,6 @@
 package com.hnly.provincial.service.role.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.entity.role.Role;
@@ -26,7 +27,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public TableDataUtils<List<RoleVO>> findListByPage(RoleVO roleVO) {
-        Page<Role> page = lambdaQuery().page(roleVO.page());
+        Page<Role> page = lambdaQuery()
+                .likeRight(StringUtils.isEmpty(roleVO.getRoleName()),Role::getRoleName,roleVO.getRoleName())
+                .page(roleVO.page());
         List<RoleVO> roleVOs = Conversion.changeList(page.getRecords(), RoleVO.class);
         return TableDataUtils.success(page.getTotal(), roleVOs);
     }

@@ -79,7 +79,7 @@ public class LadderWaterPriceServiceImpl extends ServiceImpl<LadderWaterPriceMap
         boolean firstOrderWarterPrice = String.valueOf(ladderWaterPriceVO.getFirstOrderWarterPrice()).matches(reg2);
         boolean secondOrderWarterPrice = String.valueOf(ladderWaterPriceVO.getSecondOrderWarterPrice()).matches(reg2);
         boolean thirdOrderWarterPrice = String.valueOf(ladderWaterPriceVO.getThirdOrderWarterPrice()).matches(reg2);
-        boolean electrovalence = String.valueOf(ladderWaterPriceVO.getElectrovalence()).matches(reg2);
+        boolean electrovalence = String.valueOf(ladderWaterPriceVO.getElectrovalence()).matches(reg);
         if (!firstMultiple || !secondMultiple || !thirdMultiple) {
             throw new MyException(ResultEnum.BIGDECIMAL1_EXIST);
         }

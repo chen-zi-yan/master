@@ -37,7 +37,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         checkCode(area.getCode());
         //验证是否存在上级
         checkSubordinate(area.getFatherCode());
-        Area one = lambdaQuery().eq(Area::getCode, area.getFatherCode()).one();
+        Area one = lambdaQuery().eq(Area::getCode, area.getFatherCode()).last("limit 1").one();
         if (one.getStatus() == null) {
             area.setStatus("0");
         } else {
@@ -52,7 +52,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     @Override
     public boolean deleteAreaById(Long id) {
         Area area = baseMapper.selectById(id);
-        Integer count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
+        int count = lambdaQuery().eq(Area::getFatherCode, area.getCode()).count();
         if (count <= 0) {
             baseMapper.deleteById(id);
             return true;
@@ -112,7 +112,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
      * @param code 区域码
      */
     public void checkCode(String code) {
-        Integer count = lambdaQuery().eq(Area::getCode, code).count();
+        int count = lambdaQuery().eq(Area::getCode, code).count();
         if (count != 0) {
             throw new MyException(ResultEnum.CODE_EXIST);
         }
@@ -124,7 +124,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
      * @param code 区域码
      */
     public void checkSuperior(String code) {
-        Integer count = lambdaQuery().eq(Area::getFatherCode, code).count();
+        int count = lambdaQuery().eq(Area::getFatherCode, code).count();
         if (count != 0) {
             throw new MyException(ResultEnum.CODE_SUBORDINATE_EXIST);
         }
@@ -136,7 +136,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
      * @param fatherCode 上级行政区划
      */
     public void checkSubordinate(String fatherCode) {
-        Integer count = lambdaQuery().eq(Area::getCode, fatherCode).count();
+        int count = lambdaQuery().eq(Area::getCode, fatherCode).count();
         if (count == 0) {
             throw new MyException(ResultEnum.CODE_SUPERIOR_EXIST);
         }

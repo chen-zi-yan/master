@@ -15,5 +15,6 @@ import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
  */
 public interface RechargeRecordsMapper extends BaseMapper<RechargeRecords> {
 
-    IPage<RechargeRecordsDTO> selectData();
+    IPage<RechargeRecordsDTO> selectData(String code, String name, String icCode);
+
 }

@@ -4,37 +4,39 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.rechargerecords.RechargeRecords">
-        <id column="id" property="id" />
-        <result column="order_no" property="orderNo" />
-        <result column="money" property="money" />
-        <result column="ic_code" property="icCode" />
-        <result column="dev_sn" property="devSn" />
-        <result column="dev_registration_no" property="devRegistrationNo" />
-        <result column="create_time" property="createTime" />
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="money" property="money"/>
+        <result column="ic_code" property="icCode"/>
+        <result column="dev_sn" property="devSn"/>
+        <result column="dev_registration_no" property="devRegistrationNo"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, order_no, money, ic_code, dev_sn, dev_registration_no, create_time
+        id
+        , order_no, money, ic_code, dev_sn, dev_registration_no, create_time
     </sql>
 
     <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO">
         select d.code,f.name,r.dev_registration_no as devRegistrationNo,r.money,r.ic_code as icCode,r.dev_sn as devSn
-            from t_recharge_records r
-            left join t_device d on r.dev_sn = d.dev_sn and r.dev_registration_no = d.dev_registration_no and d.type = 1
-            left join t_ic i on r.ic_code = i.ic_code
-            left join t_farmer f on f.id = i.farmer_id
-            <where>
-                <if test="code != null">
-                    and d.code = #{code},
-                </if>
-                <if test="name != null">
-                    and f.name = #{name},
-                </if>
-                <if test="icCode != null">
-                    and r.icCode = #{icCode},
-                </if>
-            </where>;
+        from t_recharge_records r
+        left join t_device d on r.dev_sn = d.dev_sn and r.dev_registration_no = d.dev_registration_no and d.type = 1
+        left join t_ic i on r.ic_code = i.ic_code
+        left join t_farmer f on f.id = i.farmer_id
+        <where>
+            <if test="code != null">
+                and d.code like "#{code}%",
+            </if>
+            <if test="name != null">
+                and f.name = "#{name}%",
+            </if>
+            <if test="icCode != null">
+                and r.icCode = "#{icCode}%",
+            </if>
+        </where>
+        ;
     </select>
 
 </mapper>

@@ -2,12 +2,15 @@ package com.hnly.provincial.controller.rechargerecords;
 
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
 import com.hnly.provincial.service.rechargerecords.IRechargeRecordsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,8 +34,8 @@ public class RechargeRecordsController {
 
     @Operation(summary = "查询充值记录分页数据")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<RechargeRecordsVO>>> findListByPage(RechargeRecordsVO rechargeRecordsVO) {
-        return JsonBean.success(rechargeRecordsService.findListByPage(rechargeRecordsVO));
+    public JsonBean<TableDataUtils<List<RechargeRecordsVO>>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO) {
+        return JsonBean.success(rechargeRecordsService.findListByPage(rechargeRecordsDTO));
     }
 
 }

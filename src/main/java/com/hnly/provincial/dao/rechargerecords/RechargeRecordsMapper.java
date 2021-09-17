@@ -1,11 +1,9 @@
 package com.hnly.provincial.dao.rechargerecords;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecords;
-import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
-
-import java.util.List;
+import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
 
 /**
  * <p>
@@ -17,5 +15,5 @@ import java.util.List;
  */
 public interface RechargeRecordsMapper extends BaseMapper<RechargeRecords> {
 
-    TableDataUtils<List<RechargeRecordsVO>> selectData(String devSn, String devRegistrationNo);
+    IPage<RechargeRecordsDTO> selectData();
 }

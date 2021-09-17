@@ -1,10 +1,12 @@
 package com.hnly.provincial.service.rechargerecords.impl;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.rechargerecords.RechargeRecordsMapper;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecords;
+import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.rechargerecords.IRechargeRecordsService;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -31,19 +34,23 @@ public class RechargeRecordsServiceImpl extends ServiceImpl<RechargeRecordsMappe
     private IAreaService iAreaService;
 
     @Override
-    public TableDataUtils<List<RechargeRecordsVO>> findListByPage(RechargeRecordsVO rechargeRecordsVO) {
+    public TableDataUtils<List<RechargeRecordsVO>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO) {
 
-        rechargeRecordsMapper.selectData(rechargeRecordsVO.getDevSn(), rechargeRecordsVO.getDevRegistrationNo());
+        IPage<RechargeRecordsDTO> rechargeRecordsDTOIPage =
+                rechargeRecordsMapper.selectData();
 
+        List<RechargeRecordsDTO> RechargeRecords = Conversion.changeList(rechargeRecordsDTOIPage.getRecords(), RechargeRecordsDTO.class);
+        for (RechargeRecordsDTO dto : RechargeRecords) {
+            Map<String, String> allName = iAreaService.getAllAreaName(dto.getCode());
+            dto.setName(allName.get("cun"));
+            dto.setTownshipName(allName.get("xiang"));
+            dto.setCountyName(allName.get("xian"));
+            dto.setCityName(allName.get("shi"));
+        }
 
-
-
-        Page<RechargeRecords> page = lambdaQuery().eq(RechargeRecords::getDevSn, rechargeRecordsVO.getDevSn())
-                .page(rechargeRecordsVO.page());
-
-
-//        return TableDataUtils.success(, maps);
+//        return TableDataUtils.success(RechargeRecords.getTotal(), RechargeRecords);
         return null;
     }
+
 
 }

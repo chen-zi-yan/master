@@ -1,14 +1,17 @@
 package com.hnly.provincial.entity.rechargerecords;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hnly.provincial.comm.utils.PageWhere;
-import com.hnly.provincial.entity.device.DeviceVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -27,52 +30,26 @@ public class RechargeRecordsVO extends PageWhere<RechargeRecords> implements Ser
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "市")
-    private String cityName;
+    @Schema(description = "主键")
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
-    @Schema(description = "县")
-    private String countyName;
+    @Schema(description = "订单号")
+    private String orderNo;
 
-    @Schema(description = "乡")
-    private String townshipName;
+    @Schema(description = "充值金额")
+    private BigDecimal money;
 
-    @Schema(description = "村")
-    private String villageName;
+    @Schema(description = "ic卡号")
+    private String icCode;
 
-    @Schema(description = "区域码")
-    private String code;
-
-    @Schema(description = "名字")
-    private String name;
-
-    @Schema(description = "设备号")
+    @Schema(description = "设备序列号")
     private String devSn;
 
     @Schema(description = "设备注册号")
     private String devRegistrationNo;
 
-    @Schema(description = "充值金额")
-    private String money;
-
-    @Schema(description = "卡状态")
-    private String icStatus;
-
-    @Schema(description = "卡状态名称")
-    private String icStatusName;
-
-    public String getStatusName() {
-        switch (icStatus) {
-            case "0":
-                return "正常";
-            case "1":
-                return "挂失";
-            case "2":
-                return "失效";
-            default:
-                return "状态错误";
-        }
-    }
-
-    private DeviceVO deviceVO;
+    @Schema(description = "创建时间")
+    private Date createTime;
 
 }

@@ -61,4 +61,10 @@ public interface IMenuService extends IService<Menu> {
      * @return 菜单集合
      */
     List<MenuVO> getMenuAll();
+
+    /**
+     * 获取登陆用户的菜单
+     * @return 用户菜单
+     */
+    List<MenuVO> getUserMenu();
 }

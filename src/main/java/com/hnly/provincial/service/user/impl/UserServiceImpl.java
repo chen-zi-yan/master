@@ -23,11 +23,10 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     @Override
-    public boolean login(String userName, String password) {
-        User one = lambdaQuery().eq(User::getUsername, userName)
+    public User login(String userName, String password) {
+        return lambdaQuery().eq(User::getUsername, userName)
                 .eq(User::getPassword, Md5Utils.getMD5(password))
                 .one();
-        return one != null;
     }
 
     @Override

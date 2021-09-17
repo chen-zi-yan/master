@@ -14,7 +14,7 @@ import com.hnly.provincial.entity.user.UserVO;
  */
 public interface IUserService extends IService<User> {
 
-    boolean login(String userName, String password);
+    User login(String userName, String password);
 
     /**
      * 添加系统用户

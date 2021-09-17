@@ -19,13 +19,15 @@ import java.util.Date;
 @Slf4j
 public class TokenUtil {
 
-    private static final long EXPIRE_TIME = 60L * 60L * 1000L;
+    public static final long EXPIRE_TIME = 60L * 60L * 1000L;
     //密钥盐
     private static final String TOKEN_SECRET = "hnly";
 
     private static final String AUTH = "auth0";
 
     private static final String USERNAME = "userName";
+    private static final String ID = "id";
+    private static final String ROLEID = "roleId";
 
     /**
      * 签名生成
@@ -38,6 +40,8 @@ public class TokenUtil {
         return JWT.create()
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, user.getUsername())
+                .withClaim(ID, user.getId())
+                .withClaim(ROLEID,user.getQuanxian())
                 .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
     }
@@ -74,7 +78,24 @@ public class TokenUtil {
         return JWT.create()
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())
+                .withClaim(ID, jwt.getClaim(ID).asLong())
+                .withClaim(ROLEID,jwt.getClaim(ROLEID).asLong())
                 .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
+    }
+
+    /**
+     * 获取token中的用户id
+     *
+     * @param token token
+     * @return 用户id
+     */
+    public static User getTokenUserId(String token) {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
+        DecodedJWT jwt = verifier.verify(token);
+        User user = new User();
+        user.setId(jwt.getClaim(ID).asLong());
+        user.setQuanxian(jwt.getClaim(ROLEID).asLong());
+        return user;
     }
 }

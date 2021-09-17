@@ -6,6 +6,7 @@ import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.comm.utils.TokenUtil;
 import com.hnly.provincial.comm.validation.Add;
 import com.hnly.provincial.comm.validation.Update;
+import com.hnly.provincial.entity.user.SessionVO;
 import com.hnly.provincial.entity.user.User;
 import com.hnly.provincial.entity.user.UserVO;
 import com.hnly.provincial.service.user.IUserService;
@@ -50,12 +51,14 @@ public class UserController {
             }
     )
     @GetMapping("login")
-    public JsonBean<String> login(String userName, String password) {
-        if (userService.login(userName, password)) {
-            User user = new User();
-            user.setUsername(userName);
-            String sign = TokenUtil.sign(user);
-            return JsonBean.success(sign);
+    public JsonBean<SessionVO> login(String userName, String password) {
+        User login = userService.login(userName, password);
+        if (login != null) {
+            String sign = TokenUtil.sign(login);
+            SessionVO vo = new SessionVO();
+            vo.setToken(sign);
+            vo.setValidPeriod(TokenUtil.EXPIRE_TIME);
+            return JsonBean.success(vo);
         }
         return JsonBean.err(ResultEnum.USER_USERNAME_PASSWORD_EXISTS);
     }

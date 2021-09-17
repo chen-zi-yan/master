@@ -36,7 +36,7 @@ public class RechargeRecordsServiceImpl extends ServiceImpl<RechargeRecordsMappe
     public TableDataUtils<List<RechargeRecordsDTO>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO) {
 
         IPage<RechargeRecordsDTO> page =
-                rechargeRecordsMapper.selectData(rechargeRecordsDTO.page(),rechargeRecordsDTO.getCode(), rechargeRecordsDTO.getName(), rechargeRecordsDTO.getIcCode());
+                rechargeRecordsMapper.selectData(rechargeRecordsDTO.page(),rechargeRecordsDTO.getCode(), rechargeRecordsDTO.getName());
         List<RechargeRecordsDTO> RechargeRecords = Conversion.changeList(page.getRecords(), RechargeRecordsDTO.class);
         for (RechargeRecordsDTO dto : RechargeRecords) {
             Map<String, String> allName = iAreaService.getAllAreaName(dto.getCode());

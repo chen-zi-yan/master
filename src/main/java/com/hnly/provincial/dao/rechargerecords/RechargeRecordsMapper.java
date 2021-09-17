@@ -15,6 +15,14 @@ import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
  */
 public interface RechargeRecordsMapper extends BaseMapper<RechargeRecords> {
 
-    IPage<RechargeRecordsDTO> selectData(IPage page, String code, String name, String icCode);
+    /**
+     * 充值记录,分页查询数据,模糊查询
+     *
+     * @param page 包含了当前页和每页显示条数
+     * @param code 区域号
+     * @param name 农户名字
+     * @return 返回RechargeRecordsDTO
+     */
+    IPage<RechargeRecordsDTO> selectData(IPage page, String code, String name);
 
 }

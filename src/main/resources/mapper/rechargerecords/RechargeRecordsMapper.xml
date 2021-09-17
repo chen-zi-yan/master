@@ -28,13 +28,10 @@
         left join t_farmer f on f.id = i.farmer_id
         <where>
             <if test="code != null and code != ''">
-                and d.code = #{code},
+                and d.code like concat(#{code},'%')
             </if>
             <if test="name != null and name != ''">
-                and f.name = #{name},
-            </if>
-            <if test="icCode != null and icCode != ''">
-                and r.icCode = #{icCode},
+                and f.name like concat(#{name},'%')
             </if>
         </where>
     </select>

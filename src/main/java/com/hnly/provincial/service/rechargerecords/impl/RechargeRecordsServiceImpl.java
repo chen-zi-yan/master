@@ -7,7 +7,6 @@ import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.rechargerecords.RechargeRecordsMapper;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecords;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
-import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.rechargerecords.IRechargeRecordsService;
 import org.springframework.stereotype.Service;
@@ -34,22 +33,19 @@ public class RechargeRecordsServiceImpl extends ServiceImpl<RechargeRecordsMappe
     private IAreaService iAreaService;
 
     @Override
-    public TableDataUtils<List<RechargeRecordsVO>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO) {
+    public TableDataUtils<List<RechargeRecordsDTO>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO) {
 
-        IPage<RechargeRecordsDTO> rechargeRecordsDTOIPage =
-                rechargeRecordsMapper.selectData(page,rechargeRecordsDTO.getCode(), rechargeRecordsDTO.getName(), rechargeRecordsDTO.getIcCode());
-
-        List<RechargeRecordsDTO> RechargeRecords = Conversion.changeList(rechargeRecordsDTOIPage.getRecords(), RechargeRecordsDTO.class);
+        IPage<RechargeRecordsDTO> page =
+                rechargeRecordsMapper.selectData(rechargeRecordsDTO.page(),rechargeRecordsDTO.getCode(), rechargeRecordsDTO.getName(), rechargeRecordsDTO.getIcCode());
+        List<RechargeRecordsDTO> RechargeRecords = Conversion.changeList(page.getRecords(), RechargeRecordsDTO.class);
         for (RechargeRecordsDTO dto : RechargeRecords) {
             Map<String, String> allName = iAreaService.getAllAreaName(dto.getCode());
-            dto.setName(allName.get("cun"));
+            dto.setVillageName(allName.get("cun"));
             dto.setTownshipName(allName.get("xiang"));
             dto.setCountyName(allName.get("xian"));
             dto.setCityName(allName.get("shi"));
         }
-
-//        return TableDataUtils.success(RechargeRecords.getTotal(), RechargeRecords);
-        return null;
+        return TableDataUtils.success(page.getTotal(), RechargeRecords);
     }
 
 

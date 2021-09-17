@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecords;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
-import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
 
 import java.util.List;
 
@@ -24,6 +23,6 @@ public interface IRechargeRecordsService extends IService<RechargeRecords> {
      * @param rechargeRecordsDTO 条件
      * @return 分页结果
      */
-    TableDataUtils<List<RechargeRecordsVO>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO);
+    TableDataUtils<List<RechargeRecordsDTO>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO);
 
 }

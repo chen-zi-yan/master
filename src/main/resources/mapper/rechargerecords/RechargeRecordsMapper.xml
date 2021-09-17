@@ -19,24 +19,24 @@
         , order_no, money, ic_code, dev_sn, dev_registration_no, create_time
     </sql>
 
-    <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO">
-        select d.code,f.name,r.dev_registration_no as devRegistrationNo,r.money,r.ic_code as icCode,r.dev_sn as devSn
+    <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO" parameterType="string">
+        select d.code as code,f.name as name,r.dev_registration_no as devRegistrationNo,r.money as money,r.ic_code as
+        icCode,r.dev_sn as devSn
         from t_recharge_records r
         left join t_device d on r.dev_sn = d.dev_sn and r.dev_registration_no = d.dev_registration_no and d.type = 1
         left join t_ic i on r.ic_code = i.ic_code
         left join t_farmer f on f.id = i.farmer_id
         <where>
-            <if test="code != null">
-                and d.code like "#{code}%",
+            <if test="code != null and code != ''">
+                and d.code = #{code},
             </if>
-            <if test="name != null">
-                and f.name = "#{name}%",
+            <if test="name != null and name != ''">
+                and f.name = #{name},
             </if>
-            <if test="icCode != null">
-                and r.icCode = "#{icCode}%",
+            <if test="icCode != null and icCode != ''">
+                and r.icCode = #{icCode},
             </if>
         </where>
-        ;
     </select>
 
 </mapper>

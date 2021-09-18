@@ -65,7 +65,7 @@ public class MenuController {
     @Operation(summary = "获取菜单")
     @GetMapping("getMenu")
     public JsonBean<List<MenuVO>> getMenu() {
-        return JsonBean.success(menuService.getMenuAll());
+        return JsonBean.success(menuService.getUserMenu());
     }
 
     @Operation(summary = "获取所有菜单")

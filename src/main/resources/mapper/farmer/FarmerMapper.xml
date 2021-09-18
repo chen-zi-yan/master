@@ -9,12 +9,6 @@
         <result column="code" property="code"/>
         <result column="phone" property="phone"/>
         <result column="id_card" property="idCard"/>
-        <result column="user_registration_no" property="userRegistrationNo"/>
-        <result column="ic_code" property="icCode"/>
-        <result column="money" property="money"/>
-        <result column="dev_sn" property="devSn"/>
-        <result column="dev_registration_no" property="devRegistrationNo"/>
-        <result column="status" property="status"/>
         <result column="land_area" property="landArea"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -22,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, code, phone, id_card, user_registration_no, ic_code, money, dev_sn, dev_registration_no, status, land_area, create_time, update_time
+        id, name, code, phone, id_card, land_area, create_time, update_time
     </sql>
 
 </mapper>

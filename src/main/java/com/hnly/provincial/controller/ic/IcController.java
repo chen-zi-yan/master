@@ -14,13 +14,13 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
-* <p>
-* 卡号表 前端控制器
-* </p>
-*
-* @author czy
-* @since 2021-09-16
-*/
+ * <p>
+ * 卡号表 前端控制器
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-16
+ */
 @Slf4j
 @Tag(name = "卡号表")
 @RestController
@@ -32,34 +32,34 @@ public class IcController {
 
     @Operation(summary = "新增卡号表")
     @PostMapping()
-    public JsonBean<String> add(@RequestBody @Validated IcVO icVO){
+    public JsonBean<String> add(@RequestBody @Validated IcVO icVO) {
         icService.add(icVO);
         return JsonBean.success();
     }
 
     @Operation(summary = "删除卡号表")
     @DeleteMapping("{id}")
-    public JsonBean<String> delete(@PathVariable("id") Long id){
+    public JsonBean<String> delete(@PathVariable("id") Long id) {
         icService.delete(id);
         return JsonBean.success();
     }
 
     @Operation(summary = "更新卡号表")
     @PutMapping()
-    public JsonBean<String> update(@RequestBody @Validated IcVO icVO){
+    public JsonBean<String> update(@RequestBody @Validated IcVO icVO) {
         icService.updateData(icVO);
         return JsonBean.success();
     }
 
     @Operation(summary = "查询卡号表分页数据")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<IcVO>>> findListByPage(IcVO icVO){
+    public JsonBean<TableDataUtils<List<IcVO>>> findListByPage(IcVO icVO) {
         return JsonBean.success(icService.findListByPage(icVO));
     }
 
     @Operation(summary = "id查询卡号表")
     @GetMapping("{id}")
-    public JsonBean<IcVO> findById(@PathVariable Long id){
+    public JsonBean<IcVO> findById(@PathVariable Long id) {
         return JsonBean.success(icService.findById(id));
     }
 }

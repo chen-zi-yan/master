@@ -83,7 +83,7 @@ public class ProjectVO extends PageWhere<Project> implements Serializable {
             return "农业局";
         } else if ("2".equals(unit)) {
             return "水利局";
-        } else  {
+        } else {
             return "发改委";
         }
     }
@@ -91,7 +91,7 @@ public class ProjectVO extends PageWhere<Project> implements Serializable {
     public String getTypeName() {
         if ("0".equals(unit)) {
             return "井灌";
-        } else  {
+        } else {
             return "渠灌";
         }
     }

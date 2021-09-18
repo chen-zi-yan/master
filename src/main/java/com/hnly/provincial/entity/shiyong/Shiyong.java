@@ -11,19 +11,19 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
-* <p>
-* 使用权证
-* </p>
-*
-* @author czy
-* @since 2021-09-14
-*/
+ * <p>
+ * 使用权证
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-14
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_shiyong")
-@Schema(name="Shiyong", description="使用权证")
-public class Shiyong  implements Serializable {
+@Schema(name = "Shiyong", description = "使用权证")
+public class Shiyong implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

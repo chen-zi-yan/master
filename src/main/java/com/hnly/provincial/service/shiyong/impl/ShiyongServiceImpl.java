@@ -73,7 +73,7 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
      */
     private void checkIdNumber(Long id, String idNumber) throws MyException {
         int count = lambdaQuery().eq(Shiyong::getIdNumber, idNumber)
-                .ne(id != null,Shiyong::getId, id).count();
+                .ne(id != null, Shiyong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.CARID_EXIST);
         }
@@ -89,7 +89,7 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
      */
     private void checkArea(Long id, String area) throws MyException {
         int count = lambdaQuery().eq(Shiyong::getArea, area)
-                .ne(id != null,Shiyong::getId, id).count();
+                .ne(id != null, Shiyong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.AREA_EXIST);
         }
@@ -105,7 +105,7 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
      */
     private void checkNumber(Long id, String number) throws MyException {
         int count = lambdaQuery().eq(Shiyong::getNumber, number)
-                .ne(id != null,Shiyong::getId, id).count();
+                .ne(id != null, Shiyong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.NUMBER_EXIST);
         }

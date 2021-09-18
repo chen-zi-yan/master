@@ -1,31 +1,31 @@
 package com.hnly.provincial.entity.ladderwaterprice;
 
-import com.hnly.provincial.comm.utils.PageWhere;
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
-* <p>
-* 阶梯水价表
-* </p>
-*
-* @author czy
-* @since 2021-09-16
-*/
+ * <p>
+ * 阶梯水价表
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-16
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_ladder_water_price")
-@Schema(name="LadderWaterPrice", description="阶梯水价表")
-public class LadderWaterPrice  implements Serializable {
+@Schema(name = "LadderWaterPrice", description = "阶梯水价表")
+public class LadderWaterPrice implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

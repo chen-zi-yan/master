@@ -16,18 +16,18 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
-* <p>
-* 卡号表
-* </p>
-*
-* @author czy
-* @since 2021-09-16
-*/
+ * <p>
+ * 卡号表
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-16
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_ic")
-@Schema(name="IcVO", description="卡号表")
+@Schema(name = "IcVO", description = "卡号表")
 public class IcVO extends PageWhere<Ic> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -88,7 +88,7 @@ public class IcVO extends PageWhere<Ic> implements Serializable {
     }
 
     public String getTypeName() {
-        switch (type){
+        switch (type) {
             case "0":
                 return "标椎ic卡";
             case "1":

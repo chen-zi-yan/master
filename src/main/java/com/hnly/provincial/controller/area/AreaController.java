@@ -90,7 +90,7 @@ public class AreaController {
 
     @Operation(summary = "获取级联数据")
     @GetMapping("{code}")
-    public JsonBean<List<CascadeVO>> getList(@PathVariable("code") String code){
+    public JsonBean<List<CascadeVO>> getList(@PathVariable("code") String code) {
         return JsonBean.success(iAreaServicel.getList(code));
     }
 }

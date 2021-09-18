@@ -62,13 +62,15 @@ public interface IAreaService extends IService<Area> {
 
     /**
      * 行政区划获取上级所有的名字
+     *
      * @return 上级所有名字
      */
     Map<String, String> getAllAreaName(String code);
 
     /**
      * 获取级联数据
-     * @param code  行政区划
+     *
+     * @param code 行政区划
      * @return 级联数据
      */
     List<CascadeVO> getList(String code);

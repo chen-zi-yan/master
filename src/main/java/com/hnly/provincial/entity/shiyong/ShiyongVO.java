@@ -14,18 +14,18 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
-* <p>
-* 使用权证
-* </p>
-*
-* @author czy
-* @since 2021-09-14
-*/
+ * <p>
+ * 使用权证
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-14
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_shiyong")
-@Schema(name="ShiyongVO", description="使用权证")
+@Schema(name = "ShiyongVO", description = "使用权证")
 public class ShiyongVO extends PageWhere<Shiyong> implements Serializable {
 
     private static final long serialVersionUID = 1L;

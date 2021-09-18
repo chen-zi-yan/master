@@ -13,19 +13,19 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
-* <p>
-* 卡号表
-* </p>
-*
-* @author czy
-* @since 2021-09-16
-*/
+ * <p>
+ * 卡号表
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-16
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_ic")
-@Schema(name="Ic", description="卡号表")
-public class Ic  implements Serializable {
+@Schema(name = "Ic", description = "卡号表")
+public class Ic implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

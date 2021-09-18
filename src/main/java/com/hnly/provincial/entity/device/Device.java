@@ -12,19 +12,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
-* <p>
-* 设备信息表
-* </p>
-*
-* @author czy
-* @since 2021-09-13
-*/
+ * <p>
+ * 设备信息表
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-13
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_device")
-@Schema(name="Device", description="设备信息表")
-public class Device  implements Serializable {
+@Schema(name = "Device", description = "设备信息表")
+public class Device implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

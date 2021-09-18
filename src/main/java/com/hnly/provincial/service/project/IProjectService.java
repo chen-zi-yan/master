@@ -28,7 +28,7 @@ public interface IProjectService extends IService<Project> {
     /**
      * 添加项目管理
      *
-     * @param projectVO   项目管理对象
+     * @param projectVO 项目管理对象
      * @return false 失败   true 成功
      */
     boolean add(ProjectVO projectVO);
@@ -44,7 +44,7 @@ public interface IProjectService extends IService<Project> {
     /**
      * 修改项目管理
      *
-     * @param projectVO  项目管理对象
+     * @param projectVO 项目管理对象
      * @return false 失败   true 成功
      */
     boolean updateData(ProjectVO projectVO);
@@ -59,16 +59,18 @@ public interface IProjectService extends IService<Project> {
 
 
     /**
-     *  添加时校验项目是否已经存在
-     * @param projectVO  项目管理对象
-     * @return  存在返回true </br>  不存在返回false
+     * 添加时校验项目是否已经存在
+     *
+     * @param projectVO 项目管理对象
+     * @return 存在返回true </br>  不存在返回false
      */
-    boolean  addCheckProject(ProjectVO projectVO);
+    boolean addCheckProject(ProjectVO projectVO);
 
     /**
-     *  更新时校验项目是否已经存在
-     * @param projectVO  项目管理对象
-     * @return  存在返回true </br>  不存在返回false
+     * 更新时校验项目是否已经存在
+     *
+     * @param projectVO 项目管理对象
+     * @return 存在返回true </br>  不存在返回false
      */
-    boolean  updateCheck(ProjectVO projectVO);
+    boolean updateCheck(ProjectVO projectVO);
 }

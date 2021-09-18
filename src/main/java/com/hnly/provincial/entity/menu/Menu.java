@@ -13,19 +13,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
-* <p>
-* 菜单功能表
-* </p>
-*
-* @author maqh
-* @since 2021-09-09
-*/
+ * <p>
+ * 菜单功能表
+ * </p>
+ *
+ * @author maqh
+ * @since 2021-09-09
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_menu")
-@Schema(name="Menu", description="菜单功能表")
-public class Menu  implements Serializable {
+@Schema(name = "Menu", description = "菜单功能表")
+public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

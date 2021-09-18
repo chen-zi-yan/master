@@ -12,17 +12,17 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
-* <p>
-* 角色菜单表
-* </p>
-*
-* @author maqh
-* @since 2021-09-17
-*/
+ * <p>
+ * 角色菜单表
+ * </p>
+ *
+ * @author maqh
+ * @since 2021-09-17
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@Schema(name="RoleMenuVO", description="角色菜单表VO")
+@Schema(name = "RoleMenuVO", description = "角色菜单表VO")
 public class RoleMenuVO extends PageWhere<RoleMenu> implements Serializable {
 
     private static final long serialVersionUID = 1L;

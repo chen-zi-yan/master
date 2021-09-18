@@ -14,19 +14,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
-* <p>
-* 项目管理
-* </p>
-*
-* @author ymd
-* @since 2021-09-08
-*/
+ * <p>
+ * 项目管理
+ * </p>
+ *
+ * @author ymd
+ * @since 2021-09-08
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_project")
-@Schema(name="Project", description="项目管理")
-public class Project  implements Serializable {
+@Schema(name = "Project", description = "项目管理")
+public class Project implements Serializable {
 
 
     @TableId(value = "id", type = IdType.AUTO)

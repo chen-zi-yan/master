@@ -14,18 +14,18 @@ import java.util.Date;
 import java.util.List;
 
 /**
-* <p>
-* 菜单功能表
-* </p>
-*
-* @author maqh
-* @since 2021-09-09
-*/
+ * <p>
+ * 菜单功能表
+ * </p>
+ *
+ * @author maqh
+ * @since 2021-09-09
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_menu")
-@Schema(name="MenuVO", description="菜单功能表")
+@Schema(name = "MenuVO", description = "菜单功能表")
 public class MenuVO extends PageWhere<Menu> implements Serializable {
 
     private static final long serialVersionUID = 1L;

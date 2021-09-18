@@ -16,25 +16,25 @@ import java.util.Date;
 import java.util.List;
 
 /**
-* <p>
-* 卡号表 服务实现类
-* </p>
-*
-* @author czy
-* @since 2021-09-16
-*/
+ * <p>
+ * 卡号表 服务实现类
+ * </p>
+ *
+ * @author czy
+ * @since 2021-09-16
+ */
 @Service
 public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcService {
 
     @Override
-    public TableDataUtils<List<IcVO>> findListByPage(IcVO icVO){
+    public TableDataUtils<List<IcVO>> findListByPage(IcVO icVO) {
         Page<Ic> page = lambdaQuery().page(icVO.page());
         List<IcVO> icVOs = Conversion.changeList(page.getRecords(), IcVO.class);
         return TableDataUtils.success(page.getTotal(), icVOs);
     }
 
     @Override
-    public boolean add(IcVO icVO){
+    public boolean add(IcVO icVO) {
         checkIcCode(icVO.getId(), icVO.getIcCode());
         icVO.setCreateTime(new Date());
         Ic ic = Conversion.changeOne(icVO, Ic.class);
@@ -43,13 +43,13 @@ public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcServi
     }
 
     @Override
-    public boolean delete(Long id){
+    public boolean delete(Long id) {
         baseMapper.deleteById(id);
         return true;
     }
 
     @Override
-    public boolean updateData(IcVO icVO){
+    public boolean updateData(IcVO icVO) {
         checkIcCode(icVO.getId(), icVO.getIcCode());
         icVO.setUpdateTime(new Date());
         Ic ic = Conversion.changeOne(icVO, Ic.class);
@@ -58,22 +58,22 @@ public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcServi
     }
 
     /**
-     *校验ic卡号是否唯一
+     * 校验ic卡号是否唯一
      *
-     * @param id id
+     * @param id     id
      * @param icCode ic卡号
      * @throws MyException 异常抛出ic卡已存在
      */
-    private void checkIcCode(Long id, String icCode) throws MyException{
+    private void checkIcCode(Long id, String icCode) throws MyException {
         int count = lambdaQuery().eq(Ic::getIcCode, icCode)
                 .ne(Ic::getId, id).count();
-        if (count != 0){
+        if (count != 0) {
             throw new MyException(ResultEnum.IC_EXIST);
         }
     }
 
     @Override
-    public IcVO findById(Long id){
+    public IcVO findById(Long id) {
         Ic ic = baseMapper.selectById(id);
         return Conversion.changeOne(ic, IcVO.class);
     }

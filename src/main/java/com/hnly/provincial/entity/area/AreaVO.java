@@ -53,11 +53,11 @@ public class AreaVO extends PageWhere<Area> implements Serializable {
     @Schema(description = "0 市 1 县区 2 乡镇 3 村庄")
     private String status;
 
-    public String getLabel(){
+    public String getLabel() {
         return name;
     }
 
-    public String getValue(){
+    public String getValue() {
         return code;
     }
 

@@ -18,10 +18,12 @@ import java.util.Date;
  */
 @Slf4j
 public class TokenUtil {
+    private TokenUtil() {
+    }
 
     public static final long EXPIRE_TIME = 60L * 60L * 1000L;
-    //密钥盐
-    private static final String TOKEN_SECRET = "hnly";
+    /** 密钥盐 */
+    private static final String TOKEN_SECRET = "nongyeshuijiazhonghegaige";
 
     private static final String AUTH = "auth0";
 
@@ -41,7 +43,7 @@ public class TokenUtil {
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, user.getUsername())
                 .withClaim(ID, user.getId())
-                .withClaim(ROLEID,user.getQuanxian())
+                .withClaim(ROLEID, user.getQuanxian())
                 .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
     }
@@ -79,7 +81,7 @@ public class TokenUtil {
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())
                 .withClaim(ID, jwt.getClaim(ID).asLong())
-                .withClaim(ROLEID,jwt.getClaim(ROLEID).asLong())
+                .withClaim(ROLEID, jwt.getClaim(ROLEID).asLong())
                 .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
     }
@@ -92,9 +94,10 @@ public class TokenUtil {
      */
     public static User getTokenUserId(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-        DecodedJWT jwt = verifier.verify(token);
+        DecodedJWT jwt = verifier.verify(token.replace("Bearer ", ""));
         User user = new User();
         user.setId(jwt.getClaim(ID).asLong());
+        user.setUsername(jwt.getClaim(USERNAME).asString());
         user.setQuanxian(jwt.getClaim(ROLEID).asLong());
         return user;
     }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnly.provincial.dao.rechargerecords.RechargeRecordsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.rechargerecords.RechargeRecords">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="money" property="money"/>
+        <result column="ic_code" property="icCode"/>
+        <result column="dev_sn" property="devSn"/>
+        <result column="dev_registration_no" property="devRegistrationNo"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , order_no, money, ic_code, dev_sn, dev_registration_no, create_time
+    </sql>
+
+    <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO" parameterType="string">
+        select d.code as code,f.name as name,r.dev_registration_no as devRegistrationNo,r.money as money,r.ic_code as
+        icCode,r.dev_sn as devSn
+        from t_recharge_records r
+        left join t_device d on r.dev_sn = d.dev_sn and r.dev_registration_no = d.dev_registration_no and d.type = 1
+        left join t_ic i on r.ic_code = i.ic_code
+        left join t_farmer f on f.id = i.farmer_id
+        <where>
+            <if test="code != null and code != ''">
+                and d.code like concat(#{code},'%')
+            </if>
+            <if test="name != null and name != ''">
+                and f.name like concat(#{name},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

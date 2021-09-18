@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnly.provincial.dao.ladderwaterprice.LadderWaterPriceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.ladderwaterprice.LadderWaterPrice">
+        <id column="id" property="id" />
+        <result column="area" property="area" />
+        <result column="water_price" property="waterPrice" />
+        <result column="first_multiple" property="firstMultiple" />
+        <result column="second_multiple" property="secondMultiple" />
+        <result column="third_multiple" property="thirdMultiple" />
+        <result column="first_order_warter_price" property="firstOrderWarterPrice" />
+        <result column="second_order_warter_price" property="secondOrderWarterPrice" />
+        <result column="third_order_warter_price" property="thirdOrderWarterPrice" />
+        <result column="electrovalence" property="electrovalence" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, area, water_price, first_multiple, second_multiple, third_multiple, first_order_warter_price, second_order_warter_price, third_order_warter_price, electrovalence, create_time, update_time
+    </sql>
+
+</mapper>

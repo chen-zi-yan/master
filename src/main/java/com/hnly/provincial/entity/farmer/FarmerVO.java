@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -76,6 +77,7 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "状态名字")
     private String statusName;
 
+    @Digits(integer = 8, fraction = 2)
     @Schema(description = "土地面积")
     private BigDecimal landArea;
 

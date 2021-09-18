@@ -1,0 +1,63 @@
+package com.hnly.provincial.entity.ic;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+/**
+* <p>
+* 卡号表
+* </p>
+*
+* @author czy
+* @since 2021-09-16
+*/
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("t_ic")
+@Schema(name="Ic", description="卡号表")
+public class Ic  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    @Schema(description = "农户id")
+    private Long farmerId;
+
+    @Schema(description = "ic卡号")
+    private String icCode;
+
+    @Schema(description = "卡内金额")
+    private BigDecimal money;
+
+    @Schema(description = "设备序列号")
+    private String devSn;
+
+    @Schema(description = "设备注册号")
+    private String devRegistrationNo;
+
+    @Schema(description = "卡状态 0 正常 1 挂失 2 失效")
+    private String status;
+
+    @Schema(description = "0 标椎ic卡 1 非标准ic卡")
+    private String type;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
+
+
+}

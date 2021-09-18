@@ -37,8 +37,8 @@ public enum ResultEnum {
     HOLDICCODE_EXIST(40021, "该用户持有ic卡,请查询后在操作"),
     GETUSERREGISTRATIONNO_EXIST(40022, "该农户编号已存在"),
     CARID_EXIST(40023, "该身份证号码或组织机构代码已经存在"),
-    AREA_EXIST(40021, "该设施所在行政区域已经存在"),
-    NUMBER_EXIST(40023, "该号码已经存在"),
+    AREA_EXIST(40024, "该设施所在行政区域已经存在"),
+    NUMBER_EXIST(40025, "该号码已经存在"),
 
 
     ;

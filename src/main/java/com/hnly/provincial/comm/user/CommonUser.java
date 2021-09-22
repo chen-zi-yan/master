@@ -115,6 +115,14 @@ public class CommonUser {
     }
 
     /**
+     * 获取请求方式
+     * @return 请求方式
+     */
+    public String getRequestMethod(){
+        return getRequest().getMethod();
+    }
+
+    /**
      * 获取用户真实ip
      *
      * @param request request

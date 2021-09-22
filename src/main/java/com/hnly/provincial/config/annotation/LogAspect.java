@@ -72,13 +72,15 @@ public class LogAspect {
             }
             userLog.setParam(params);
         }
+
         String name = point.getTarget().getClass().getName();
         userLog.setMethod(name + "." + signature.getName() + "()");
         userLog.setClientIp(commonUser.getIp());
         userLog.setUrl(commonUser.getServletPath());
-        userLog.setUseTime(time+"");
+        userLog.setUseTime(time + "");
+        userLog.setRequestMethod(commonUser.getRequestMethod());
         User user = commonUser.getUser();
-        if (user.getId() != null){
+        if (user.getId() != null) {
             userLog.setUserName(user.getUsername());
             userLog.setUserId(user.getId());
         }

@@ -14,11 +14,12 @@
         <result column="use_time" property="useTime"/>
         <result column="create_time" property="createTime"/>
         <result column="client_ip" property="clientIp"/>
+        <result column="request_method" property="requestMethod"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, user_name, content, url, method, param, use_time, create_time, client_ip
+        id, user_id, user_name, content, url, method, param, use_time, create_time, client_ip, request_method
     </sql>
 
 </mapper>

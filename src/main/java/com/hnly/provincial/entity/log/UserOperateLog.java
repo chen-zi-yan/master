@@ -59,4 +59,7 @@ public class UserOperateLog  implements Serializable {
     @Schema(description = "客户端ip")
     private String clientIp;
 
+    @Schema(description = "请求方式")
+    private String requestMethod;
+
 }

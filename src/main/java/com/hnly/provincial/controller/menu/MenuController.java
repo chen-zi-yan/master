@@ -74,6 +74,7 @@ public class MenuController {
         return JsonBean.success(menuService.getMenuAll());
     }
 
+    @Operation(summary = "获取按钮权限")
     @GetMapping("button")
     public JsonBean<List<MenuVO>> getButtonRole(){
         return JsonBean.success(menuService.getButtonRole());

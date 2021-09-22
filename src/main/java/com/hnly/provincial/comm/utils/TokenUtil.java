@@ -30,7 +30,7 @@ public class TokenUtil {
     private static final String USERNAME = "userName";
     private static final String ID = "id";
     private static final String ROLEID = "roleId";
-
+    private static final String CODE = "code";
     /**
      * 签名生成
      *
@@ -43,6 +43,7 @@ public class TokenUtil {
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, user.getUsername())
                 .withClaim(ID, user.getId())
+                .withClaim(CODE,user.getCode())
                 .withClaim(ROLEID, user.getQuanxian())
                 .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -81,6 +82,7 @@ public class TokenUtil {
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())
                 .withClaim(ID, jwt.getClaim(ID).asLong())
+                .withClaim(CODE,jwt.getClaim(CODE).asString())
                 .withClaim(ROLEID, jwt.getClaim(ROLEID).asLong())
                 .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -98,6 +100,7 @@ public class TokenUtil {
         User user = new User();
         user.setId(jwt.getClaim(ID).asLong());
         user.setUsername(jwt.getClaim(USERNAME).asString());
+        user.setCode(jwt.getClaim(CODE).asString());
         user.setQuanxian(jwt.getClaim(ROLEID).asLong());
         return user;
     }

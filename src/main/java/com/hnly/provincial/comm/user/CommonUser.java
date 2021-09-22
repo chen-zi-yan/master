@@ -20,6 +20,29 @@ public class CommonUser {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         String authorization = request.getHeader("Authorization");
-        return TokenUtil.getTokenUserId(authorization);
+        User tokenUserId = TokenUtil.getTokenUserId(authorization);
+        return initCode(tokenUserId);
+    }
+
+    /**
+     * 整理农户管辖区域
+     * @param user 用户信息
+     * @return 整理后code
+     */
+    public User initCode(User user) {
+        if (user.getCode() == null) {
+            user.setCode("41");
+        }else if (Integer.parseInt(user.getCode().substring(9,12)) > 0){
+            user.setCode(user.getCode().substring(0, 12));
+        } else if (Integer.parseInt(user.getCode().substring(6, 9)) > 0) {
+            user.setCode(user.getCode().substring(0, 9));
+        } else if (Integer.parseInt(user.getCode().substring(4, 6)) > 0) {
+            user.setCode(user.getCode().substring(0,6));
+        }else if (Integer.parseInt(user.getCode().substring(2,4)) > 0){
+            user.setCode(user.getCode().substring(0,4));
+        }else {
+            user.setCode(user.getCode().substring(0,2));
+        }
+        return user;
     }
 }

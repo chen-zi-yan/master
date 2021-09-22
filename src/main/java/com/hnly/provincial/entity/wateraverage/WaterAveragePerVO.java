@@ -36,6 +36,7 @@ public class WaterAveragePerVO extends PageWhere<WaterAveragePer> implements Ser
 
     @Schema(description = "市名称")
     private String cityName;
+    
     @Schema(description = "县名称")
     private String countyName;
 

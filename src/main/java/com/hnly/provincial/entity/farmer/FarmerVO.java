@@ -74,6 +74,9 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "身份证(隐藏)")
     private String idCardHidden;
 
+    @Schema(description = "审批状态")
+    private String status;
+
     @Schema(description = "状态名字")
     private String statusName;
 
@@ -86,5 +89,20 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
 
     @Schema(description = "修改时间")
     private Date updateTime;
+
+    public String getStatusName() {
+        switch (status) {
+            case "0":
+                return "未审批";
+            case "1":
+                return "已报送";
+            case "2":
+                return "审批通过";
+            case "3":
+                return "审批未通过";
+            default:
+                return "";
+        }
+    }
 
 }

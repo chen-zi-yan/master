@@ -47,6 +47,9 @@ public class Farmer implements Serializable {
     @Schema(description = "土地面积")
     private BigDecimal landArea;
 
+    @Schema(description = "审批状态")
+    private String status;
+
     @Schema(description = "创建时间")
     private Date createTime;
 

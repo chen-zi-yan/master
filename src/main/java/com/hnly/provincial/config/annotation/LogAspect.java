@@ -66,11 +66,11 @@ public class LogAspect {
         LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
         String[] parameterNames = u.getParameterNames(method);
         if (args != null && parameterNames != null) {
-            String params = "";
+            StringBuilder params = new StringBuilder();
             for (int i = 0; i < args.length; i++) {
-                params += parameterNames[i] + ":" + args[i] + " ";
+                params.append(parameterNames[i]).append(":").append(args[i]).append(" ");
             }
-            userLog.setParam(params);
+            userLog.setParam(params.toString());
         }
 
         String name = point.getTarget().getClass().getName();

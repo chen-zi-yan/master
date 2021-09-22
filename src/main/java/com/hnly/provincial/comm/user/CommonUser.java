@@ -16,33 +16,71 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class CommonUser {
 
+    /**
+     * 获取用户
+     *
+     * @return 用户信息
+     */
     public User getUser() {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = servletRequestAttributes.getRequest();
-        String authorization = request.getHeader("Authorization");
-        User tokenUserId = TokenUtil.getTokenUserId(authorization);
+        User tokenUserId = getTokenUser();
         return initCode(tokenUserId);
     }
 
     /**
      * 整理农户管辖区域
+     *
      * @param user 用户信息
      * @return 整理后code
      */
     public User initCode(User user) {
-        if (user.getCode() == null) {
-            user.setCode("41");
-        }else if (Integer.parseInt(user.getCode().substring(9,12)) > 0){
-            user.setCode(user.getCode().substring(0, 12));
-        } else if (Integer.parseInt(user.getCode().substring(6, 9)) > 0) {
-            user.setCode(user.getCode().substring(0, 9));
-        } else if (Integer.parseInt(user.getCode().substring(4, 6)) > 0) {
-            user.setCode(user.getCode().substring(0,6));
-        }else if (Integer.parseInt(user.getCode().substring(2,4)) > 0){
-            user.setCode(user.getCode().substring(0,4));
-        }else {
-            user.setCode(user.getCode().substring(0,2));
-        }
+        user.setCode(code(user.getCode()));
         return user;
     }
+
+    /**
+     * 整理code
+     *
+     * @param code 整理前code
+     * @return 整理后code
+     */
+    public String code(String code) {
+        String str = "";
+        if (code == null) {
+            str = "41";
+        } else if (Integer.parseInt(code.substring(9, 12)) > 0) {
+            str = code.substring(0, 12);
+        } else if (Integer.parseInt(code.substring(6, 9)) > 0) {
+            str = code.substring(0, 9);
+        } else if (Integer.parseInt(code.substring(4, 6)) > 0) {
+            str = code.substring(0, 6);
+        } else if (Integer.parseInt(code.substring(2, 4)) > 0) {
+            str = code.substring(0, 4);
+        } else {
+            str = code.substring(0, 2);
+        }
+        return str;
+    }
+
+    /**
+     * 获取token用户的行政区划
+     *
+     * @return 行政区划
+     */
+    public String getUserCode() {
+        User tokenUser = getTokenUser();
+        return code(tokenUser.getCode());
+    }
+
+    /**
+     * 获取tokenUser
+     *
+     * @return user
+     */
+    private User getTokenUser() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        String authorization = request.getHeader("Authorization");
+        return TokenUtil.getTokenUserId(authorization);
+    }
+
 }

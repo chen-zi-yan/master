@@ -6,7 +6,7 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.rechargerecords.RechargeRecordsMapper;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecords;
-import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
+import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.rechargerecords.IRechargeRecordsService;
 import org.springframework.stereotype.Service;
@@ -33,12 +33,12 @@ public class RechargeRecordsServiceImpl extends ServiceImpl<RechargeRecordsMappe
     private IAreaService iAreaService;
 
     @Override
-    public TableDataUtils<List<RechargeRecordsDTO>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO) {
+    public TableDataUtils<List<RechargeRecordsVO>> findListByPage(RechargeRecordsVO rechargeRecordsVO) {
 
-        IPage<RechargeRecordsDTO> page =
-                rechargeRecordsMapper.selectData(rechargeRecordsDTO.page(), rechargeRecordsDTO.getCode(), rechargeRecordsDTO.getName());
-        List<RechargeRecordsDTO> RechargeRecords = Conversion.changeList(page.getRecords(), RechargeRecordsDTO.class);
-        for (RechargeRecordsDTO dto : RechargeRecords) {
+        IPage<RechargeRecordsVO> page =
+                rechargeRecordsMapper.selectData(rechargeRecordsVO.page(), rechargeRecordsVO.getCode(), rechargeRecordsVO.getName());
+        List<RechargeRecordsVO> RechargeRecords = Conversion.changeList(page.getRecords(), RechargeRecordsVO.class);
+        for (RechargeRecordsVO dto : RechargeRecords) {
             Map<String, String> allName = iAreaService.getAllAreaName(dto.getCode());
             dto.setVillageName(allName.get("cun"));
             dto.setTownshipName(allName.get("xiang"));

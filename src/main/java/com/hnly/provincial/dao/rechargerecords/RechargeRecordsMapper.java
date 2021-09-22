@@ -3,7 +3,7 @@ package com.hnly.provincial.dao.rechargerecords;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hnly.provincial.entity.rechargerecords.RechargeRecords;
-import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
+import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
 
 /**
  * <p>
@@ -23,6 +23,6 @@ public interface RechargeRecordsMapper extends BaseMapper<RechargeRecords> {
      * @param name 农户名字
      * @return 返回RechargeRecordsDTO
      */
-    IPage<RechargeRecordsDTO> selectData(IPage page, String code, String name);
+    IPage<RechargeRecordsVO> selectData(IPage page, String code, String name);
 
 }

@@ -19,7 +19,8 @@
         , order_no, money, ic_code, dev_sn, dev_registration_no, create_time
     </sql>
 
-    <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO" parameterType="string">
+    <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO"
+            parameterType="string">
         select d.code as code,f.name as name,r.dev_registration_no as devRegistrationNo,r.money as money,r.ic_code as
         icCode,r.dev_sn as devSn
         from t_recharge_records r

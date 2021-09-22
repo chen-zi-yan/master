@@ -7,6 +7,7 @@ import com.hnly.provincial.service.wateraverage.IWaterAveragePerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,7 +32,7 @@ public class WaterAveragePerController {
 
     @Operation(summary = "新增亩均定额")
     @PostMapping()
-    public JsonBean<String> add(@RequestBody WaterAveragePerVO waterAveragePerVO) {
+    public JsonBean<String> add(@RequestBody @Validated WaterAveragePerVO waterAveragePerVO) {
         waterAveragePerService.add(waterAveragePerVO);
         return JsonBean.success();
     }
@@ -45,7 +46,7 @@ public class WaterAveragePerController {
 
     @Operation(summary = "更新亩均定额")
     @PutMapping()
-    public JsonBean<String> update(@RequestBody WaterAveragePerVO waterAveragePerVO) {
+    public JsonBean<String> update(@RequestBody @Validated WaterAveragePerVO waterAveragePerVO) {
         waterAveragePerService.updateData(waterAveragePerVO);
         return JsonBean.success();
     }

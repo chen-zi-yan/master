@@ -69,7 +69,7 @@ public class DeviceController {
     }
 
 
-    @Tag(name = "统计设备的数量")
+    @Tag(name = "统计")
     @Operation(summary = "统计设备的数量")
     @GetMapping("getDeviceCount")
     public JsonBean<Integer> getDeviceCount() {

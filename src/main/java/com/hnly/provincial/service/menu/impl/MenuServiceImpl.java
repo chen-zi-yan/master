@@ -77,7 +77,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     public List<MenuVO> getUserMenu() {
         User user = commonUser.getUser();
-        log.debug(user.toString());
-        return null;
+        List<MenuVO> menus = baseMapper.getUserMenu(user.getQuanxian());
+        for (MenuVO menuVO : menus) {
+            menuVO.setChildren(baseMapper.getChildren(menuVO.getKey(), user.getQuanxian()));
+        }
+        return menus;
+    }
+
+    @Override
+    public List<MenuVO> getButtonRole() {
+        User user = commonUser.getUser();
+        return baseMapper.getButton(user.getQuanxian());
     }
 }

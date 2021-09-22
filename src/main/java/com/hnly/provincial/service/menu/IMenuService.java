@@ -70,4 +70,10 @@ public interface IMenuService extends IService<Menu> {
      * @return 用户菜单
      */
     List<MenuVO> getUserMenu();
+
+    /**
+     * 获取按钮权限
+     * @return 用户按钮权限
+     */
+    List<MenuVO> getButtonRole();
 }

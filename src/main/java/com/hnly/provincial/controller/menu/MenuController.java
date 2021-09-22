@@ -62,7 +62,7 @@ public class MenuController {
         return JsonBean.success(menuService.findById(id));
     }
 
-    @Operation(summary = "获取菜单")
+    @Operation(summary = "获取用户菜单")
     @GetMapping("getMenu")
     public JsonBean<List<MenuVO>> getMenu() {
         return JsonBean.success(menuService.getUserMenu());
@@ -72,5 +72,10 @@ public class MenuController {
     @GetMapping("getMenuAll")
     public JsonBean<List<MenuVO>> getMenuAll() {
         return JsonBean.success(menuService.getMenuAll());
+    }
+
+    @GetMapping("button")
+    public JsonBean<List<MenuVO>> getButtonRole(){
+        return JsonBean.success(menuService.getButtonRole());
     }
 }

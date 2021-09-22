@@ -31,6 +31,7 @@ public class TokenUtil {
     private static final String ID = "id";
     private static final String ROLEID = "roleId";
     private static final String CODE = "code";
+
     /**
      * 签名生成
      *
@@ -43,7 +44,7 @@ public class TokenUtil {
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, user.getUsername())
                 .withClaim(ID, user.getId())
-                .withClaim(CODE,user.getCode())
+                .withClaim(CODE, user.getCode())
                 .withClaim(ROLEID, user.getQuanxian())
                 .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -82,7 +83,7 @@ public class TokenUtil {
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())
                 .withClaim(ID, jwt.getClaim(ID).asLong())
-                .withClaim(CODE,jwt.getClaim(CODE).asString())
+                .withClaim(CODE, jwt.getClaim(CODE).asString())
                 .withClaim(ROLEID, jwt.getClaim(ROLEID).asLong())
                 .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -96,7 +97,12 @@ public class TokenUtil {
      */
     public static User getTokenUserId(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-        DecodedJWT jwt = verifier.verify(token.replace("Bearer ", ""));
+        DecodedJWT jwt = null;
+        try {
+            jwt = verifier.verify(token.replace("Bearer ", ""));
+        } catch (Exception e) {
+            return new User();
+        }
         User user = new User();
         user.setId(jwt.getClaim(ID).asLong());
         user.setUsername(jwt.getClaim(USERNAME).asString());

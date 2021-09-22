@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnly.provincial.dao.wateraverage.WaterAveragePerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.wateraverage.WaterAveragePer">
+        <id column="id" property="id"/>
+        <result column="year" property="year"/>
+        <result column="above_average" property="aboveAverage"/>
+        <result column="average_per_water_first" property="averagePerWaterFirst"/>
+        <result column="area_code" property="areaCode"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , year, above_average, average_per_water_first, area_code
+    </sql>
+
+</mapper>

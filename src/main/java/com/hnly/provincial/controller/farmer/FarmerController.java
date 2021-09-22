@@ -72,7 +72,7 @@ public class FarmerController {
     }
 
 
-    @Tag(name = "统计")
+    @Tag(name = "统计农户数量")
     @Operation(summary = "统计农户数量")
     @GetMapping("getFarmerCount")
     public JsonBean<Integer> getFarmerCount() {

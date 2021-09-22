@@ -1,7 +1,9 @@
 package com.hnly.provincial.controller.device;
 
 import com.hnly.provincial.comm.JsonBean;
+import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.entity.device.Device;
 import com.hnly.provincial.entity.device.DeviceVO;
 import com.hnly.provincial.service.device.IDeviceService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +31,9 @@ public class DeviceController {
 
     @Resource
     private IDeviceService deviceService;
+
+    @Resource
+    private CommonUser commonUser;
 
     @Operation(summary = "新增设备信息表")
     @PostMapping()
@@ -61,5 +66,13 @@ public class DeviceController {
     @GetMapping("{id}")
     public JsonBean<DeviceVO> findById(@PathVariable Long id) {
         return JsonBean.success(deviceService.findById(id));
+    }
+
+
+    @Tag(name = "统计设备的数量")
+    @Operation(summary = "统计设备的数量")
+    @GetMapping("getDeviceCount")
+    public JsonBean<Integer> getDeviceCount() {
+        return JsonBean.success(deviceService.lambdaQuery().likeRight(Device::getCode, commonUser.getUserCode()).count());
     }
 }

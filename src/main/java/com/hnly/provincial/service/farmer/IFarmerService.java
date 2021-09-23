@@ -56,12 +56,4 @@ public interface IFarmerService extends IService<Farmer> {
      * @return FarmerVO
      */
     FarmerVO findById(Long id);
-
-    /**
-     * id获取农户名称
-     *
-     * @param farmerId 农户id
-     * @return 农户名字
-     */
-    String getName(Long farmerId);
 }

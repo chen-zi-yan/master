@@ -121,15 +121,4 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         Farmer farmer = baseMapper.selectById(id);
         return Conversion.changeOne(farmer, FarmerVO.class);
     }
-
-    @Override
-    public String getName(Long farmerId) {
-        Farmer byId = getById(farmerId);
-        if (byId == null) {
-            return "";
-        }
-        return byId.getName();
-    }
-
-
 }

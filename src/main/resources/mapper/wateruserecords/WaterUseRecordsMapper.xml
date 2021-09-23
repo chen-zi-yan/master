@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.wateruserecords.WaterUseRecords">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="farmer_id" property="farmerId"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="code" property="code"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="type" property="type"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="use_water" property="useWater"/>
+        <result column="use_electricity" property="useElectricity"/>
+        <result column="use_money" property="useMoney"/>
+        <result column="use_water_first" property="useWaterFirst"/>
+        <result column="use_water_second" property="useWaterSecond"/>
+        <result column="use_water_third" property="useWaterThird"/>
+        <result column="use_money_first" property="useMoneyFirst"/>
+        <result column="use_money_second" property="useMoneySecond"/>
+        <result column="use_money_third" property="useMoneyThird"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , order_no, farmer_id, device_id, code, year, month, type, start_time, end_time, use_water, use_electricity, use_money, use_water_first, use_water_second, use_water_third, use_money_first, use_money_second, use_money_third
+    </sql>
+
+</mapper>

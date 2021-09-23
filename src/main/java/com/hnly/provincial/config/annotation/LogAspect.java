@@ -42,7 +42,12 @@ public class LogAspect {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        saveLog(point, System.currentTimeMillis() - beginTime);
+        //拦截异常，防止一些特殊情况导致程序不能正常进行
+        try {
+            saveLog(point, System.currentTimeMillis() - beginTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return proceed;
     }
 

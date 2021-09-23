@@ -34,6 +34,24 @@ public class WaterUseRecordsVO extends PageWhere<WaterUseRecords> implements Ser
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @Schema(description = "市名称")
+    private String cityName;
+
+    @Schema(description = "县名称")
+    private String countyName;
+
+    @Schema(description = "乡名称")
+    private String townshipName;
+
+    @Schema(description = "村名称")
+    private String villageName;
+
+    @Schema(description = "农户名称")
+    private String farmerName;
+
+    @Schema(description = "设备类型")
+    private String deviceName;
+
     @Schema(description = "订单号")
     private String orderNo;
 
@@ -54,9 +72,6 @@ public class WaterUseRecordsVO extends PageWhere<WaterUseRecords> implements Ser
 
     @Schema(description = "0 标准计量 1 非标准计量")
     private String type;
-
-    @Schema(description = "0 标准计量 1 非标准计量")
-    private String typeName;
 
     @Schema(description = "开始使用时间")
     private Date startTime;
@@ -91,14 +106,4 @@ public class WaterUseRecordsVO extends PageWhere<WaterUseRecords> implements Ser
     @Schema(description = "三阶费用")
     private BigDecimal useMoneyThird;
 
-    public String getTypeName() {
-        switch (type) {
-            case "0":
-                return "标准计量";
-            case "1":
-                return "非标准计量";
-            default:
-                return "空";
-        }
-    }
 }

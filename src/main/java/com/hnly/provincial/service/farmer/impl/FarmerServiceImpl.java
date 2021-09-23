@@ -110,7 +110,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
      */
     private void checkIdCard(String idCard, Long id) throws MyException {
         int count = lambdaQuery().eq(Farmer::getIdCard, idCard)
-                .ne(id != null,Farmer::getId, id).count();
+                .ne(id != null, Farmer::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.IDCODE_EXIST);
         }
@@ -120,6 +120,15 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
     public FarmerVO findById(Long id) {
         Farmer farmer = baseMapper.selectById(id);
         return Conversion.changeOne(farmer, FarmerVO.class);
+    }
+
+    @Override
+    public String getName(Long farmerId) {
+        Farmer byId = getById(farmerId);
+        if (byId == null) {
+            return "";
+        }
+        return byId.getName();
     }
 
 

@@ -7,7 +7,6 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
 import com.hnly.provincial.entity.device.Device;
-import com.hnly.provincial.entity.farmer.Farmer;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -47,9 +46,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
                 .page(waterUseRecordsVO.page());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
-            Farmer farmer = farmerService.lambdaQuery().eq(vo.getFarmerId() != null, Farmer::getId, vo.getFarmerId()).one();
-            vo.setFarmerName(farmer.getName());
-            Device device = deviceService.lambdaQuery().eq(vo.getDeviceId() != null, Device::getId, vo.getDeviceId()).one();
+            vo.setFarmerName(farmerService.getName(vo.getFarmerId()));
+            Device device = deviceService.getById(vo.getDeviceId());
             vo.setDeviceName(device.getName());
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setCityName(allAreaName.get("shi"));

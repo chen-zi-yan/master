@@ -2,6 +2,7 @@ package com.hnly.provincial.service.wateruserecords;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 
@@ -24,4 +25,12 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @return 分页结果
      */
     TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO);
+
+    /**
+     * 获取今年和去年的每月总用水量
+     *
+     * @param code 行政区划
+     * @return 今年和去年的每月总用水量
+     */
+    MonthSunWaterVO getMonthSumWater(String code);
 }

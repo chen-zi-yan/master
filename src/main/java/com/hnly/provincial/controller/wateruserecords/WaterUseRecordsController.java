@@ -1,7 +1,10 @@
 package com.hnly.provincial.controller.wateruserecords;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hnly.provincial.comm.JsonBean;
+import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,10 +34,23 @@ public class WaterUseRecordsController {
     @Resource
     private IWaterUseRecordsService waterUseRecordsService;
 
+    @Resource
+    private CommonUser commonUser;
+
     @Operation(summary = "查询用水记录表分页数据")
     @GetMapping()
     public JsonBean<TableDataUtils<List<WaterUseRecordsVO>>> findListByPage(WaterUseRecordsVO waterUseRecordsVO) {
         return JsonBean.success(waterUseRecordsService.findListByPage(waterUseRecordsVO));
+    }
+
+    @Tag(name = "统计")
+    @Operation(summary = "统计这年每月的总用水量")
+    @GetMapping("getMonthSumWater")
+    public JsonBean<MonthSunWaterVO> getMonthSumWater(String code) {
+        if (StringUtils.isEmpty(code)) {
+            code = commonUser.getUserCode();
+        }
+        return JsonBean.success(waterUseRecordsService.getMonthSumWater(code));
     }
 
 }

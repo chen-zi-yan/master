@@ -3,9 +3,11 @@ package com.hnly.provincial.service.wateruserecords.impl;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hnly.provincial.comm.date.DateTool;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
+import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -54,5 +56,15 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             vo.setVillageName(allAreaName.get("cun"));
         }
         return TableDataUtils.success(page.getTotal(), waterUseRecordsVOs);
+    }
+
+    @Override
+    public MonthSunWaterVO getMonthSumWater(String code) {
+        List<Object> monthSumWater = baseMapper.getMonthSumWater(code, DateTool.getYear());
+        List<Object> lastYearMonthSumWater = baseMapper.getMonthSumWater(code, DateTool.getLastYear());
+        MonthSunWaterVO monthSunWaterVO = new MonthSunWaterVO();
+        monthSunWaterVO.setYear(monthSumWater);
+        monthSunWaterVO.setLastYear(lastYearMonthSumWater);
+        return monthSunWaterVO;
     }
 }

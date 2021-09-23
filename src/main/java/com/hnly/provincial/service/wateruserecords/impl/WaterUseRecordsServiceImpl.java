@@ -47,9 +47,9 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
                 .page(waterUseRecordsVO.page());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
-            Farmer farmer = farmerService.lambdaQuery().eq(vo.getFarmerId() != null, Farmer::getId, vo.getFarmerId()).last("limit 1").one();
+            Farmer farmer = farmerService.lambdaQuery().eq(vo.getFarmerId() != null, Farmer::getId, vo.getFarmerId()).one();
             vo.setFarmerName(farmer.getName());
-            Device device = deviceService.lambdaQuery().eq(vo.getDeviceId() != null, Device::getId, vo.getDeviceId()).last("limit 1").one();
+            Device device = deviceService.lambdaQuery().eq(vo.getDeviceId() != null, Device::getId, vo.getDeviceId()).one();
             vo.setDeviceName(device.getName());
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setCityName(allAreaName.get("shi"));

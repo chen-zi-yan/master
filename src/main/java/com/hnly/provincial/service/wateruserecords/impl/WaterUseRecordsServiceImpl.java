@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
-import com.hnly.provincial.entity.device.Device;
-import com.hnly.provincial.entity.farmer.Farmer;
+import com.hnly.provincial.entity.device.DeviceVO;
+import com.hnly.provincial.entity.farmer.FarmerVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -32,6 +32,9 @@ import java.util.Map;
 public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMapper, WaterUseRecords> implements IWaterUseRecordsService {
 
     @Resource
+    private IWaterUseRecordsService waterUseRecordsService;
+
+    @Resource
     private IAreaService iAreaService;
 
     @Resource
@@ -47,10 +50,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
                 .page(waterUseRecordsVO.page());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
-            Farmer farmer = farmerService.lambdaQuery().eq(vo.getFarmerId() != null, Farmer::getId, vo.getFarmerId()).one();
-            vo.setFarmerName(farmer.getName());
-            Device device = deviceService.lambdaQuery().eq(vo.getDeviceId() != null, Device::getId, vo.getDeviceId()).one();
-            vo.setDeviceName(device.getName());
+            vo.setFarmerName(waterUseRecordsService.getFarmerName(vo.getFarmerId()));
+            vo.setDeviceName(waterUseRecordsService.getDeviceName(vo.getDeviceId()));
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setCityName(allAreaName.get("shi"));
             vo.setCountyName(allAreaName.get("xian"));
@@ -59,6 +60,24 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         }
 
         return TableDataUtils.success(page.getTotal(), waterUseRecordsVOs);
+    }
+
+    @Override
+    public String getFarmerName(Long id) {
+        FarmerVO byId = farmerService.findById(id);
+        if (byId == null) {
+            return "";
+        }
+        return byId.getName();
+    }
+
+    @Override
+    public String getDeviceName(Long id) {
+        DeviceVO byId = deviceService.findById(id);
+        if (byId == null) {
+            return "";
+        }
+        return byId.getName();
     }
 
 }

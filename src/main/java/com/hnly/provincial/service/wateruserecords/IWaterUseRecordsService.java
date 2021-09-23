@@ -28,16 +28,16 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
     /**
      * 查询数据中的农户id=农户farmer表中的id
      *
-     * @param id 用水数据中的farmer_id
+     * @param farmerId 用水数据表中的farmer_id
      * @return 存在则返回农户的名字, 失败返回一个空值
      */
-    String getFarmerName(Long id);
+    String getFarmerName(Long farmerId);
 
     /**
      * 查询数据中的农户id=设备device表中的id
      *
-     * @param id 用水数据中的device_id
+     * @param deviceId 用水数据表中的device_id
      * @return 存在则返回设备的类型, 失败返回一个空值
      */
-    String getDeviceName(Long id);
+    String getDeviceName(Long deviceId);
 }

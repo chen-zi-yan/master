@@ -63,8 +63,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     @Override
-    public String getFarmerName(Long id) {
-        FarmerVO byId = farmerService.findById(id);
+    public String getFarmerName(Long farmerId) {
+        FarmerVO byId = farmerService.findById(farmerId);
         if (byId == null) {
             return "";
         }
@@ -72,8 +72,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     @Override
-    public String getDeviceName(Long id) {
-        DeviceVO byId = deviceService.findById(id);
+    public String getDeviceName(Long deviceId) {
+        DeviceVO byId = deviceService.findById(deviceId);
         if (byId == null) {
             return "";
         }

@@ -35,8 +35,8 @@ public class WaterAveragePerServiceImpl extends ServiceImpl<WaterAveragePerMappe
     @Override
     public TableDataUtils<List<WaterAveragePerVO>> findListByPage(WaterAveragePerVO waterAveragePerVO) {
         Page<WaterAveragePer> page = lambdaQuery()
-                .eq(StringUtils.isEmpty(waterAveragePerVO.getYear()), WaterAveragePer::getYear, waterAveragePerVO.getYear())
-                .likeRight(StringUtils.isEmpty(waterAveragePerVO.getAreaCode()), WaterAveragePer::getAreaCode, waterAveragePerVO.getAreaCode())
+                .eq(!StringUtils.isEmpty(waterAveragePerVO.getYear()), WaterAveragePer::getYear, waterAveragePerVO.getYear())
+                .likeRight(!StringUtils.isEmpty(waterAveragePerVO.getAreaCode()), WaterAveragePer::getAreaCode, waterAveragePerVO.getAreaCode())
                 .page(waterAveragePerVO.page());
         List<WaterAveragePerVO> waterAveragePerVOs = Conversion.changeList(page.getRecords(), WaterAveragePerVO.class);
         for (WaterAveragePerVO vo : waterAveragePerVOs) {

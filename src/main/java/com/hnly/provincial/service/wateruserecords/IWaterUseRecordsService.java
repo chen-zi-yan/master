@@ -24,20 +24,4 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @return 分页结果
      */
     TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO);
-
-    /**
-     * 查询数据中的农户id=农户farmer表中的id
-     *
-     * @param farmerId 用水数据表中的farmer_id
-     * @return 存在则返回农户的名字, 失败返回一个空值
-     */
-    String getFarmerName(Long farmerId);
-
-    /**
-     * 查询数据中的农户id=设备device表中的id
-     *
-     * @param deviceId 用水数据表中的device_id
-     * @return 存在则返回设备的类型, 失败返回一个空值
-     */
-    String getDeviceName(Long deviceId);
 }

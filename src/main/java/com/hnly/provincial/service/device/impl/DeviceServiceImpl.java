@@ -98,4 +98,19 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         Device device = baseMapper.selectById(id);
         return Conversion.changeOne(device, DeviceVO.class);
     }
+
+    /**
+     * 查询数据中的农户id=设备device表中的id
+     *
+     * @param deviceId 用水数据表中的device_id
+     * @return 存在则返回设备的类型, 失败返回一个空值
+     */
+    @Override
+    public String getDeviceName(Long deviceId) {
+        Device byId = baseMapper.selectById(deviceId);
+        if (byId == null) {
+            return "";
+        }
+        return byId.getName();
+    }
 }

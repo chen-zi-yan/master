@@ -121,4 +121,19 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         Farmer farmer = baseMapper.selectById(id);
         return Conversion.changeOne(farmer, FarmerVO.class);
     }
+
+    /**
+     * 查询数据中的农户id=农户farmer表中的id
+     *
+     * @param farmerId 用水数据表中的farmer_id
+     * @return 存在则返回农户的名字, 失败返回一个空值
+     */
+    @Override
+    public String getFarmerName(Long farmerId) {
+        Farmer byId = baseMapper.selectById(farmerId);
+        if (byId == null) {
+            return "";
+        }
+        return byId.getName();
+    }
 }

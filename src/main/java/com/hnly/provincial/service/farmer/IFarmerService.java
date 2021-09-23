@@ -56,4 +56,12 @@ public interface IFarmerService extends IService<Farmer> {
      * @return FarmerVO
      */
     FarmerVO findById(Long id);
+
+    /**
+     * 查询数据中的农户id=农户farmer表中的id
+     *
+     * @param farmerId 用水数据表中的farmer_id
+     * @return 存在则返回农户的名字, 失败返回一个空值
+     */
+    String getFarmerName(Long farmerId);
 }

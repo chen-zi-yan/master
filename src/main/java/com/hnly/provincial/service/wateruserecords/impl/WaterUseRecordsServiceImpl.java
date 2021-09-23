@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
-import com.hnly.provincial.entity.device.DeviceVO;
-import com.hnly.provincial.entity.farmer.FarmerVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -32,9 +30,6 @@ import java.util.Map;
 public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMapper, WaterUseRecords> implements IWaterUseRecordsService {
 
     @Resource
-    private IWaterUseRecordsService waterUseRecordsService;
-
-    @Resource
     private IAreaService iAreaService;
 
     @Resource
@@ -50,34 +45,14 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
                 .page(waterUseRecordsVO.page());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
-            vo.setFarmerName(waterUseRecordsService.getFarmerName(vo.getFarmerId()));
-            vo.setDeviceName(waterUseRecordsService.getDeviceName(vo.getDeviceId()));
+            vo.setFarmerName(farmerService.getFarmerName(vo.getFarmerId()));
+            vo.setDeviceName(deviceService.getDeviceName(vo.getDeviceId()));
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setCityName(allAreaName.get("shi"));
             vo.setCountyName(allAreaName.get("xian"));
             vo.setTownshipName(allAreaName.get("xiang"));
             vo.setVillageName(allAreaName.get("cun"));
         }
-
         return TableDataUtils.success(page.getTotal(), waterUseRecordsVOs);
     }
-
-    @Override
-    public String getFarmerName(Long farmerId) {
-        FarmerVO byId = farmerService.findById(farmerId);
-        if (byId == null) {
-            return "";
-        }
-        return byId.getName();
-    }
-
-    @Override
-    public String getDeviceName(Long deviceId) {
-        DeviceVO byId = deviceService.findById(deviceId);
-        if (byId == null) {
-            return "";
-        }
-        return byId.getName();
-    }
-
 }

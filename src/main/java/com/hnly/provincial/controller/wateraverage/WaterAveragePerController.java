@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2021-09-22
  */
 @Slf4j
-@Tag(name = "亩均定额")
+@Tag(name = "亩均定额1")
 @RestController
 @RequestMapping("water-average-per")
 public class WaterAveragePerController {

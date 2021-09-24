@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     /**
-     * 查询这个地区这年每月的累计用水量
+     * 统计这年与上年每月的总用水量
      *
      * @param code 区域规划
      * @param year 年
@@ -24,7 +24,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     List<Object> getMonthSumWater(String code, int year);
 
     /**
-     * 查询这个地区这年的累计用水量
+     * 统计今年累计用水量和今年与去年累计用水量的差值
      *
      * @param code 区域规划
      * @param year 年

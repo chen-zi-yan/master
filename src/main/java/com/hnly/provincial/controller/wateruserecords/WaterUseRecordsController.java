@@ -55,7 +55,7 @@ public class WaterUseRecordsController {
     }
 
     @Tag(name = "统计")
-    @Operation(summary = "年累计用水量")
+    @Operation(summary = "统计今年累计用水量和今年与去年累计用水量的差值")
     @GetMapping("getYearSunWater")
     public JsonBean<YearSunWaterVO> getYearSunWater(String code) {
         if (StringUtils.isEmpty(code)) {

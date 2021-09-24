@@ -75,6 +75,9 @@ public class IcVO extends PageWhere<Ic> implements Serializable {
     private Date updateTime;
 
     public String getStatusName() {
+        if (status == null){
+            return "";
+        }
         switch (status) {
             case "0":
                 return "正常";
@@ -83,18 +86,21 @@ public class IcVO extends PageWhere<Ic> implements Serializable {
             case "2":
                 return "失效";
             default:
-                return "状态错误";
+                return "";
         }
     }
 
     public String getTypeName() {
+        if (type == null){
+            return "";
+        }
         switch (type) {
             case "0":
                 return "标椎ic卡";
             case "1":
                 return "非标准ic卡";
             default:
-                return "错误";
+                return "";
         }
     }
 

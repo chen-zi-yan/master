@@ -53,7 +53,9 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
             if (!StringUtils.isEmpty(vo.getPhone())){
                 vo.setPhoneHidden(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
             }
-            vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})","$1*****$2"));
+            if (!StringUtils.isEmpty(vo.getIdCard())) {
+                vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1*****$2"));
+            }
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setName(allAreaName.get("cun"));
             vo.setTownshipName(allAreaName.get("xiang"));

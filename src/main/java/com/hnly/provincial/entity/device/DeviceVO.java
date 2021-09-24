@@ -84,6 +84,9 @@ public class DeviceVO extends PageWhere<Device> implements Serializable {
     private Date updateTime;
 
     public String getTypeName() {
+        if (type == null){
+            return "";
+        }
         switch (type) {
             case "1":
                 return "充值机";

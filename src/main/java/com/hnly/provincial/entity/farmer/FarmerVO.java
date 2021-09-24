@@ -91,6 +91,9 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     private Date updateTime;
 
     public String getStatusName() {
+        if (status == null){
+            return "";
+        }
         switch (status) {
             case "0":
                 return "未审批";

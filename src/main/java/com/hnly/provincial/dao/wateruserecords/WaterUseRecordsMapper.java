@@ -3,6 +3,7 @@ package com.hnly.provincial.dao.wateruserecords;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -30,5 +31,5 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param year 年
      * @return 累计用水量
      */
-    float  getYearSumWater(String code, int year);
+    BigDecimal getYearSumWater(String code, int year);
 }

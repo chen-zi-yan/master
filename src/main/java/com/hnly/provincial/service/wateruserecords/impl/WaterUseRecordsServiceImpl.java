@@ -18,6 +18,7 @@ import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -71,11 +72,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public YearSunWaterVO getYearSunWater(String code) {
-        float  yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
-        float  lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
+        BigDecimal yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
+        BigDecimal  lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
         YearSunWaterVO yearSunWaterVO = new YearSunWaterVO();
         yearSunWaterVO.setYearSum(yearSumWater);
-        yearSunWaterVO.setDiscrepancy(yearSumWater - lastYearSumWater);
+        yearSunWaterVO.setDiscrepancy(yearSumWater.subtract(lastYearSumWater));
         return yearSunWaterVO;
     }
 }

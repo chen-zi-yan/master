@@ -3,6 +3,8 @@ package com.hnly.provincial.entity.wateruserecords;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author : chenziyan
  * @version : 1.0
@@ -13,9 +15,9 @@ import lombok.Data;
 public class YearSunWaterVO {
 
     @Schema(description = "今年累计用水量")
-    private float  yearSum;
+    private BigDecimal yearSum;
 
     @Schema(description = "与上年相比用水量")
-    private float  discrepancy;
+    private BigDecimal  discrepancy;
 
 }

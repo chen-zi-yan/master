@@ -27,8 +27,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id
-        , order_no, farmer_id, device_id, code, year, month, type, start_time, end_time, use_water, use_electricity, use_money, use_water_first, use_water_second, use_water_third, use_money_first, use_money_second, use_money_third
+        id, order_no, farmer_id, device_id, code, year, month, type, start_time, end_time, use_water, use_electricity, use_money, use_water_first, use_water_second, use_water_third, use_money_first, use_money_second, use_money_third
     </sql>
 
     <select id="getMonthSumWater" resultType="java.lang.Object">

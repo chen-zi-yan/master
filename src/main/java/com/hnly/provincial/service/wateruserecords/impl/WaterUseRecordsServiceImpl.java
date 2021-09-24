@@ -71,8 +71,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public YearSunWaterVO getYearSunWater(String code) {
-        double yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
-        double lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
+        float  yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
+        float  lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
         YearSunWaterVO yearSunWaterVO = new YearSunWaterVO();
         yearSunWaterVO.setYearSum(yearSumWater);
         yearSunWaterVO.setDiscrepancy(yearSumWater - lastYearSumWater);

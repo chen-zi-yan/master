@@ -13,9 +13,9 @@ import lombok.Data;
 public class YearSunWaterVO {
 
     @Schema(description = "今年累计用水量")
-    private double yearSum;
+    private float  yearSum;
 
     @Schema(description = "与上年相比用水量")
-    private double discrepancy;
+    private float  discrepancy;
 
 }

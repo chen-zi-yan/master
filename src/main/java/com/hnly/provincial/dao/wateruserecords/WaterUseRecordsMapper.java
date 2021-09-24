@@ -30,5 +30,5 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param year 年
      * @return 累计用水量
      */
-    double getYearSumWater(String code, int year);
+    float  getYearSumWater(String code, int year);
 }

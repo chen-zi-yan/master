@@ -72,13 +72,14 @@ public class UserController {
 
     @Operation(summary = "刷新token")
     @PostMapping("refreshToken")
-    public JsonBean<Map<String, String>> refreshToken(HttpServletRequest request) {
+    public JsonBean<Map<String, Object>> refreshToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         token = token.replace("Bearer ", "");
         String newToken = TokenUtil.refreshToken(token);
-        Map<String, String> tokenMap = new HashMap<>(2);
+        Map<String, Object> tokenMap = new HashMap<>(2);
         tokenMap.put("oldToken", token);
         tokenMap.put("newToken", newToken);
+        tokenMap.put("validPeriod", TokenUtil.EXPIRE_TIME);
         return JsonBean.success(tokenMap);
     }
 

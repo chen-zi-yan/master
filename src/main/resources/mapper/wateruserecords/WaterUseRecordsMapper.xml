@@ -32,11 +32,9 @@
     </sql>
 
     <select id="getMonthSumWater" resultType="java.lang.Object">
-        select month, sum (use_water)
+        select sum(use_water)
         from t_water_use_records
-        where code like concat(#{code}
-            , '%')
-          and year = #{year}
+        where code like concat(#{code}, '%') and year = #{year}
         group by month
         order by month
     </select>

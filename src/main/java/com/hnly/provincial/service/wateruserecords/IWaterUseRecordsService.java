@@ -5,6 +5,7 @@ import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
+import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
 
 import java.util.List;
 
@@ -33,4 +34,12 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @return 今年和去年的每月总用水量
      */
     MonthSunWaterVO getMonthSumWater(String code);
+
+    /**
+     * 获取今年的总用水量
+     *
+     * @param code 区域码
+     * @return 今年的累计用水量
+     */
+    YearSunWaterVO getYearSunWater(String code);
 }

@@ -10,6 +10,7 @@ import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
 import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
+import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.device.IDeviceService;
 import com.hnly.provincial.service.farmer.IFarmerService;
@@ -66,5 +67,15 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         monthSunWaterVO.setYear(monthSumWater);
         monthSunWaterVO.setLastYear(lastYearMonthSumWater);
         return monthSunWaterVO;
+    }
+
+    @Override
+    public YearSunWaterVO getYearSunWater(String code) {
+        double yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
+        double lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
+        YearSunWaterVO yearSunWaterVO = new YearSunWaterVO();
+        yearSunWaterVO.setYearSum(yearSumWater);
+        yearSunWaterVO.setDiscrepancy(yearSumWater - lastYearSumWater);
+        return yearSunWaterVO;
     }
 }

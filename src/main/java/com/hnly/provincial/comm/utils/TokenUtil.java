@@ -61,8 +61,9 @@ public class TokenUtil {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
             DecodedJWT jwt = verifier.verify(token);
-            if (System.currentTimeMillis() > jwt.getExpiresAt().getTime()) {
-                throw new MyException(ResultEnum.TOKEN_EXPIRED);
+            //token过期间一分钟返回token即将过期信息
+            if (System.currentTimeMillis() - (60 * 1000) > jwt.getExpiresAt().getTime()) {
+                throw new MyException(ResultEnum.TOKEN_OVERDUE);
             }
             return true;
         } catch (Exception e) {

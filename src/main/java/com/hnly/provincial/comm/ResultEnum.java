@@ -15,7 +15,7 @@ public enum ResultEnum {
     NOT_AUTHORITY(401, "非法访问"),
     USER_ALREADY_EXISTS(40001, "该用户名已存在"),
     NOSESSION(40002, "未登录,或session过期"),
-    USER_NOT_LOGIN(40003, "账号被禁用"),
+    TOKEN_OVERDUE(40003, "token即将过期"),
     USER_USERNAME_PASSWORD_EXISTS(40004, "账号或密码错误"),
     SAVE_ERROR(40005, "保存错误"),
     NOT_DELETE(40006, "无法删除"),

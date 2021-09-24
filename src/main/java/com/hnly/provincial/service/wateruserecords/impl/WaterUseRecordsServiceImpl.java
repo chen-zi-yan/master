@@ -10,6 +10,7 @@ import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
 import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
+import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.device.IDeviceService;
 import com.hnly.provincial.service.farmer.IFarmerService;
@@ -17,6 +18,7 @@ import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -66,5 +68,15 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         monthSunWaterVO.setYear(monthSumWater);
         monthSunWaterVO.setLastYear(lastYearMonthSumWater);
         return monthSunWaterVO;
+    }
+
+    @Override
+    public YearSunWaterVO getYearSunWater(String code) {
+        BigDecimal yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
+        BigDecimal  lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
+        YearSunWaterVO yearSunWaterVO = new YearSunWaterVO();
+        yearSunWaterVO.setYearSum(yearSumWater);
+        yearSunWaterVO.setDiscrepancy(yearSumWater.subtract(lastYearSumWater));
+        return yearSunWaterVO;
     }
 }

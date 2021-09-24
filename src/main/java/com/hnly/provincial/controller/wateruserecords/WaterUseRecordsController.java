@@ -6,6 +6,7 @@ import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
+import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,13 +45,23 @@ public class WaterUseRecordsController {
     }
 
     @Tag(name = "统计")
-    @Operation(summary = "统计这年每月的总用水量")
+    @Operation(summary = "统计这年与上年每月的总用水量")
     @GetMapping("getMonthSumWater")
     public JsonBean<MonthSunWaterVO> getMonthSumWater(String code) {
         if (StringUtils.isEmpty(code)) {
             code = commonUser.getUserCode();
         }
         return JsonBean.success(waterUseRecordsService.getMonthSumWater(code));
+    }
+
+    @Tag(name = "统计")
+    @Operation(summary = "统计今年累计用水量和今年与去年累计用水量的差值")
+    @GetMapping("getYearSunWater")
+    public JsonBean<YearSunWaterVO> getYearSunWater(String code) {
+        if (StringUtils.isEmpty(code)) {
+            code = commonUser.getUserCode();
+        }
+        return JsonBean.success(waterUseRecordsService.getYearSunWater(code));
     }
 
 }

@@ -30,7 +30,7 @@ public class LogAspect {
     @Resource
     private CommonUser commonUser;
 
-    @Value("{saveLog}")
+    @Value("${saveLog}")
     private boolean saveLog;
 
     @Resource
@@ -48,6 +48,7 @@ public class LogAspect {
         }
         //拦截异常，防止一些特殊情况导致程序不能正常进行
         try {
+            //去配置文件内容设置是否保存操作日志
             if (saveLog) {
                 saveLog(point, System.currentTimeMillis() - beginTime);
             }

@@ -42,9 +42,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     private IDeviceService deviceService;
 
     @Override
-    public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO) {
+    public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO, String deviceName, String farmerName) {
         Page<WaterUseRecords> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(waterUseRecordsVO.getCode()), WaterUseRecords::getCode, waterUseRecordsVO.getCode())
+                .eq(!StringUtils.isEmpty(waterUseRecordsVO.getType()), WaterUseRecords::getType, waterUseRecordsVO.getType())
                 .page(waterUseRecordsVO.page());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {

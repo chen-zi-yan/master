@@ -22,7 +22,7 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @param waterUseRecordsVO 条件
      * @return 分页结果
      */
-    TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO);
+    TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO, String deviceName, String farmerName);
 
     /**
      * 获取今年和去年的每月总用水量

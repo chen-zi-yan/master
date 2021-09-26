@@ -41,8 +41,8 @@ public class WaterUseRecordsController {
 
     @Operation(summary = "查询用水记录表分页数据")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<WaterUseRecordsVO>>> findListByPage(WaterUseRecordsVO waterUseRecordsVO) {
-        return JsonBean.success(waterUseRecordsService.findListByPage(waterUseRecordsVO));
+    public JsonBean<TableDataUtils<List<WaterUseRecordsVO>>> findListByPage(WaterUseRecordsVO waterUseRecordsVO, String deviceName, String farmerName) {
+        return JsonBean.success(waterUseRecordsService.findListByPage(waterUseRecordsVO, deviceName, farmerName));
     }
 
     @Tag(name = "统计")

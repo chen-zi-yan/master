@@ -88,12 +88,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 单位名称
      */
     private String checkName(String code, String code1) {
-        if (StringUtils.isEmpty(code)){
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(code1);
-            return allAreaName.get("shi");
-        }else {
+        if (!StringUtils.isEmpty(code) || code == "41"){
             Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, code).last("limit 1").one();
             return area.getName();
+        }else {
+            Map<String, String> allAreaName = iAreaService.getAllAreaName(code1);
+            return allAreaName.get("shi");
         }
     }
 }

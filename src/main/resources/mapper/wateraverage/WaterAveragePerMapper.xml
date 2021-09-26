@@ -13,8 +13,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id
-        , year, above_average, average_per_water_first, area_code
+        id, year, above_average, average_per_water_first, area_code
     </sql>
 
 </mapper>

@@ -2,7 +2,6 @@ package com.hnly.provincial.service.wateruserecords.impl;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.date.DateTool;
 import com.hnly.provincial.comm.utils.Conversion;
@@ -11,8 +10,6 @@ import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.wateruserecords.*;
 import com.hnly.provincial.service.area.IAreaService;
-import com.hnly.provincial.service.device.IDeviceService;
-import com.hnly.provincial.service.farmer.IFarmerService;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
 import org.springframework.stereotype.Service;
 
@@ -35,21 +32,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     @Resource
     private IAreaService iAreaService;
 
-    @Resource
-    private IFarmerService farmerService;
-
-    @Resource
-    private IDeviceService deviceService;
-
     @Override
     public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(FindNameVO findNameVO) {
-        Page<WaterUseRecords> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(findNameVO.getCode()), WaterUseRecords::getCode, findNameVO.getCode())
-                .page(findNameVO.page());
+        IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(),findNameVO.getDeviceName(), findNameVO.getType());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
-            vo.setFarmerName(farmerService.getFarmerName(vo.getFarmerId()));
-            vo.setDeviceName(deviceService.getDeviceName(vo.getDeviceId()));
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setCityName(allAreaName.get("shi"));
             vo.setCountyName(allAreaName.get("xian"));

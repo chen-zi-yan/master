@@ -1,16 +1,15 @@
 package com.hnly.provincial.service.wateruserecords.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.date.DateTool;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
-import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
-import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
+import com.hnly.provincial.entity.area.Area;
+import com.hnly.provincial.entity.wateruserecords.*;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.device.IDeviceService;
 import com.hnly.provincial.service.farmer.IFarmerService;
@@ -73,10 +72,41 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     @Override
     public YearSunWaterVO getYearSunWater(String code) {
         BigDecimal yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
-        BigDecimal  lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
+        BigDecimal lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
         YearSunWaterVO yearSunWaterVO = new YearSunWaterVO();
         yearSunWaterVO.setYearSum(yearSumWater);
         yearSunWaterVO.setDiscrepancy(yearSumWater.subtract(lastYearSumWater));
         return yearSunWaterVO;
+    }
+
+    @Override
+    public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
+        String year = useWaterStatisticsVO.getYear();
+        if (StringUtils.isEmpty(useWaterStatisticsVO.getYear())){
+            year = String.valueOf(DateTool.getYear());
+        }
+        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), useWaterStatisticsVO.getCode(), year);
+        List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
+        for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
+            waterStatisticsVO.setName(checkName(useWaterStatisticsVO.getCode(), waterStatisticsVO.getCode()));
+        }
+        return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
+    }
+
+    /**
+     * 获取单位名称
+     *
+     * @param code 查询时传入的code
+     * @param code1 查询数据库之后传回的code
+     * @return 单位名称
+     */
+    private String checkName(String code, String code1) {
+        if (StringUtils.isEmpty(code)){
+            Map<String, String> allAreaName = iAreaService.getAllAreaName(code1);
+            return allAreaName.get("shi");
+        }else {
+            Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, code).last("limit 1").one();
+            return area.getName();
+        }
     }
 }

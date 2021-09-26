@@ -5,6 +5,7 @@ import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
+import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
@@ -62,6 +63,13 @@ public class WaterUseRecordsController {
             code = commonUser.getUserCode();
         }
         return JsonBean.success(waterUseRecordsService.getYearSunWater(code));
+    }
+
+    @Tag(name = "统计")
+    @Operation(summary = "根据区域规划获取各个地方的累计用水量")
+    @GetMapping("getUseWater")
+    public JsonBean<TableDataUtils<List<UseWaterStatisticsVO>>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
+        return JsonBean.success(waterUseRecordsService.getUseWater(useWaterStatisticsVO));
     }
 
 }

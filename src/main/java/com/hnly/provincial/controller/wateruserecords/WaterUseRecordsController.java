@@ -4,10 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.TableDataUtils;
-import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
-import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
-import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
+import com.hnly.provincial.entity.wateruserecords.*;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,8 +38,8 @@ public class WaterUseRecordsController {
 
     @Operation(summary = "查询用水记录表分页数据")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<WaterUseRecordsVO>>> findListByPage(WaterUseRecordsVO waterUseRecordsVO) {
-        return JsonBean.success(waterUseRecordsService.findListByPage(waterUseRecordsVO));
+    public JsonBean<TableDataUtils<List<WaterUseRecordsVO>>> findListByPage(FindNameVO findNameVO) {
+        return JsonBean.success(waterUseRecordsService.findListByPage(findNameVO));
     }
 
     @Tag(name = "统计")

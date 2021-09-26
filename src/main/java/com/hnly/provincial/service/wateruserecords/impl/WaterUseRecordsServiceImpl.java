@@ -2,18 +2,14 @@ package com.hnly.provincial.service.wateruserecords.impl;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.date.DateTool;
-import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
 import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.wateruserecords.*;
 import com.hnly.provincial.service.area.IAreaService;
-import com.hnly.provincial.service.device.IDeviceService;
-import com.hnly.provincial.service.farmer.IFarmerService;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
 import org.springframework.stereotype.Service;
 
@@ -36,24 +32,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     @Resource
     private IAreaService iAreaService;
 
-    @Resource
-    private IFarmerService farmerService;
-
-    @Resource
-    private IDeviceService deviceService;
-
-    @Resource
-    private CommonUser commonUser;
-
     @Override
-    public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO) {
-        Page<WaterUseRecords> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(waterUseRecordsVO.getCode()), WaterUseRecords::getCode, waterUseRecordsVO.getCode())
-                .page(waterUseRecordsVO.page());
+    public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(FindNameVO findNameVO) {
+        IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(),findNameVO.getDeviceName(), findNameVO.getType());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
-            vo.setFarmerName(farmerService.getFarmerName(vo.getFarmerId()));
-            vo.setDeviceName(deviceService.getDeviceName(vo.getDeviceId()));
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setCityName(allAreaName.get("shi"));
             vo.setCountyName(allAreaName.get("xian"));
@@ -85,44 +68,16 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
-        String year = checkYear(useWaterStatisticsVO.getYear());
-        String code;
-        code = checkCode(useWaterStatisticsVO.getCode());
-        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), code, year);
+        String year = useWaterStatisticsVO.getYear();
+        if (StringUtils.isEmpty(useWaterStatisticsVO.getYear())){
+            year = String.valueOf(DateTool.getYear());
+        }
+        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), useWaterStatisticsVO.getCode(), year);
         List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
-            waterStatisticsVO.setName(checkName(code, waterStatisticsVO.getCode()));
+            waterStatisticsVO.setName(checkName(useWaterStatisticsVO.getCode(), waterStatisticsVO.getCode()));
         }
         return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
-    }
-
-    /**
-     * 条件:行政区划
-     *
-     * @param code 行政区划
-     * @return
-     */
-    private String checkCode(String code) {
-        if (!StringUtils.isEmpty(code)){
-            return commonUser.code(code);
-        }else {
-            return code;
-        }
-
-    }
-
-    /**
-     * 条件:年
-     *
-     * @param year 年
-     * @return 为空返回系统年,返回
-     */
-    private String checkYear(String year) {
-        if (StringUtils.isEmpty(year)){
-            return String.valueOf(DateTool.getYear());
-        }else {
-            return year;
-        }
     }
 
     /**
@@ -130,10 +85,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      *
      * @param code 查询时传入的code
      * @param code1 查询数据库之后传回的code
-     * @return 单位名称 前端传入的code为空时返回市级单位 否则返回该单位的下级单位
+     * @return 单位名称
      */
     private String checkName(String code, String code1) {
-        if (StringUtils.isEmpty(code) || code.equals("41")){
+        if (StringUtils.isEmpty(code)){
             Map<String, String> allAreaName = iAreaService.getAllAreaName(code1);
             return allAreaName.get("shi");
         }else {

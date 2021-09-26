@@ -10,6 +10,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,9 @@ public class LogAspect {
     @Resource
     private CommonUser commonUser;
 
+    @Value("${saveLog}")
+    private boolean saveLog;
+
     @Resource
     private IUserOperateLogService userOperateLogService;
 
@@ -44,7 +48,10 @@ public class LogAspect {
         }
         //拦截异常，防止一些特殊情况导致程序不能正常进行
         try {
-            saveLog(point, System.currentTimeMillis() - beginTime);
+            //去配置文件内容设置是否保存操作日志
+            if (saveLog) {
+                saveLog(point, System.currentTimeMillis() - beginTime);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

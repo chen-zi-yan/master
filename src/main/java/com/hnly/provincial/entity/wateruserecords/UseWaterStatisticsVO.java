@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 @Schema(name = "UseWaterStatistics", description = "灌区用水统计")
 public class UseWaterStatisticsVO extends PageWhere<WaterUseRecords> {
 
+    @Schema(description = "年")
+    private String year;
+
     @Schema(description = "单位")
     private String name;
 

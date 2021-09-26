@@ -68,8 +68,8 @@ public class WaterUseRecordsController {
     @Tag(name = "统计")
     @Operation(summary = "根据区域规划获取各个地方的累计用水量")
     @GetMapping("getUseWater")
-    public JsonBean<TableDataUtils<List<UseWaterStatisticsVO>>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO, String year) {
-        return JsonBean.success(waterUseRecordsService.getUseWater(useWaterStatisticsVO, year));
+    public JsonBean<TableDataUtils<List<UseWaterStatisticsVO>>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
+        return JsonBean.success(waterUseRecordsService.getUseWater(useWaterStatisticsVO));
     }
 
 }

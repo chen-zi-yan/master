@@ -80,11 +80,18 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     @Override
-    public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO, String year) {
-        BigDecimal bigDecimal = new BigDecimal("1000");
+    public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
+        String year = useWaterStatisticsVO.getYear();
+        if (StringUtils.isEmpty(useWaterStatisticsVO.getYear())){
+            year = String.valueOf(DateTool.getYear());
+        }
         IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), useWaterStatisticsVO.getCode(), year);
         List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
+            if (StringUtils.isEmpty(useWaterStatisticsVO.getCode())){
+                Map<String, String> allAreaName = iAreaService.getAllAreaName(useWaterStatisticsVO.getCode());
+                waterStatisticsVO.setName(allAreaName.get("shi"));
+            }
             Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, useWaterStatisticsVO.getCode()).last("limit 1").one();
             waterStatisticsVO.setName(area.getName());
         }

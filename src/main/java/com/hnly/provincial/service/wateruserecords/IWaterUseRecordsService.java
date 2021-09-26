@@ -44,8 +44,7 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * 获取该区域下累计已用水量\剩余水量\已用占比
      *
      * @param useWaterStatisticsVO 实体类对象
-     * @param year                 年
      * @return 累计已用水量\剩余水量\已用占比
      */
-    TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO, String year);
+    TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO);
 }

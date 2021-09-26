@@ -88,14 +88,25 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), useWaterStatisticsVO.getCode(), year);
         List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
-            if (StringUtils.isEmpty(useWaterStatisticsVO.getCode())){
-                Map<String, String> allAreaName = iAreaService.getAllAreaName(waterStatisticsVO.getCode());
-                waterStatisticsVO.setName(allAreaName.get("shi"));
-            }else {
-                Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, useWaterStatisticsVO.getCode()).last("limit 1").one();
-                waterStatisticsVO.setName(area.getName());
-            }
+            waterStatisticsVO.setName(checkName(useWaterStatisticsVO.getCode(), waterStatisticsVO.getCode()));
         }
         return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
+    }
+
+    /**
+     * 获取单位名称
+     *
+     * @param code 查询时传入的code
+     * @param code1 查询数据库之后传回的code
+     * @return 单位名称
+     */
+    private String checkName(String code, String code1) {
+        if (StringUtils.isEmpty(code)){
+            Map<String, String> allAreaName = iAreaService.getAllAreaName(code1);
+            return allAreaName.get("shi");
+        }else {
+            Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, code).last("limit 1").one();
+            return area.getName();
+        }
     }
 }

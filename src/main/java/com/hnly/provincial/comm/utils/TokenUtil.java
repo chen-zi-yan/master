@@ -3,6 +3,7 @@ package com.hnly.provincial.comm.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.config.interceptor.exception.MyException;
@@ -79,7 +80,12 @@ public class TokenUtil {
      */
     public static String refreshToken(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-        DecodedJWT jwt = verifier.verify(token);
+        DecodedJWT jwt = null;
+        try {
+            jwt = verifier.verify(token);
+        } catch (JWTVerificationException e) {
+            throw new MyException(ResultEnum.NOSESSION);
+        }
         return JWT.create()
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())

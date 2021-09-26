@@ -51,4 +51,16 @@
         group by code
     </select>
 
+    <select id="findByDeviceName" resultType="com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO">
+        select d.name
+        from t_water_use_records wur left join t_device d on wur.device_id = d.id
+        where d.name like concat(#{deviceName}, '%');
+    </select>
+
+    <select id="findByFarmerName" resultType="com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO">
+        select f.name
+        from t_water_use_records wur left join t_farmer f on wur.farmer_id=f.id
+        where f.name like concat(#{farmerName}, '%');
+    </select>
+
 </mapper>

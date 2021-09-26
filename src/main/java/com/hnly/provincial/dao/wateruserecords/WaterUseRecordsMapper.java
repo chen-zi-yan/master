@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
+import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,4 +45,22 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return 以区域规划分组获取已用水量
      */
     IPage<UseWaterStatisticsVO> getUseWater(IPage page, String code, String year);
+
+    /**
+     * 模糊查询设备名称
+     *
+     * @param page 分页
+     * @param deviceName
+     * @return
+     */
+    IPage<WaterUseRecordsVO> findByDeviceName(IPage page, String deviceName);
+
+    /**
+     * 模糊查询农户名称
+     *
+     * @param page
+     * @param farmerName
+     * @return
+     */
+    IPage<WaterUseRecordsVO> findByFarmerName(IPage page, String farmerName);
 }

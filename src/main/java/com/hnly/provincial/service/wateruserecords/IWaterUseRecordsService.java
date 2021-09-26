@@ -19,10 +19,10 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
     /**
      * 查询用水记录表分页数据
      *
-     * @param waterUseRecordsVO 条件
+     * @param findNameVO 入参对象
      * @return 分页结果
      */
-    TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO, String deviceName, String farmerName);
+    TableDataUtils<List<WaterUseRecordsVO>> findListByPage(FindNameVO findNameVO);
 
     /**
      * 获取今年和去年的每月总用水量

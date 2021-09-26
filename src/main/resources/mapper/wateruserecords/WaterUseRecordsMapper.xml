@@ -44,4 +44,11 @@
         where code like concat(#{code}, '%') and year = #{year}
     </select>
 
+    <select id="getUseWater" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">
+        select sum(use_water) as useWater, code
+        from t_water_use_records
+        where code like concat(#{code}, '%') and year = #{year}
+        group by code
+    </select>
+
 </mapper>

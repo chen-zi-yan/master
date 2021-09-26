@@ -1,16 +1,15 @@
 package com.hnly.provincial.service.wateruserecords.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.date.DateTool;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
-import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
-import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
+import com.hnly.provincial.entity.area.Area;
+import com.hnly.provincial.entity.wateruserecords.*;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.device.IDeviceService;
 import com.hnly.provincial.service.farmer.IFarmerService;
@@ -73,10 +72,22 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     @Override
     public YearSunWaterVO getYearSunWater(String code) {
         BigDecimal yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear());
-        BigDecimal  lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
+        BigDecimal lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear());
         YearSunWaterVO yearSunWaterVO = new YearSunWaterVO();
         yearSunWaterVO.setYearSum(yearSumWater);
         yearSunWaterVO.setDiscrepancy(yearSumWater.subtract(lastYearSumWater));
         return yearSunWaterVO;
+    }
+
+    @Override
+    public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO, String year) {
+        BigDecimal bigDecimal = new BigDecimal("1000");
+        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), useWaterStatisticsVO.getCode(), year);
+        List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
+        for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
+            Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, useWaterStatisticsVO.getCode()).last("limit 1").one();
+            waterStatisticsVO.setName(area.getName());
+        }
+        return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
     }
 }

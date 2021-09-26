@@ -2,10 +2,7 @@ package com.hnly.provincial.service.wateruserecords;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hnly.provincial.comm.utils.TableDataUtils;
-import com.hnly.provincial.entity.wateruserecords.MonthSunWaterVO;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
-import com.hnly.provincial.entity.wateruserecords.YearSunWaterVO;
+import com.hnly.provincial.entity.wateruserecords.*;
 
 import java.util.List;
 
@@ -42,4 +39,13 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @return 今年的累计用水量
      */
     YearSunWaterVO getYearSunWater(String code);
+
+    /**
+     * 获取该区域下累计已用水量\剩余水量\已用占比
+     *
+     * @param useWaterStatisticsVO 实体类对象
+     * @param year                 年
+     * @return 累计已用水量\剩余水量\已用占比
+     */
+    TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO, String year);
 }

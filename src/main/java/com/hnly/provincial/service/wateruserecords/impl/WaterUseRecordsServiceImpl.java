@@ -89,11 +89,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
             if (StringUtils.isEmpty(useWaterStatisticsVO.getCode())){
-                Map<String, String> allAreaName = iAreaService.getAllAreaName(useWaterStatisticsVO.getCode());
+                Map<String, String> allAreaName = iAreaService.getAllAreaName(waterStatisticsVO.getCode());
                 waterStatisticsVO.setName(allAreaName.get("shi"));
+            }else {
+                Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, useWaterStatisticsVO.getCode()).last("limit 1").one();
+                waterStatisticsVO.setName(area.getName());
             }
-            Area area = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, useWaterStatisticsVO.getCode()).last("limit 1").one();
-            waterStatisticsVO.setName(area.getName());
         }
         return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
     }

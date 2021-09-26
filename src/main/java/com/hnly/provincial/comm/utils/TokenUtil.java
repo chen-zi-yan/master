@@ -64,6 +64,7 @@ public class TokenUtil {
             verifier.verify(token);
             return true;
         } catch (Exception e) {
+            log.debug("token失效");
             throw new MyException(ResultEnum.NOSESSION);
         }
     }

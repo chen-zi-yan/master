@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.date.DateTool;
+import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
@@ -40,6 +41,9 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Resource
     private IDeviceService deviceService;
+
+    @Resource
+    private CommonUser commonUser;
 
     @Override
     public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(WaterUseRecordsVO waterUseRecordsVO) {
@@ -81,24 +85,44 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
-        String year;
-        if (StringUtils.isEmpty(useWaterStatisticsVO.getYear())){
-            year = String.valueOf(DateTool.getYear());
-        }else {
-            year = useWaterStatisticsVO.getYear();
-        }
+        String year = checkYear(useWaterStatisticsVO.getYear());
         String code;
-        if (!StringUtils.isEmpty(useWaterStatisticsVO.getCode())){
-            code = useWaterStatisticsVO.getCode().replaceAll("^0*", "");
-        }else {
-            code = useWaterStatisticsVO.getCode();
-        }
+        code = checkCode(useWaterStatisticsVO.getCode());
         IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), code, year);
         List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
             waterStatisticsVO.setName(checkName(code, waterStatisticsVO.getCode()));
         }
         return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
+    }
+
+    /**
+     * 条件:行政区划
+     *
+     * @param code 行政区划
+     * @return
+     */
+    private String checkCode(String code) {
+        if (!StringUtils.isEmpty(code)){
+            return commonUser.code(code);
+        }else {
+            return code;
+        }
+
+    }
+
+    /**
+     * 条件:年
+     *
+     * @param year 年
+     * @return 为空返回系统年,返回
+     */
+    private String checkYear(String year) {
+        if (StringUtils.isEmpty(year)){
+            return String.valueOf(DateTool.getYear());
+        }else {
+            return year;
+        }
     }
 
     /**
@@ -109,7 +133,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 单位名称 前端传入的code为空时返回市级单位 否则返回该单位的下级单位
      */
     private String checkName(String code, String code1) {
-        if (StringUtils.isEmpty(code)){
+        if (StringUtils.isEmpty(code) || code.equals("41")){
             Map<String, String> allAreaName = iAreaService.getAllAreaName(code1);
             return allAreaName.get("shi");
         }else {

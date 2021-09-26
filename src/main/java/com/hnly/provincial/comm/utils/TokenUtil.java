@@ -3,6 +3,7 @@ package com.hnly.provincial.comm.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.config.interceptor.exception.MyException;
@@ -60,14 +61,11 @@ public class TokenUtil {
     public static boolean verify(String token) {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-            DecodedJWT jwt = verifier.verify(token);
-            //token过期间一分钟返回token即将过期信息
-            if (System.currentTimeMillis() - (60 * 1000) > jwt.getExpiresAt().getTime()) {
-                throw new MyException(ResultEnum.TOKEN_OVERDUE);
-            }
+            verifier.verify(token);
             return true;
         } catch (Exception e) {
-            return false;
+            log.debug("token失效");
+            throw new MyException(ResultEnum.NOSESSION);
         }
     }
 
@@ -79,7 +77,12 @@ public class TokenUtil {
      */
     public static String refreshToken(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-        DecodedJWT jwt = verifier.verify(token);
+        DecodedJWT jwt = null;
+        try {
+            jwt = verifier.verify(token);
+        } catch (JWTVerificationException e) {
+            throw new MyException(ResultEnum.NOSESSION);
+        }
         return JWT.create()
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())

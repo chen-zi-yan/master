@@ -77,6 +77,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     public List<MenuVO> getUserMenu() {
         User user = commonUser.getUser();
+        if (user.getUsername().equals("admin")) {
+            return getMenuAll();
+        }
         List<MenuVO> menus = baseMapper.getUserMenu(user.getQuanxian());
         for (MenuVO menuVO : menus) {
             menuVO.setChildren(baseMapper.getChildren(menuVO.getKey(), user.getQuanxian()));

@@ -81,14 +81,22 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
-        String year = useWaterStatisticsVO.getYear();
+        String year;
         if (StringUtils.isEmpty(useWaterStatisticsVO.getYear())){
             year = String.valueOf(DateTool.getYear());
+        }else {
+            year = useWaterStatisticsVO.getYear();
         }
-        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), useWaterStatisticsVO.getCode(), year);
+        String code;
+        if (!StringUtils.isEmpty(useWaterStatisticsVO.getCode())){
+            code = useWaterStatisticsVO.getCode().replaceAll("^0*", "");
+        }else {
+            code = useWaterStatisticsVO.getCode();
+        }
+        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), code, year);
         List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO waterStatisticsVO : useWaterStatisticsVOS) {
-            waterStatisticsVO.setName(checkName(useWaterStatisticsVO.getCode(), waterStatisticsVO.getCode()));
+            waterStatisticsVO.setName(checkName(code, waterStatisticsVO.getCode()));
         }
         return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
     }
@@ -98,7 +106,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      *
      * @param code 查询时传入的code
      * @param code1 查询数据库之后传回的code
-     * @return 单位名称
+     * @return 单位名称 前端传入的code为空时返回市级单位 否则返回该单位的下级单位
      */
     private String checkName(String code, String code1) {
         if (StringUtils.isEmpty(code)){

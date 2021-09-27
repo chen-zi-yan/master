@@ -2,7 +2,6 @@ package com.hnly.provincial.dao.wateruserecords;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import org.apache.ibatis.annotations.Param;
@@ -40,13 +39,19 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     /**
      * 获取该区域下累计已用水量
      *
-     * @param page 分页
      * @param code 区域规划
      * @param year 年
      * @return 以区域规划分组获取已用水量
      */
-    IPage<UseWaterStatisticsVO> getUseWater(IPage page, String code, String year);
+    String getUseWater(String code, String year);
 
+    /**
+     * 获取行政区划
+     *
+     * @param status 行政区划类型
+     * @return 行政区划
+     */
+    List<Object> findUnit(String status);
 
     /**
      * 查询用水记录表分页数据
@@ -59,4 +64,5 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return WaterUseRecordsVO对象
      */
     IPage<WaterUseRecordsVO> findListByPage(@Param("page") IPage page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("deviceName") String deviceName, @Param("type") String type);
+
 }

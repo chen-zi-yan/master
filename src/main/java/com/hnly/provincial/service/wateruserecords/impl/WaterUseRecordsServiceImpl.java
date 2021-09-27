@@ -74,14 +74,22 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
         String year = checkYear(useWaterStatisticsVO.getYear());
         String code = checkCode(useWaterStatisticsVO.getCode());
-
-        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), code, year);
-
-        List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
-        for (UseWaterStatisticsVO vo : useWaterStatisticsVOS) {
-            vo.setName(checkName(code, vo.getCode()));
+        String status = checkStatus(code);
+        List<Object> unit = baseMapper.findUnit(status);
+        for (Object o : unit) {
+            String useWater = baseMapper.getUseWater(code, year);
+            System.out.println("useWater = " + useWater);
+            System.out.println("o = " + o);
         }
-        return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
+
+//        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), code, year);
+//
+//        List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
+//        for (UseWaterStatisticsVO vo : useWaterStatisticsVOS) {
+//            vo.setName(checkName(code, vo.getCode()));
+//        }
+//        return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
+        return null;
     }
 
     /**
@@ -104,6 +112,25 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             return allAreaName.get("cun");
         }
         return allAreaName.get("shi");
+    }
+
+    /**
+     * 获取单位的类型
+     *
+     * @param code 行政区划
+     * @return 返回单位的类型 0 市 1 县区 2 乡镇 3 村庄
+     */
+    private String checkStatus(String code){
+        if (code.length() <= 2){
+            return "0";
+        }else if (code.length() <= 4){
+            return "1";
+        }else if (code.length() <= 6){
+            return "2";
+        }else if (code.length() >= 9){
+            return "3";
+        }
+       return null;
     }
 
     /**

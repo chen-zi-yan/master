@@ -44,13 +44,16 @@
         where code like concat(#{code}, '%') and year = #{year}
     </select>
 
-    <select id="getUseWater" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">
-        select sum(use_water) as useWater, code
+    <select id="getUseWater" resultType="java.lang.String">
+        select sum(use_water) as useWater
         from t_water_use_records
         where code like concat(#{code}, '%') and year = #{year}
-        group by code
     </select>
 
+    <select id="findUnit" resultType="java.lang.Object">
+        select code from t_area
+        where status = #{status};
+    </select>
 
     <select id="findListByPage" resultType="com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO">
         select d.name as deviceName, f.name as farmerName, wur.*

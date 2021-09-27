@@ -16,8 +16,4 @@
         id, role_name, remark, update_time, create_time
     </sql>
 
-    <select id="findList" resultType="com.hnly.provincial.entity.role.Role">
-        select * from t_role
-    </select>
-
 </mapper>

@@ -64,7 +64,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public List<Role> findList(Role role) {
-        List<Role> listRole = baseMapper.findList();
-        return listRole;
+        List<Role> roles = baseMapper.selectList(null);
+        return roles;
     }
 }

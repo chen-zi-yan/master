@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -75,14 +77,51 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         String year = checkYear(useWaterStatisticsVO.getYear());
         String code = checkCode(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
+        //自定义用水额度
+        BigDecimal useWaterLimit = new BigDecimal("10");
         IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
         List<UseWaterStatisticsVO> waterUseRecordsVOs = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO vo : waterUseRecordsVOs) {
-            BigDecimal useWater = baseMapper.getUseWater(checkCode(vo.getCode()), year);
-            vo.setUseWater(useWater != null ? useWater.setScale(2, BigDecimal.ROUND_DOWN) : new BigDecimal("0"));
+            BigDecimal useWater = checkUseWater(year, vo.getCode());
+            BigDecimal ratio = CheckUseWaterRatio(useWaterLimit, useWater);
             vo.setName(checkName(code, vo.getCode()));
+            vo.setUseWater(useWater);
+            vo.setSurplus(useWaterLimit.subtract(useWater));
+            vo.setUseWaterRatio(NumberFormat.getPercentInstance(Locale.US).format(ratio));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
+    }
+
+    /**
+     * 计算已用水量的百分比
+     *
+     * @param useWaterLimit 用水的额度
+     * @param useWater 用掉的水量
+     * @return 用水的百分比
+     */
+    private BigDecimal CheckUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
+        BigDecimal ratio = new BigDecimal(0);
+        if (!useWaterLimit.equals(BigDecimal.ZERO)){
+            ratio = useWater.divide(useWaterLimit).setScale(2, BigDecimal.ROUND_DOWN);
+        }
+        return ratio;
+    }
+
+    /**
+     * 获取累计用水量
+     *
+     * @param year 年
+     * @param code 区域规划
+     * @return 累计用水;量
+     */
+    private BigDecimal checkUseWater(String year, String code) {
+        BigDecimal useWater = baseMapper.getUseWater(checkCode(code), year);
+        if (useWater != null){
+            useWater = useWater.setScale(2, BigDecimal.ROUND_DOWN);
+        }else {
+            useWater = new BigDecimal("0");
+        }
+        return useWater;
     }
 
     /**

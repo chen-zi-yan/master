@@ -60,7 +60,7 @@ public interface IRoleService extends IService<Role> {
     /**
      * 查询角色列表数据
      *
-     * @param roleVO 对象
+     * @param role 对象
      * @return 角色列表数据
      */
     List<Role> findList(Role role);

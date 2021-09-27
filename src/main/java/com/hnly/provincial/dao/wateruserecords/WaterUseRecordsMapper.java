@@ -43,7 +43,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param year 年
      * @return 以区域规划分组获取已用水量
      */
-    String getUseWater(String code, String year);
+    BigDecimal getUseWater(Object code, String year);
 
     /**
      * 获取行政区划

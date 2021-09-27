@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,19 +77,13 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         String code = checkCode(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
         List<Object> unit = baseMapper.findUnit(status);
-        for (Object o : unit) {
-            String useWater = baseMapper.getUseWater(code, year);
-            System.out.println("useWater = " + useWater);
-            System.out.println("o = " + o);
+        Map<Object, BigDecimal> map = new HashMap<>();
+        for (Object oCode : unit) {
+            BigDecimal useWater = baseMapper.getUseWater(code, year);
+            map.put(oCode, useWater);
         }
+        System.out.println("map = " + map);
 
-//        IPage<UseWaterStatisticsVO> page = baseMapper.getUseWater(useWaterStatisticsVO.page(), code, year);
-//
-//        List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
-//        for (UseWaterStatisticsVO vo : useWaterStatisticsVOS) {
-//            vo.setName(checkName(code, vo.getCode()));
-//        }
-//        return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
         return null;
     }
 
@@ -130,7 +125,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         }else if (code.length() >= 9){
             return "3";
         }
-       return null;
+       return "0";
     }
 
     /**

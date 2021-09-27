@@ -2,6 +2,7 @@ package com.hnly.provincial.dao.wateruserecords;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
 import org.apache.ibatis.annotations.Param;
@@ -43,7 +44,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param year 年
      * @return 以区域规划分组获取已用水量
      */
-    BigDecimal getUseWater(Object code, String year);
+    BigDecimal getUseWater(String code, String year);
 
     /**
      * 获取行政区划
@@ -51,7 +52,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param status 行政区划类型
      * @return 行政区划
      */
-    List<Object> findUnit(String status);
+    IPage<UseWaterStatisticsVO> findUnit(IPage page, String status, String code);
 
     /**
      * 查询用水记录表分页数据

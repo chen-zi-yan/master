@@ -50,9 +50,9 @@
         where code like concat(#{code}, '%') and year = #{year}
     </select>
 
-    <select id="findUnit" resultType="java.lang.Object">
+    <select id="findUnit" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">
         select code from t_area
-        where status = #{status};
+        where status = #{status} and code like concat(#{code},'%')
     </select>
 
     <select id="findListByPage" resultType="com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO">

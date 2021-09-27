@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(FindNameVO findNameVO) {
-        IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(),findNameVO.getDeviceName(), findNameVO.getType());
+        IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(), findNameVO.getDeviceName(), findNameVO.getType());
         List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
@@ -76,34 +75,33 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         String year = checkYear(useWaterStatisticsVO.getYear());
         String code = checkCode(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
-        List<Object> unit = baseMapper.findUnit(status);
-        Map<Object, BigDecimal> map = new HashMap<>();
-        for (Object oCode : unit) {
-            BigDecimal useWater = baseMapper.getUseWater(code, year);
-            map.put(oCode, useWater);
+        IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
+        List<UseWaterStatisticsVO> waterUseRecordsVOs = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
+        for (UseWaterStatisticsVO vo : waterUseRecordsVOs) {
+            BigDecimal useWater = baseMapper.getUseWater(checkCode(vo.getCode()), year);
+            vo.setUseWater(useWater);
+            vo.setName(checkName(code, vo.getCode()));
         }
-        System.out.println("map = " + map);
-
-        return null;
+        return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
     }
 
     /**
      * 获取单位名称
      *
-     * @param code 入参的区域规划
+     * @param code   入参的区域规划
      * @param voCode 分类之后单位的区域规划
      * @return 返回区域规划的单位名称
      */
     private String checkName(String code, String voCode) {
         Map<String, String> allAreaName = iAreaService.getAllAreaName(voCode);
-        Area one = iAreaService.lambdaQuery().likeRight(Area::getCode, code).last("limit 1").one();
-        if (one.getStatus() == null){
+        Area one = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, code).last("limit 1").one();
+        if (one.getStatus() == null || one.getStatus().equals("0")) {
             return allAreaName.get("shi");
-        } else if (one.getStatus().equals("0")){
+        } else if (one.getStatus().equals("1")) {
             return allAreaName.get("xian");
-        } else if (one.getStatus().equals("1")){
+        } else if (one.getStatus().equals("2")) {
             return allAreaName.get("xiang");
-        } else if (one.getStatus().equals("2")){
+        } else if (one.getStatus().equals("3")) {
             return allAreaName.get("cun");
         }
         return allAreaName.get("shi");
@@ -115,17 +113,17 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param code 行政区划
      * @return 返回单位的类型 0 市 1 县区 2 乡镇 3 村庄
      */
-    private String checkStatus(String code){
-        if (code.length() <= 2){
+    private String checkStatus(String code) {
+        if (code.length() <= 2) {
             return "0";
-        }else if (code.length() <= 4){
+        } else if (code.length() <= 4) {
             return "1";
-        }else if (code.length() <= 6){
+        } else if (code.length() <= 6) {
             return "2";
-        }else if (code.length() >= 9){
+        } else if (code.length() >= 9) {
             return "3";
         }
-       return "0";
+        return "0";
     }
 
     /**
@@ -135,9 +133,9 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return
      */
     private String checkCode(String code) {
-        if (!StringUtils.isEmpty(code)){
+        if (!StringUtils.isEmpty(code)) {
             return commonUser.code(code);
-        }else {
+        } else {
             return "41";
         }
 
@@ -147,12 +145,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * 条件:年
      *
      * @param year 年
-     * @return 为空返回系统年,返回
+     * @return 为空返回系统年, 返回
      */
     private String checkYear(String year) {
-        if (StringUtils.isEmpty(year)){
+        if (StringUtils.isEmpty(year)) {
             return String.valueOf(DateTool.getYear());
-        }else {
+        } else {
             return year;
         }
     }

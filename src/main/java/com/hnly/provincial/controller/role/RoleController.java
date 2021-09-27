@@ -2,6 +2,7 @@ package com.hnly.provincial.controller.role;
 
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.entity.role.Role;
 import com.hnly.provincial.entity.role.RoleVO;
 import com.hnly.provincial.service.role.IRoleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,5 +65,11 @@ public class RoleController {
     @GetMapping("{id}")
     public JsonBean<RoleVO> findById(@PathVariable Long id) {
         return JsonBean.success(roleService.findById(id));
+    }
+
+    @Operation(summary = "查询角色表列表数据")
+    @GetMapping("findList")
+    public JsonBean<List<Role>> findList(Role role) {
+        return JsonBean.success(roleService.findList(role));
     }
 }

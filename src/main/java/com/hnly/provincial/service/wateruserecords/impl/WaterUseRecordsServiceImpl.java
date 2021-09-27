@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -194,14 +192,4 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             return year;
         }
     }
-
-    public static void main(String[] args) {
-        BigDecimal bigDecimal = new BigDecimal("0.22");
-        String format = NumberFormat.getPercentInstance(Locale.US).format(bigDecimal);
-        System.out.println("format = " + format);
-
-//        bigDecimal.Replace("0.", string.Empty);
-//        String.Format("{0:P0}",bigDecimal);
-    }
-
 }

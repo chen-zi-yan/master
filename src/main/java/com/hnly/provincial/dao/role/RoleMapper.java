@@ -1,7 +1,9 @@
 package com.hnly.provincial.dao.role;
 
-import com.hnly.provincial.entity.role.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hnly.provincial.entity.role.Role;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface RoleMapper extends BaseMapper<Role> {
 
+    /**
+     * 查询角色列表数据
+     *
+     * @return 角色数据
+     */
+    List<Role> findList();
 }

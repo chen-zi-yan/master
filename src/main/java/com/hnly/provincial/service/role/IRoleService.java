@@ -56,4 +56,12 @@ public interface IRoleService extends IService<Role> {
      * @return RoleVO
      */
     RoleVO findById(Long id);
+
+    /**
+     * 查询角色列表数据
+     *
+     * @param roleVO 对象
+     * @return 角色列表数据
+     */
+    List<Role> findList(Role role);
 }

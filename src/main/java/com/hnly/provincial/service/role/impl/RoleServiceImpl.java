@@ -61,4 +61,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         Role role = baseMapper.selectById(id);
         return Conversion.changeOne(role, RoleVO.class);
     }
+
+    @Override
+    public List<Role> findList(Role role) {
+        List<Role> listRole = baseMapper.findList();
+        return listRole;
+    }
 }

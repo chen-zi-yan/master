@@ -59,5 +59,4 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return WaterUseRecordsVO对象
      */
     IPage<WaterUseRecordsVO> findListByPage(@Param("page") IPage page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("deviceName") String deviceName, @Param("type") String type);
-
 }

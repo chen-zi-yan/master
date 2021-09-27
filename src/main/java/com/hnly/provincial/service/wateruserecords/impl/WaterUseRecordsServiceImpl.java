@@ -8,6 +8,7 @@ import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
+import com.hnly.provincial.entity.area.Area;
 import com.hnly.provincial.entity.wateruserecords.*;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
@@ -78,10 +79,31 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
         List<UseWaterStatisticsVO> useWaterStatisticsVOS = Conversion.changeList(page.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO vo : useWaterStatisticsVOS) {
-
+            vo.setName(checkName(code, vo.getCode()));
         }
-
         return TableDataUtils.success(page.getTotal(), useWaterStatisticsVOS);
+    }
+
+    /**
+     * 获取单位名称
+     *
+     * @param code 入参的区域规划
+     * @param voCode 分类之后单位的区域规划
+     * @return 返回区域规划的单位名称
+     */
+    private String checkName(String code, String voCode) {
+        Map<String, String> allAreaName = iAreaService.getAllAreaName(voCode);
+        Area one = iAreaService.lambdaQuery().likeRight(Area::getCode, code).last("limit 1").one();
+        if (one.getStatus() == null){
+            return allAreaName.get("shi");
+        } else if (one.getStatus().equals("0")){
+            return allAreaName.get("xian");
+        } else if (one.getStatus().equals("1")){
+            return allAreaName.get("xiang");
+        } else if (one.getStatus().equals("2")){
+            return allAreaName.get("cun");
+        }
+        return allAreaName.get("shi");
     }
 
     /**
@@ -94,7 +116,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         if (!StringUtils.isEmpty(code)){
             return commonUser.code(code);
         }else {
-            return code;
+            return "41";
         }
 
     }

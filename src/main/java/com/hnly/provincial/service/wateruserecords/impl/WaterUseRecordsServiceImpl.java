@@ -79,7 +79,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         List<UseWaterStatisticsVO> waterUseRecordsVOs = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO vo : waterUseRecordsVOs) {
             BigDecimal useWater = baseMapper.getUseWater(checkCode(vo.getCode()), year);
-            vo.setUseWater(useWater);
+            vo.setUseWater(useWater != null ? useWater.setScale(2, BigDecimal.ROUND_DOWN) : new BigDecimal("0"));
             vo.setName(checkName(code, vo.getCode()));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);

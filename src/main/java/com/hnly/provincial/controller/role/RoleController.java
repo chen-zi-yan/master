@@ -69,7 +69,7 @@ public class RoleController {
 
     @Operation(summary = "查询角色表列表数据")
     @GetMapping("findList")
-    public JsonBean<List<Role>> findList(Role role) {
-        return JsonBean.success(roleService.findList(role));
+    public JsonBean<List<Role>> findList() {
+        return JsonBean.success(roleService.findList());
     }
 }

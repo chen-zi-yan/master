@@ -87,7 +87,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             vo.setName(checkName(code, vo.getCode()));
             vo.setUseWater(useWater);
             vo.setSurplus(useWaterLimit.subtract(useWater));
-            vo.setUseWaterRatio(NumberFormat.getPercentInstance(Locale.US).format(ratio));
+//            vo.setUseWaterRatio(NumberFormat.getPercentInstance(Locale.US).format(ratio));//(String类型)带百分号
+            vo.setUseWaterRatio(ratio.multiply(new BigDecimal("100")));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
     }
@@ -193,4 +194,14 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             return year;
         }
     }
+
+    public static void main(String[] args) {
+        BigDecimal bigDecimal = new BigDecimal("0.22");
+        String format = NumberFormat.getPercentInstance(Locale.US).format(bigDecimal);
+        System.out.println("format = " + format);
+
+//        bigDecimal.Replace("0.", string.Empty);
+//        String.Format("{0:P0}",bigDecimal);
+    }
+
 }

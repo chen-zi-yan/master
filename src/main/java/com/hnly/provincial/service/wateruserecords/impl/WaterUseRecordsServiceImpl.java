@@ -97,9 +97,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 用水的百分比
      */
     private BigDecimal CheckUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
-        BigDecimal ratio = new BigDecimal(0);
+        BigDecimal ratio;
         if (!useWaterLimit.equals(BigDecimal.ZERO)) {
             ratio = useWater.divide(useWaterLimit).setScale(2, BigDecimal.ROUND_DOWN);
+        }else {
+            ratio = new BigDecimal(0);
         }
         return ratio;
     }

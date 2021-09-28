@@ -91,21 +91,6 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     /**
-     * 查询该区域的用水量定额
-     *
-     * @param year 年
-     * @param code 区域规划
-     * @return 用水量定额
-     */
-    private BigDecimal CheckUseWaterLimit(String year, String code) {
-        BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, checkCode(code));
-        if (useWaterLimit == null) {
-            useWaterLimit = new BigDecimal("0");
-        }
-        return useWaterLimit;
-    }
-
-    /**
      * 计算已用水量的百分比
      *
      * @param useWaterLimit 用水的额度
@@ -135,6 +120,21 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             useWater = new BigDecimal("0");
         }
         return useWater;
+    }
+
+    /**
+     * 查询该区域的用水量定额
+     *
+     * @param year 年
+     * @param code 区域规划
+     * @return 用水量定额
+     */
+    private BigDecimal CheckUseWaterLimit(String year, String code) {
+        BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, checkCode(code));
+        if (useWaterLimit == null) {
+            useWaterLimit = new BigDecimal("0");
+        }
+        return useWaterLimit;
     }
 
     /**

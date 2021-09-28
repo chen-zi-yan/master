@@ -22,7 +22,7 @@ public class TokenUtil {
     private TokenUtil() {
     }
 
-    public static final long EXPIRE_TIME = 60L * 60L * 1000L;
+    public static final long EXPIRE_TIME = 8 * 60L * 60L * 1000L;
     /** 密钥盐 */
     private static final String TOKEN_SECRET = "nongyeshuijiazhonghegaige";
 

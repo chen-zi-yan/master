@@ -3,6 +3,7 @@ package com.hnly.provincial.controller.user;
 
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.ResultEnum;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.TokenUtil;
 import com.hnly.provincial.comm.validation.Add;
 import com.hnly.provincial.comm.validation.Update;
@@ -68,6 +69,12 @@ public class UserController {
     public JsonBean<List<User>> getList() {
         List<User> list = userService.list();
         return JsonBean.success(list);
+    }
+
+    @Operation(summary = "分页获取用户信息")
+    @PostMapping
+    public JsonBean<TableDataUtils<List<UserVO>>> getPage(UserVO vo) {
+        return JsonBean.success(userService.getPage(vo));
     }
 
     @Operation(summary = "刷新token")

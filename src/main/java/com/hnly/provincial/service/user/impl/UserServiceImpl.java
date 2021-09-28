@@ -1,15 +1,20 @@
 package com.hnly.provincial.service.user.impl;
 
+import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.Md5Utils;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.user.UserMapper;
 import com.hnly.provincial.entity.user.User;
 import com.hnly.provincial.entity.user.UserVO;
 import com.hnly.provincial.service.user.IUserService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -55,5 +60,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setId(id);
         user.setStatus(type);
         return updateById(user);
+    }
+
+    @Override
+    public TableDataUtils<List<UserVO>> getPage(UserVO vo) {
+        Page<User> page = lambdaQuery().likeRight(StringUtils.isEmpty(vo.getCode()), User::getCode, vo.getCode()).page(vo.page());
+        List<UserVO> users = Conversion.changeList(page.getRecords(), UserVO.class);
+        return TableDataUtils.success(page.getTotal(), users);
     }
 }

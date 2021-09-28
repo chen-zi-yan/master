@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 
@@ -78,13 +79,13 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
         List<UseWaterStatisticsVO> waterUseRecordsVOs = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO vo : waterUseRecordsVOs) {
-            BigDecimal useWaterLimit = CheckUseWaterLimit(year, vo.getCode());
+            BigDecimal useWaterLimit = checkUseWaterLimit(year, vo.getCode());
             BigDecimal useWater = checkUseWater(year, vo.getCode());
             vo.setName(checkName(code, vo.getCode()));
             vo.setUseWaterLimit(useWaterLimit);
             vo.setUseWater(useWater);
             vo.setSurplus(useWaterLimit.subtract(useWater));
-            vo.setUseWaterRatio(CheckUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
+            vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
     }
@@ -96,10 +97,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param useWater      用掉的水量
      * @return 用水的百分比
      */
-    private BigDecimal CheckUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
+    private BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio;
         if (!useWaterLimit.equals(BigDecimal.ZERO)) {
-            ratio = useWater.divide(useWaterLimit).setScale(2, BigDecimal.ROUND_DOWN);
+            ratio = useWater.divide(useWaterLimit,2, RoundingMode.DOWN);
         }else {
             ratio = new BigDecimal(0);
         }
@@ -116,7 +117,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     private BigDecimal checkUseWater(String year, String code) {
         BigDecimal useWater = baseMapper.getUseWater(checkCode(code), year);
         if (useWater != null) {
-            useWater = useWater.setScale(2, BigDecimal.ROUND_DOWN);
+            useWater = useWater.setScale(2, RoundingMode.DOWN);
         } else {
             useWater = new BigDecimal("0");
         }
@@ -130,7 +131,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param code 区域规划
      * @return 用水量定额
      */
-    private BigDecimal CheckUseWaterLimit(String year, String code) {
+    private BigDecimal checkUseWaterLimit(String year, String code) {
         BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, checkCode(code));
         if (useWaterLimit == null) {
             useWaterLimit = new BigDecimal("0");
@@ -148,13 +149,13 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     private String checkName(String code, String voCode) {
         Map<String, String> allAreaName = iAreaService.getAllAreaName(voCode);
         Area one = iAreaService.lambdaQuery().likeRight(Area::getFatherCode, code).last("limit 1").one();
-        if (one.getStatus() == null || one.getStatus().equals("0")) {
+        if (one.getStatus() == null || "0".equals(one.getStatus())) {
             return allAreaName.get("shi");
-        } else if (one.getStatus().equals("1")) {
+        } else if ("1".equals(one.getStatus())) {
             return allAreaName.get("xian");
-        } else if (one.getStatus().equals("2")) {
+        } else if ("2".equals(one.getStatus())) {
             return allAreaName.get("xiang");
-        } else if (one.getStatus().equals("3")) {
+        } else if ("3".equals(one.getStatus())) {
             return allAreaName.get("cun");
         }
         return allAreaName.get("shi");
@@ -183,7 +184,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * 条件:行政区划
      *
      * @param code 行政区划
-     * @return
+     * @return 行政区划单位
      */
     private String checkCode(String code) {
         if (!StringUtils.isEmpty(code)) {

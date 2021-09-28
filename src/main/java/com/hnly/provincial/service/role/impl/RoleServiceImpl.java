@@ -101,4 +101,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     public List<Role> findList() {
         return lambdaQuery().list();
     }
+
+    @Override
+    public String getName(Long quanxian) {
+        Role byId = getById(quanxian);
+        return byId == null ? "" : byId.getRoleName();
+    }
 }

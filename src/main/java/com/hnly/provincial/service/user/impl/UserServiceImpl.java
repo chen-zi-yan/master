@@ -11,9 +11,11 @@ import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.user.UserMapper;
 import com.hnly.provincial.entity.user.User;
 import com.hnly.provincial.entity.user.UserVO;
+import com.hnly.provincial.service.role.IRoleService;
 import com.hnly.provincial.service.user.IUserService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,6 +28,9 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+
+    @Resource
+    private IRoleService roleService;
 
     @Override
     public User login(String userName, String password) {
@@ -66,6 +71,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public TableDataUtils<List<UserVO>> getPage(UserVO vo) {
         Page<User> page = lambdaQuery().likeRight(StringUtils.isEmpty(vo.getCode()), User::getCode, vo.getCode()).page(vo.page());
         List<UserVO> users = Conversion.changeList(page.getRecords(), UserVO.class);
+        for (UserVO user : users) {
+            user.setQuanxianName(roleService.getName(user.getQuanxian()));
+        }
         return TableDataUtils.success(page.getTotal(), users);
     }
 }

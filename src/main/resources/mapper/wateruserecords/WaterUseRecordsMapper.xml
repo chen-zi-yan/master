@@ -55,6 +55,12 @@
         where status = #{status} and code like concat(#{code},'%')
     </select>
 
+    <select id="getUseWaterLimit" resultType="java.math.BigDecimal">
+        select sum(water) as water
+        from t_water_quota
+        where code like concat(#{code}, '%') and year = #{year}
+    </select>
+
     <select id="findListByPage" resultType="com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO">
         select d.name as deviceName, f.name as farmerName, wur.*
         from t_water_use_records wur

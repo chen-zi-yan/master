@@ -22,6 +22,9 @@ public class UseWaterStatisticsVO extends PageWhere<WaterUseRecords> {
     @Schema(description = "单位")
     private String name;
 
+    @Schema(description = "用水量定额")
+    private BigDecimal useWaterLimit;
+
     @Schema(description = "累计已用水量")
     private BigDecimal useWater;
 

@@ -54,6 +54,8 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      */
     IPage<UseWaterStatisticsVO> findUnit(IPage page, String status, String code);
 
+    BigDecimal getUseWaterLimit(String year, String code);
+
     /**
      * 查询用水记录表分页数据
      *
@@ -65,5 +67,4 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return WaterUseRecordsVO对象
      */
     IPage<WaterUseRecordsVO> findListByPage(@Param("page") IPage page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("deviceName") String deviceName, @Param("type") String type);
-
 }

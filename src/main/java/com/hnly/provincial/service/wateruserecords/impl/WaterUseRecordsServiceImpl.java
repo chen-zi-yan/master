@@ -75,19 +75,34 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         String year = checkYear(useWaterStatisticsVO.getYear());
         String code = checkCode(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
-        //自定义用水额度
-        BigDecimal useWaterLimit = new BigDecimal("10");
         IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
         List<UseWaterStatisticsVO> waterUseRecordsVOs = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
         for (UseWaterStatisticsVO vo : waterUseRecordsVOs) {
+            BigDecimal useWaterLimit = CheckUseWaterLimit(year, vo.getCode());
             BigDecimal useWater = checkUseWater(year, vo.getCode());
             BigDecimal ratio = CheckUseWaterRatio(useWaterLimit, useWater);
             vo.setName(checkName(code, vo.getCode()));
+            vo.setUseWaterLimit(useWaterLimit);
             vo.setUseWater(useWater);
             vo.setSurplus(useWaterLimit.subtract(useWater));
             vo.setUseWaterRatio(ratio.multiply(new BigDecimal("100")));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
+    }
+
+    /**
+     * 查询该区域的用水量定额
+     *
+     * @param year 年
+     * @param code 区域规划
+     * @return 用水量定额
+     */
+    private BigDecimal CheckUseWaterLimit(String year, String code) {
+        BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, checkCode(code));
+        if (useWaterLimit == null){
+            useWaterLimit = new BigDecimal("0");
+        }
+        return useWaterLimit;
     }
 
     /**

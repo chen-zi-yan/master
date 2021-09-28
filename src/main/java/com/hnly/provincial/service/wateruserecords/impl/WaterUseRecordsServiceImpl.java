@@ -80,12 +80,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         for (UseWaterStatisticsVO vo : waterUseRecordsVOs) {
             BigDecimal useWaterLimit = CheckUseWaterLimit(year, vo.getCode());
             BigDecimal useWater = checkUseWater(year, vo.getCode());
-            BigDecimal ratio = CheckUseWaterRatio(useWaterLimit, useWater);
             vo.setName(checkName(code, vo.getCode()));
             vo.setUseWaterLimit(useWaterLimit);
             vo.setUseWater(useWater);
             vo.setSurplus(useWaterLimit.subtract(useWater));
-            vo.setUseWaterRatio(ratio.multiply(new BigDecimal("100")));
+            vo.setUseWaterRatio(CheckUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
     }

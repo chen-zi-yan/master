@@ -86,7 +86,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         int count = lambdaQuery().eq(!StringUtils.isEmpty(roleName), Role::getRoleName, roleName)
                 .ne(id != null, Role::getId, id).count();
         if (count != 0){
-            throw new MyException(ResultEnum.USER_ALREADY_EXISTS);
+            throw new MyException(ResultEnum.ROLE_EXIST);
         }
     }
 

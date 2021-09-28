@@ -78,14 +78,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     /**
      * 校验角色名称
      *
-     * @param id id
+     * @param id       id
      * @param roleName 角色名称
      * @throws MyException 存在抛出自定义异常-该用户名已存在
      */
     private void checkRoleName(Integer id, String roleName) throws MyException {
         int count = lambdaQuery().eq(!StringUtils.isEmpty(roleName), Role::getRoleName, roleName)
                 .ne(id != null, Role::getId, id).count();
-        if (count != 0){
+        if (count != 0) {
             throw new MyException(ResultEnum.ROLE_EXIST);
         }
     }

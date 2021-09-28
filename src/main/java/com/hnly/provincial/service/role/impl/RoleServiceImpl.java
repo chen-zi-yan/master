@@ -49,7 +49,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public boolean add(RoleVO roleVO) {
-        checkRoleName(roleVO.getId(), roleVO.getRoleName());
         roleVO.setCreateTime(new Date());
         Role role = Conversion.changeOne(roleVO, Role.class);
         baseMapper.insert(role);
@@ -68,28 +67,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public boolean updateData(RoleVO roleVO) {
-        checkRoleName(roleVO.getId(), roleVO.getRoleName());
         roleVO.setUpdateTime(new Date());
         Role role = Conversion.changeOne(roleVO, Role.class);
         baseMapper.updateById(role);
         return true;
     }
-
-    /**
-     * 校验角色名称
-     *
-     * @param id id
-     * @param roleName 角色名称
-     * @throws MyException 存在抛出自定义异常-该用户名已存在
-     */
-    private void checkRoleName(Integer id, String roleName) throws MyException {
-        int count = lambdaQuery().eq(!StringUtils.isEmpty(roleName), Role::getRoleName, roleName)
-                .ne(id != null, Role::getId, id).count();
-        if (count != 0){
-            throw new MyException(ResultEnum.USER_ALREADY_EXISTS);
-        }
-    }
-
 
     @Override
     public RoleVO findById(Long id) {

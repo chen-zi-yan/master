@@ -92,4 +92,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         User user = commonUser.getUser();
         return baseMapper.getButton(user.getQuanxian());
     }
+
+    @Override
+    public Long getParentId(Long id) {
+        Menu byId = getById(id);
+        if (byId.getParentKey() == null) {
+            return null;
+        }
+        Menu one = lambdaQuery().eq(Menu::getKey, byId.getParentKey()).one();
+        return one.getId();
+    }
 }

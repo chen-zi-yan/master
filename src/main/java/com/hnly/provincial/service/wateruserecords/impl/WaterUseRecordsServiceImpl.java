@@ -99,7 +99,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      */
     private BigDecimal CheckUseWaterLimit(String year, String code) {
         BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, checkCode(code));
-        if (useWaterLimit == null){
+        if (useWaterLimit == null) {
             useWaterLimit = new BigDecimal("0");
         }
         return useWaterLimit;
@@ -109,12 +109,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * 计算已用水量的百分比
      *
      * @param useWaterLimit 用水的额度
-     * @param useWater 用掉的水量
+     * @param useWater      用掉的水量
      * @return 用水的百分比
      */
     private BigDecimal CheckUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio = new BigDecimal(0);
-        if (!useWaterLimit.equals(BigDecimal.ZERO)){
+        if (!useWaterLimit.equals(BigDecimal.ZERO)) {
             ratio = useWater.divide(useWaterLimit).setScale(2, BigDecimal.ROUND_DOWN);
         }
         return ratio;
@@ -129,9 +129,9 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      */
     private BigDecimal checkUseWater(String year, String code) {
         BigDecimal useWater = baseMapper.getUseWater(checkCode(code), year);
-        if (useWater != null){
+        if (useWater != null) {
             useWater = useWater.setScale(2, BigDecimal.ROUND_DOWN);
-        }else {
+        } else {
             useWater = new BigDecimal("0");
         }
         return useWater;

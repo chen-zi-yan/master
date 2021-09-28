@@ -51,8 +51,10 @@
     </select>
 
     <select id="findUnit" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">
-        select code from t_area
-        where status = #{status} and code like concat(#{code},'%')
+        select code
+        from t_area
+        where status = #{status}
+          and code like concat(#{code}, '%')
     </select>
 
     <select id="getUseWaterLimit" resultType="java.math.BigDecimal">

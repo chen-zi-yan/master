@@ -39,6 +39,7 @@ public enum ResultEnum {
     AREA_EXIST(40023, "该设施所在行政区域已经存在"),
     NUMBER_EXIST(40024, "该号码已经存在"),
     COUNTY_EXIST(40025, "该县已经存在"),
+    ROLE_EXIST(40026, "该角色名称已经存在"),
 
 
     ;

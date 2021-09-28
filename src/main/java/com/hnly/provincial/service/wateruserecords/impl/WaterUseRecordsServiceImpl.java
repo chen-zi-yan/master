@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -87,7 +85,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             vo.setName(checkName(code, vo.getCode()));
             vo.setUseWater(useWater);
             vo.setSurplus(useWaterLimit.subtract(useWater));
-            vo.setUseWaterRatio(NumberFormat.getPercentInstance(Locale.US).format(ratio));
+            vo.setUseWaterRatio(ratio.multiply(new BigDecimal("100")));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
     }

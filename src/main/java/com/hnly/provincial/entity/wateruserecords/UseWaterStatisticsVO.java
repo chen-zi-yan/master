@@ -29,7 +29,7 @@ public class UseWaterStatisticsVO extends PageWhere<WaterUseRecords> {
     private BigDecimal surplus;
 
     @Schema(description = "已用水量占比")
-    private String useWaterRatio;
+    private BigDecimal useWaterRatio;
 
     @Schema(description = "区域规划")
     private String code;

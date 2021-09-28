@@ -34,6 +34,18 @@ public class WaterQuotaVO extends PageWhere<WaterQuota> implements Serializable 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @Schema(description = "市")
+    private String cityName;
+
+    @Schema(description = "县")
+    private String countyName;
+
+    @Schema(description = "乡")
+    private String townshipName;
+
+    @Schema(description = "村")
+    private String villageName;
+
     @NotNull(message = "行政区划不能为空")
     @NotEmpty(message = "行政区划不能为空")
     @Schema(description = "行政区划")

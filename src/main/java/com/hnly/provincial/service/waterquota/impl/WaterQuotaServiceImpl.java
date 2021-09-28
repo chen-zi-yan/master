@@ -37,6 +37,7 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
     public TableDataUtils<List<WaterQuotaVO>> findListByPage(WaterQuotaVO waterQuotaVO) {
         Page<WaterQuota> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(waterQuotaVO.getCode()), WaterQuota::getCode, waterQuotaVO.getCode())
+                .likeRight(waterQuotaVO.getYear() != 0, WaterQuota::getYear, waterQuotaVO.getYear())
                 .page(waterQuotaVO.page());
         List<WaterQuotaVO> waterQuotaVOs = Conversion.changeList(page.getRecords(), WaterQuotaVO.class);
         for (WaterQuotaVO vo : waterQuotaVOs) {
@@ -51,7 +52,7 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
 
     @Override
     public boolean add(WaterQuotaVO waterQuotaVO) {
-        checkCode(waterQuotaVO.getId(), waterQuotaVO.getCode());
+        checkCode(waterQuotaVO.getId(), waterQuotaVO.getCode(), waterQuotaVO.getYear());
         waterQuotaVO.setCreateTime(new Date());
         WaterQuota waterQuota = Conversion.changeOne(waterQuotaVO, WaterQuota.class);
         baseMapper.insert(waterQuota);
@@ -66,7 +67,7 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
 
     @Override
     public boolean updateData(WaterQuotaVO waterQuotaVO) {
-        checkCode(waterQuotaVO.getId(), waterQuotaVO.getCode());
+        checkCode(waterQuotaVO.getId(), waterQuotaVO.getCode(), waterQuotaVO.getYear());
         waterQuotaVO.setUpdateTime(new Date());
         WaterQuota waterQuota = Conversion.changeOne(waterQuotaVO, WaterQuota.class);
         baseMapper.updateById(waterQuota);
@@ -80,8 +81,9 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
      * @param code 行政区划
      * @throws MyException 抛出自定义异常 行政区划已存在
      */
-    private void checkCode(Long id, String code) throws MyException {
+    private void checkCode(Long id, String code, int year) throws MyException {
         int count = lambdaQuery().eq(WaterQuota::getCode, code)
+                .eq(WaterQuota::getYear, year)
                 .ne(id != null, WaterQuota::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.CODELIMIT_EXIST);

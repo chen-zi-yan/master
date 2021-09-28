@@ -9,9 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -52,9 +50,11 @@ public class WaterQuotaVO extends PageWhere<WaterQuota> implements Serializable 
     @Schema(description = "修改时间")
     private Date updateTime;
 
+    @Min(value = 2020, message = "请输入正确的年份")
+    @Max(value = 2100, message = "请输入正确的年份")
     @NotNull(message = "行政区划不能为空")
     @Schema(description = "年")
-    private Integer year;
+    private int year;
 
 
 }

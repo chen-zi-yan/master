@@ -60,7 +60,6 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
     @Override
     public List<Long> findByRoleId(Long id) {
         List<RoleMenu> list = lambdaQuery().eq(RoleMenu::getRoleId, id).select(RoleMenu::getMenuId).list();
-        List<Long> menuIds = list.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
-        return menuIds;
+        return list.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
     }
 }

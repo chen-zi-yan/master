@@ -40,6 +40,7 @@ public enum ResultEnum {
     NUMBER_EXIST(40024, "该号码已经存在"),
     COUNTY_EXIST(40025, "该县已经存在"),
     ROLE_EXIST(40026, "该角色名称已经存在"),
+    CODELIMIT_EXIST(40027, "该区域规划已经填写过用水定额"),
 
 
     ;

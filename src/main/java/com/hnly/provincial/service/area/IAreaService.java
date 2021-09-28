@@ -74,4 +74,12 @@ public interface IAreaService extends IService<Area> {
      * @return 级联数据
      */
     List<CascadeVO> getList(String code);
+
+    /**
+     * code 获取名字
+     *
+     * @param code 行政区划码
+     * @return 名字
+     */
+    String getNameByCode(String code);
 }

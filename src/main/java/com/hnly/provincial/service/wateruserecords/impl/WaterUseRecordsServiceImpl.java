@@ -40,15 +40,15 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     @Override
     public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(FindNameVO findNameVO) {
         IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(), findNameVO.getDeviceName(), findNameVO.getType());
-        List<WaterUseRecordsVO> waterUseRecordsVOs = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
-        for (WaterUseRecordsVO vo : waterUseRecordsVOs) {
+        List<WaterUseRecordsVO> waterUseRecordsVO = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
+        for (WaterUseRecordsVO vo : waterUseRecordsVO) {
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setCityName(allAreaName.get("shi"));
             vo.setCountyName(allAreaName.get("xian"));
             vo.setTownshipName(allAreaName.get("xiang"));
             vo.setVillageName(allAreaName.get("cun"));
         }
-        return TableDataUtils.success(page.getTotal(), waterUseRecordsVOs);
+        return TableDataUtils.success(page.getTotal(), waterUseRecordsVO);
     }
 
     @Override
@@ -77,8 +77,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         String code = checkCode(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
         IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
-        List<UseWaterStatisticsVO> waterUseRecordsVOs = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
-        for (UseWaterStatisticsVO vo : waterUseRecordsVOs) {
+        List<UseWaterStatisticsVO> waterUseRecordsVO = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
+        for (UseWaterStatisticsVO vo : waterUseRecordsVO) {
             BigDecimal useWaterLimit = checkUseWaterLimit(year, vo.getCode());
             BigDecimal useWater = checkUseWater(year, vo.getCode());
             vo.setName(checkName(code, vo.getCode()));
@@ -87,7 +87,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             vo.setSurplus(useWaterLimit.subtract(useWater));
             vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
         }
-        return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);
+        return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVO);
     }
 
     /**

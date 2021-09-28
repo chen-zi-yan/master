@@ -162,6 +162,12 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
         return cascadeVOS;
     }
 
+    @Override
+    public String getNameByCode(String code) {
+        Area one = lambdaQuery().eq(Area::getCode, code).last("limit 1").one();
+        return one.getName();
+    }
+
     public void getChildren(List<CascadeVO> list) {
         for (CascadeVO areaVO : list) {
             List<Area> list1 = lambdaQuery().eq(Area::getFatherCode, areaVO.getValue()).list();

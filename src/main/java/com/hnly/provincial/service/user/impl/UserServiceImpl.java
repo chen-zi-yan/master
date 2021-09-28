@@ -11,6 +11,7 @@ import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.user.UserMapper;
 import com.hnly.provincial.entity.user.User;
 import com.hnly.provincial.entity.user.UserVO;
+import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.role.IRoleService;
 import com.hnly.provincial.service.user.IUserService;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Resource
     private IRoleService roleService;
 
+    @Resource
+    private IAreaService areaService;
+
     @Override
     public User login(String userName, String password) {
         return lambdaQuery().eq(User::getUsername, userName)
@@ -52,6 +56,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user1.setCreatetime(new Date());
         //密码MD5加密
         user1.setPassword(Md5Utils.getMD5(user1.getPassword()));
+        if (user1.getCode() != null) {
+            user1.setAnge(areaService.getNameByCode(user1.getCode()));
+        }
         return super.save(user1);
     }
 

@@ -85,7 +85,6 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             vo.setName(checkName(code, vo.getCode()));
             vo.setUseWater(useWater);
             vo.setSurplus(useWaterLimit.subtract(useWater));
-//            vo.setUseWaterRatio(NumberFormat.getPercentInstance(Locale.US).format(ratio));//(String类型)带百分号
             vo.setUseWaterRatio(ratio.multiply(new BigDecimal("100")));
         }
         return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVOs);

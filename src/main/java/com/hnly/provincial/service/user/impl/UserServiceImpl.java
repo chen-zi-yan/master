@@ -69,7 +69,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public TableDataUtils<List<UserVO>> getPage(UserVO vo) {
-        Page<User> page = lambdaQuery().likeRight(!StringUtils.isEmpty(vo.getCode()), User::getCode, vo.getCode()).page(vo.page());
+        Page<User> page = lambdaQuery().likeRight(!StringUtils.isEmpty(vo.getCode()) && !vo.getCode().equals("41"), User::getCode, vo.getCode()).page(vo.page());
         List<UserVO> users = Conversion.changeList(page.getRecords(), UserVO.class);
         for (UserVO user : users) {
             user.setQuanxianName(roleService.getName(user.getQuanxian()));

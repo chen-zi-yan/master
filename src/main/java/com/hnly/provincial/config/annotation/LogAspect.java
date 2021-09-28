@@ -37,15 +37,12 @@ public class LogAspect {
     private IUserOperateLogService userOperateLogService;
 
     @Around("@annotation(io.swagger.v3.oas.annotations.Operation)")
-    public Object around(ProceedingJoinPoint point) {
+    public Object around(ProceedingJoinPoint point) throws Throwable {
 
-        Object proceed = null;
         long beginTime = System.currentTimeMillis();
-        try {
-            proceed = point.proceed();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+
+        Object proceed = point.proceed();
+
         //拦截异常，防止一些特殊情况导致程序不能正常进行
         try {
             //去配置文件内容设置是否保存操作日志

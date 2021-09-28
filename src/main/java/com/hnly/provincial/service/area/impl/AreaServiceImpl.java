@@ -156,10 +156,10 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     @Override
     public List<CascadeVO> getList(String code) {
         List<Area> list = lambdaQuery().eq(Area::getFatherCode, code).list();
-        List<AreaVO> areaVOS = Conversion.changeList(list, AreaVO.class);
-        List<CascadeVO> cascadeVOS = Conversion.changeList(areaVOS, CascadeVO.class);
-        getChildren(cascadeVOS);
-        return cascadeVOS;
+        List<AreaVO> areaVOList = Conversion.changeList(list, AreaVO.class);
+        List<CascadeVO> cascadeVOList = Conversion.changeList(areaVOList, CascadeVO.class);
+        getChildren(cascadeVOList);
+        return cascadeVOList;
     }
 
     @Override

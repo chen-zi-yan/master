@@ -32,8 +32,8 @@ public class LadderWaterPriceServiceImpl extends ServiceImpl<LadderWaterPriceMap
         Page<LadderWaterPrice> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(ladderWaterPriceVO.getArea()), LadderWaterPrice::getArea, ladderWaterPriceVO.getArea())
                 .page(ladderWaterPriceVO.page());
-        List<LadderWaterPriceVO> ladderWaterPriceVOs = Conversion.changeList(page.getRecords(), LadderWaterPriceVO.class);
-        return TableDataUtils.success(page.getTotal(), ladderWaterPriceVOs);
+        List<LadderWaterPriceVO> ladderWaterPriceVOList = Conversion.changeList(page.getRecords(), LadderWaterPriceVO.class);
+        return TableDataUtils.success(page.getTotal(), ladderWaterPriceVOList);
     }
 
     @Override

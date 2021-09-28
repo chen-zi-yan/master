@@ -1,14 +1,15 @@
 package com.hnly.provincial.service.log.impl;
 
-import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.utils.Conversion;
+import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.dao.log.UserOperateLogMapper;
 import com.hnly.provincial.entity.log.UserOperateLog;
 import com.hnly.provincial.entity.log.UserOperateLogVO;
-import com.hnly.provincial.dao.log.UserOperateLogMapper;
 import com.hnly.provincial.service.log.IUserOperateLogService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import java.util.List;
 
 /**
@@ -25,8 +26,8 @@ public class UserOperateLogServiceImpl extends ServiceImpl<UserOperateLogMapper,
     @Override
     public TableDataUtils<List<UserOperateLogVO>> findListByPage(UserOperateLogVO userOperateLogVO){
         Page<UserOperateLog> page = lambdaQuery().page(userOperateLogVO.page());
-        List<UserOperateLogVO> userOperateLogVOs = Conversion.changeList(page.getRecords(), UserOperateLogVO.class);
-        return TableDataUtils.success(page.getTotal(), userOperateLogVOs);
+        List<UserOperateLogVO> userOperateLogVOList = Conversion.changeList(page.getRecords(), UserOperateLogVO.class);
+        return TableDataUtils.success(page.getTotal(), userOperateLogVOList);
     }
 
     @Override

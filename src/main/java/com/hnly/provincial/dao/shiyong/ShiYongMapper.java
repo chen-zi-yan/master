@@ -1,7 +1,7 @@
 package com.hnly.provincial.dao.shiyong;
 
-import com.hnly.provincial.entity.shiyong.Shiyong;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hnly.provincial.entity.shiyong.ShiYong;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author czy
  * @since 2021-09-14
  */
-public interface ShiyongMapper extends BaseMapper<Shiyong> {
+public interface ShiYongMapper extends BaseMapper<ShiYong> {
 
 }

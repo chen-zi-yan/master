@@ -40,11 +40,11 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                 .eq(!StringUtils.isEmpty(projectVO.getType()), Project::getType, projectVO.getType())
                 .likeRight(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
                 .page(projectVO.page());
-        List<ProjectVO> projectVOS = Conversion.changeList(page.getRecords(), ProjectVO.class);
-        for (ProjectVO vo : projectVOS) {
+        List<ProjectVO> projectVOList = Conversion.changeList(page.getRecords(), ProjectVO.class);
+        for (ProjectVO vo : projectVOList) {
             replenishAreaName(vo);
         }
-        return TableDataUtils.success(page.getTotal(), projectVOS);
+        return TableDataUtils.success(page.getTotal(), projectVOList);
     }
 
     @Override

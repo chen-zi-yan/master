@@ -1,16 +1,16 @@
 package com.hnly.provincial.service.ic.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.ResultEnum;
-import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.Conversion;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
+import com.hnly.provincial.dao.ic.IcMapper;
 import com.hnly.provincial.entity.ic.Ic;
 import com.hnly.provincial.entity.ic.IcVO;
-import com.hnly.provincial.dao.ic.IcMapper;
 import com.hnly.provincial.service.ic.IIcService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -29,8 +29,8 @@ public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcServi
     @Override
     public TableDataUtils<List<IcVO>> findListByPage(IcVO icVO) {
         Page<Ic> page = lambdaQuery().page(icVO.page());
-        List<IcVO> icVOs = Conversion.changeList(page.getRecords(), IcVO.class);
-        return TableDataUtils.success(page.getTotal(), icVOs);
+        List<IcVO> icVOList = Conversion.changeList(page.getRecords(), IcVO.class);
+        return TableDataUtils.success(page.getTotal(), icVOList);
     }
 
     @Override

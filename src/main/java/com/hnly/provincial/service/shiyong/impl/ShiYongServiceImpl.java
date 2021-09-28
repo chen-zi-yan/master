@@ -7,10 +7,10 @@ import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
-import com.hnly.provincial.dao.shiyong.ShiyongMapper;
-import com.hnly.provincial.entity.shiyong.Shiyong;
-import com.hnly.provincial.entity.shiyong.ShiyongVO;
-import com.hnly.provincial.service.shiyong.IShiyongService;
+import com.hnly.provincial.dao.shiyong.ShiYongMapper;
+import com.hnly.provincial.entity.shiyong.ShiYong;
+import com.hnly.provincial.entity.shiyong.ShiYongVO;
+import com.hnly.provincial.service.shiyong.IShiYongService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,26 +24,26 @@ import java.util.List;
  * @since 2021-09-14
  */
 @Service
-public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> implements IShiyongService {
+public class ShiYongServiceImpl extends ServiceImpl<ShiYongMapper, ShiYong> implements IShiYongService {
 
     @Override
-    public TableDataUtils<List<ShiyongVO>> findListByPage(ShiyongVO shiyongVO) {
-        Page<Shiyong> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(shiyongVO.getNumber()), Shiyong::getNumber, shiyongVO.getNumber())
-                .likeRight(!StringUtils.isEmpty(shiyongVO.getArea()), Shiyong::getArea, shiyongVO.getArea())
-                .likeRight(!StringUtils.isEmpty(shiyongVO.getIdNumber()), Shiyong::getIdNumber, shiyongVO.getIdNumber())
+    public TableDataUtils<List<ShiYongVO>> findListByPage(ShiYongVO shiyongVO) {
+        Page<ShiYong> page = lambdaQuery()
+                .likeRight(!StringUtils.isEmpty(shiyongVO.getNumber()), ShiYong::getNumber, shiyongVO.getNumber())
+                .likeRight(!StringUtils.isEmpty(shiyongVO.getArea()), ShiYong::getArea, shiyongVO.getArea())
+                .likeRight(!StringUtils.isEmpty(shiyongVO.getIdNumber()), ShiYong::getIdNumber, shiyongVO.getIdNumber())
                 .page(shiyongVO.page());
-        List<ShiyongVO> shiyongVOs = Conversion.changeList(page.getRecords(), ShiyongVO.class);
-        return TableDataUtils.success(page.getTotal(), shiyongVOs);
+        List<ShiYongVO> shiYongVOList = Conversion.changeList(page.getRecords(), ShiYongVO.class);
+        return TableDataUtils.success(page.getTotal(), shiYongVOList);
     }
 
     @Override
-    public boolean add(ShiyongVO shiyongVO) {
+    public boolean add(ShiYongVO shiyongVO) {
         checkNumber(shiyongVO.getId(), shiyongVO.getNumber());
         checkArea(shiyongVO.getId(), shiyongVO.getArea());
         checkIdNumber(shiyongVO.getId(), shiyongVO.getIdNumber());
-        Shiyong shiyong = Conversion.changeOne(shiyongVO, Shiyong.class);
-        baseMapper.insert(shiyong);
+        ShiYong shiYong = Conversion.changeOne(shiyongVO, ShiYong.class);
+        baseMapper.insert(shiYong);
         return true;
     }
 
@@ -54,12 +54,12 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
     }
 
     @Override
-    public boolean updateData(ShiyongVO shiyongVO) {
+    public boolean updateData(ShiYongVO shiyongVO) {
         checkNumber(shiyongVO.getId(), shiyongVO.getNumber());
         checkArea(shiyongVO.getId(), shiyongVO.getArea());
         checkIdNumber(shiyongVO.getId(), shiyongVO.getIdNumber());
-        Shiyong shiyong = Conversion.changeOne(shiyongVO, Shiyong.class);
-        baseMapper.updateById(shiyong);
+        ShiYong shiYong = Conversion.changeOne(shiyongVO, ShiYong.class);
+        baseMapper.updateById(shiYong);
         return true;
     }
 
@@ -72,8 +72,8 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
      * @throws MyException 自定义异常
      */
     private void checkIdNumber(Long id, String idNumber) throws MyException {
-        int count = lambdaQuery().eq(Shiyong::getIdNumber, idNumber)
-                .ne(id != null, Shiyong::getId, id).count();
+        int count = lambdaQuery().eq(ShiYong::getIdNumber, idNumber)
+                .ne(id != null, ShiYong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.CARID_EXIST);
         }
@@ -88,8 +88,8 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
      * @throws MyException 自定义异常
      */
     private void checkArea(Long id, String area) throws MyException {
-        int count = lambdaQuery().eq(Shiyong::getArea, area)
-                .ne(id != null, Shiyong::getId, id).count();
+        int count = lambdaQuery().eq(ShiYong::getArea, area)
+                .ne(id != null, ShiYong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.AREA_EXIST);
         }
@@ -104,16 +104,16 @@ public class ShiyongServiceImpl extends ServiceImpl<ShiyongMapper, Shiyong> impl
      * @throws MyException 自定义异常
      */
     private void checkNumber(Long id, String number) throws MyException {
-        int count = lambdaQuery().eq(Shiyong::getNumber, number)
-                .ne(id != null, Shiyong::getId, id).count();
+        int count = lambdaQuery().eq(ShiYong::getNumber, number)
+                .ne(id != null, ShiYong::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.NUMBER_EXIST);
         }
     }
 
     @Override
-    public ShiyongVO findById(Long id) {
-        Shiyong shiyong = baseMapper.selectById(id);
-        return Conversion.changeOne(shiyong, ShiyongVO.class);
+    public ShiYongVO findById(Long id) {
+        ShiYong shiyong = baseMapper.selectById(id);
+        return Conversion.changeOne(shiyong, ShiYongVO.class);
     }
 }

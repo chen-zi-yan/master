@@ -24,9 +24,9 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("t_shiyong")
-@Schema(name = "ShiyongVO", description = "使用权证")
-public class ShiyongVO extends PageWhere<Shiyong> implements Serializable {
+@TableName("t_shi_yong")
+@Schema(name = "ShiYongVO", description = "使用权证")
+public class ShiYongVO extends PageWhere<ShiYong> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

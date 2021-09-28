@@ -31,8 +31,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     public TableDataUtils<List<MenuVO>> findListByPage(MenuVO menuVO) {
         Page<Menu> page = lambdaQuery().page(menuVO.page());
-        List<MenuVO> menuVOs = Conversion.changeList(page.getRecords(), MenuVO.class);
-        return TableDataUtils.success(page.getTotal(), menuVOs);
+        List<MenuVO> menuVOList = Conversion.changeList(page.getRecords(), MenuVO.class);
+        return TableDataUtils.success(page.getTotal(), menuVOList);
     }
 
     @Override
@@ -65,19 +65,19 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     public List<MenuVO> getMenuAll() {
         List<Menu> list = lambdaQuery().eq(Menu::getType, 1).isNull(Menu::getParentKey).orderByAsc(Menu::getSort).list();
-        List<MenuVO> menuVOS = Conversion.changeList(list, MenuVO.class);
-        for (MenuVO menuVO : menuVOS) {
+        List<MenuVO> menuVOList = Conversion.changeList(list, MenuVO.class);
+        for (MenuVO menuVO : menuVOList) {
             List<Menu> children = lambdaQuery().eq(Menu::getParentKey, menuVO.getKey()).orderByAsc(Menu::getSort).list();
-            List<MenuVO> childrenVOS = Conversion.changeList(children, MenuVO.class);
-            menuVO.setChildren(childrenVOS);
+            List<MenuVO> childrenVOList = Conversion.changeList(children, MenuVO.class);
+            menuVO.setChildren(childrenVOList);
         }
-        return menuVOS;
+        return menuVOList;
     }
 
     @Override
     public List<MenuVO> getUserMenu() {
         User user = commonUser.getUser();
-        if (user.getUsername().equals("admin")) {
+        if ("admin".equals(user.getUsername())) {
             return getMenuAll();
         }
         List<MenuVO> menus = baseMapper.getUserMenu(user.getQuanxian());

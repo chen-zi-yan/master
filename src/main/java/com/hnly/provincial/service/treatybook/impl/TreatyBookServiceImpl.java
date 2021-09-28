@@ -31,8 +31,8 @@ public class TreatyBookServiceImpl extends ServiceImpl<TreatyBookMapper, TreatyB
                 .likeRight(!StringUtils.isEmpty(treatyBookVO.getPartyb()), TreatyBook::getPartyb, treatyBookVO.getPartyb())
                 .likeRight(!StringUtils.isEmpty(treatyBookVO.getName()), TreatyBook::getName, treatyBookVO.getName())
                 .page(treatyBookVO.page());
-        List<TreatyBookVO> treatyBookVOs = Conversion.changeList(page.getRecords(), TreatyBookVO.class);
-        return TableDataUtils.success(page.getTotal(), treatyBookVOs);
+        List<TreatyBookVO> treatyBookVOList = Conversion.changeList(page.getRecords(), TreatyBookVO.class);
+        return TableDataUtils.success(page.getTotal(), treatyBookVOList);
     }
 
     @Override

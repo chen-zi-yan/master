@@ -2,8 +2,8 @@ package com.hnly.provincial.controller.shiyong;
 
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.utils.TableDataUtils;
-import com.hnly.provincial.entity.shiyong.ShiyongVO;
-import com.hnly.provincial.service.shiyong.IShiyongService;
+import com.hnly.provincial.entity.shiyong.ShiYongVO;
+import com.hnly.provincial.service.shiyong.IShiYongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -24,42 +24,42 @@ import java.util.List;
 @Slf4j
 @Tag(name = "使用权证")
 @RestController
-@RequestMapping("shiyong")
-public class ShiyongController {
+@RequestMapping("shiYong")
+public class ShiYongController {
 
     @Resource
-    private IShiyongService shiyongService;
+    private IShiYongService shiYongService;
 
     @Operation(summary = "新增使用权证")
     @PostMapping()
-    public JsonBean<String> add(@RequestBody @Validated ShiyongVO shiyongVO) {
-        shiyongService.add(shiyongVO);
+    public JsonBean<String> add(@RequestBody @Validated ShiYongVO shiYongVO) {
+        shiYongService.add(shiYongVO);
         return JsonBean.success();
     }
 
     @Operation(summary = "删除使用权证")
     @DeleteMapping("{id}")
     public JsonBean<String> delete(@PathVariable("id") Long id) {
-        shiyongService.delete(id);
+        shiYongService.delete(id);
         return JsonBean.success();
     }
 
     @Operation(summary = "更新使用权证")
     @PutMapping()
-    public JsonBean<String> update(@RequestBody @Validated ShiyongVO shiyongVO) {
-        shiyongService.updateData(shiyongVO);
+    public JsonBean<String> update(@RequestBody @Validated ShiYongVO shiYongVO) {
+        shiYongService.updateData(shiYongVO);
         return JsonBean.success();
     }
 
     @Operation(summary = "查询使用权证分页数据")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<ShiyongVO>>> findListByPage(ShiyongVO shiyongVO) {
-        return JsonBean.success(shiyongService.findListByPage(shiyongVO));
+    public JsonBean<TableDataUtils<List<ShiYongVO>>> findListByPage(ShiYongVO shiYongVO) {
+        return JsonBean.success(shiYongService.findListByPage(shiYongVO));
     }
 
     @Operation(summary = "id查询使用权证")
     @GetMapping("{id}")
-    public JsonBean<ShiyongVO> findById(@PathVariable Long id) {
-        return JsonBean.success(shiyongService.findById(id));
+    public JsonBean<ShiYongVO> findById(@PathVariable Long id) {
+        return JsonBean.success(shiYongService.findById(id));
     }
 }

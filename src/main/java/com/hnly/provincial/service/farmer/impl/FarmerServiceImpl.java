@@ -48,8 +48,8 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .likeRight(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
                 .likeRight(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
                 .page(farmerVO.page());
-        List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
-        for (FarmerVO vo : farmerVOs) {
+        List<FarmerVO> farmerVOList = Conversion.changeList(page.getRecords(), FarmerVO.class);
+        for (FarmerVO vo : farmerVOList) {
             if (!StringUtils.isEmpty(vo.getPhone())){
                 vo.setPhoneHidden(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
             }
@@ -62,7 +62,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
             vo.setCountyName(allAreaName.get("xian"));
             vo.setCityName(allAreaName.get("shi"));
         }
-        return TableDataUtils.success(page.getTotal(), farmerVOs);
+        return TableDataUtils.success(page.getTotal(), farmerVOList);
     }
 
     @Override

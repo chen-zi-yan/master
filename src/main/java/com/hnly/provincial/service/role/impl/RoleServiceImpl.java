@@ -43,8 +43,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         Page<Role> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(roleVO.getRoleName()), Role::getRoleName, roleVO.getRoleName())
                 .page(roleVO.page());
-        List<RoleVO> roleVOs = Conversion.changeList(page.getRecords(), RoleVO.class);
-        return TableDataUtils.success(page.getTotal(), roleVOs);
+        List<RoleVO> roleVOList = Conversion.changeList(page.getRecords(), RoleVO.class);
+        return TableDataUtils.success(page.getTotal(), roleVOList);
     }
 
     @Override

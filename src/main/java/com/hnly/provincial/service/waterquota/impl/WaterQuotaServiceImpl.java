@@ -39,15 +39,15 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
                 .likeRight(!StringUtils.isEmpty(waterQuotaVO.getCode()), WaterQuota::getCode, waterQuotaVO.getCode())
                 .eq(waterQuotaVO.getYear() != 0, WaterQuota::getYear, waterQuotaVO.getYear())
                 .page(waterQuotaVO.page());
-        List<WaterQuotaVO> waterQuotaVOs = Conversion.changeList(page.getRecords(), WaterQuotaVO.class);
-        for (WaterQuotaVO vo : waterQuotaVOs) {
+        List<WaterQuotaVO> waterQuota = Conversion.changeList(page.getRecords(), WaterQuotaVO.class);
+        for (WaterQuotaVO vo : waterQuota) {
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setVillageName(allAreaName.get("cun"));
             vo.setTownshipName(allAreaName.get("xiang"));
             vo.setCountyName(allAreaName.get("xian"));
             vo.setCityName(allAreaName.get("shi"));
         }
-        return TableDataUtils.success(page.getTotal(), waterQuotaVOs);
+        return TableDataUtils.success(page.getTotal(), waterQuota);
     }
 
     @Override

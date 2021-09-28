@@ -37,15 +37,15 @@ public class RechargeRecordsServiceImpl extends ServiceImpl<RechargeRecordsMappe
 
         IPage<RechargeRecordsVO> page =
                 rechargeRecordsMapper.selectData(rechargeRecordsVO.page(), rechargeRecordsVO.getCode(), rechargeRecordsVO.getName());
-        List<RechargeRecordsVO> RechargeRecords = Conversion.changeList(page.getRecords(), RechargeRecordsVO.class);
-        for (RechargeRecordsVO dto : RechargeRecords) {
+        List<RechargeRecordsVO> rechargeRecordsVOList = Conversion.changeList(page.getRecords(), RechargeRecordsVO.class);
+        for (RechargeRecordsVO dto : rechargeRecordsVOList) {
             Map<String, String> allName = iAreaService.getAllAreaName(dto.getCode());
             dto.setVillageName(allName.get("cun"));
             dto.setTownshipName(allName.get("xiang"));
             dto.setCountyName(allName.get("xian"));
             dto.setCityName(allName.get("shi"));
         }
-        return TableDataUtils.success(page.getTotal(), RechargeRecords);
+        return TableDataUtils.success(page.getTotal(), rechargeRecordsVOList);
     }
 
 

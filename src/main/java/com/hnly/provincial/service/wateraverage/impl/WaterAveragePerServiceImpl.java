@@ -38,13 +38,13 @@ public class WaterAveragePerServiceImpl extends ServiceImpl<WaterAveragePerMappe
                 .eq(!StringUtils.isEmpty(waterAveragePerVO.getYear()), WaterAveragePer::getYear, waterAveragePerVO.getYear())
                 .likeRight(!StringUtils.isEmpty(waterAveragePerVO.getAreaCode()), WaterAveragePer::getAreaCode, waterAveragePerVO.getAreaCode())
                 .page(waterAveragePerVO.page());
-        List<WaterAveragePerVO> waterAveragePerVOs = Conversion.changeList(page.getRecords(), WaterAveragePerVO.class);
-        for (WaterAveragePerVO vo : waterAveragePerVOs) {
+        List<WaterAveragePerVO> waterAveragePerVOList = Conversion.changeList(page.getRecords(), WaterAveragePerVO.class);
+        for (WaterAveragePerVO vo : waterAveragePerVOList) {
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getAreaCode());
             vo.setCityName(allAreaName.get("shi"));
             vo.setCountyName(allAreaName.get("xian"));
         }
-        return TableDataUtils.success(page.getTotal(), waterAveragePerVOs);
+        return TableDataUtils.success(page.getTotal(), waterAveragePerVOList);
     }
 
     @Override

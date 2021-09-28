@@ -41,15 +41,15 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
                 .likeRight(!StringUtils.isEmpty(deviceVO.getCode()), Device::getCode, deviceVO.getCode())
                 .likeRight(!StringUtils.isEmpty(deviceVO.getDevSn()), Device::getDevSn, deviceVO.getDevSn())
                 .page(deviceVO.page());
-        List<DeviceVO> deviceVOs = Conversion.changeList(page.getRecords(), DeviceVO.class);
-        for (DeviceVO vo : deviceVOs) {
+        List<DeviceVO> deviceVOList = Conversion.changeList(page.getRecords(), DeviceVO.class);
+        for (DeviceVO vo : deviceVOList) {
             Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
             vo.setVillageName(allAreaName.get("cun"));
             vo.setTownshipName(allAreaName.get("xiang"));
             vo.setCountyName(allAreaName.get("xian"));
             vo.setCityName(allAreaName.get("shi"));
         }
-        return TableDataUtils.success(page.getTotal(), deviceVOs);
+        return TableDataUtils.success(page.getTotal(), deviceVOList);
     }
 
     @Override

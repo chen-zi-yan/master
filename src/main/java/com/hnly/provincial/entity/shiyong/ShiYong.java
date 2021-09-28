@@ -21,9 +21,9 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("t_shiyong")
-@Schema(name = "Shiyong", description = "使用权证")
-public class Shiyong implements Serializable {
+@TableName("t_shi_yong")
+@Schema(name = "ShiYong", description = "使用权证")
+public class ShiYong implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

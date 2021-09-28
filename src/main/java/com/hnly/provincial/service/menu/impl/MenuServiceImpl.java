@@ -64,10 +64,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     public List<MenuVO> getMenuAll() {
-        List<Menu> list = lambdaQuery().eq(Menu::getType, 1).isNull(Menu::getParentKey).list();
+        List<Menu> list = lambdaQuery().eq(Menu::getType, 1).isNull(Menu::getParentKey).orderByAsc(Menu::getSort).list();
         List<MenuVO> menuVOS = Conversion.changeList(list, MenuVO.class);
         for (MenuVO menuVO : menuVOS) {
-            List<Menu> children = lambdaQuery().eq(Menu::getParentKey, menuVO.getKey()).list();
+            List<Menu> children = lambdaQuery().eq(Menu::getParentKey, menuVO.getKey()).orderByAsc(Menu::getSort).list();
             List<MenuVO> childrenVOS = Conversion.changeList(children, MenuVO.class);
             menuVO.setChildren(childrenVOS);
         }

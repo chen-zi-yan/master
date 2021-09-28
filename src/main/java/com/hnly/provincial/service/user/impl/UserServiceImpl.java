@@ -16,6 +16,7 @@ import com.hnly.provincial.service.user.IUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         User user1 = Conversion.changeOne(user, User.class);
+        user1.setCreatetime(new Date());
         //密码MD5加密
         user1.setPassword(Md5Utils.getMD5(user1.getPassword()));
         return super.save(user1);
@@ -56,6 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean updateUser(UserVO userVO) {
         User user = Conversion.changeOne(userVO, User.class);
+        user.setUpdatetime(new Date());
         return updateById(user);
     }
 
@@ -64,6 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = new User();
         user.setId(id);
         user.setStatus(type);
+        user.setUpdatetime(new Date());
         return updateById(user);
     }
 

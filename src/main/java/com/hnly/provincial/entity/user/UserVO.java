@@ -77,6 +77,8 @@ public class UserVO extends PageWhere<User> implements Serializable {
     @Schema(description = "权限id")
     private Long quanxian;
 
+    private String quanxianName;
+
     @Schema(description = "创建时间")
     private Date createtime;
 

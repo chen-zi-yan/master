@@ -63,4 +63,12 @@ public interface IRoleService extends IService<Role> {
      * @return 角色列表数据
      */
     List<Role> findList();
+
+    /**
+     * 获取权限名称
+     *
+     * @param quanxian id
+     * @return 权限名称
+     */
+    String getName(Long quanxian);
 }

@@ -73,7 +73,16 @@ public interface IMenuService extends IService<Menu> {
 
     /**
      * 获取按钮权限
+     *
      * @return 用户按钮权限
      */
     List<MenuVO> getButtonRole();
+
+    /**
+     * 查找上级id
+     *
+     * @param id 需要查找的id
+     * @return 存在返回id <br/> 不存在返回null
+     */
+    Long getParentId(Long id);
 }

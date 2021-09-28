@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @Operation(summary = "分页获取用户信息")
-    @PostMapping
+    @GetMapping
     public JsonBean<TableDataUtils<List<UserVO>>> getPage(UserVO vo) {
         return JsonBean.success(userService.getPage(vo));
     }

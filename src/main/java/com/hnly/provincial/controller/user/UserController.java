@@ -58,6 +58,7 @@ public class UserController {
             String sign = TokenUtil.sign(login);
             SessionVO vo = new SessionVO();
             vo.setToken(sign);
+            vo.setName(login.getName());
             vo.setValidPeriod(TokenUtil.EXPIRE_TIME);
             return JsonBean.success(vo);
         }

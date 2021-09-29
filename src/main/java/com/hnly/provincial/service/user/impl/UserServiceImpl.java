@@ -65,6 +65,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean updateUser(UserVO userVO) {
         User user = Conversion.changeOne(userVO, User.class);
+        if (user.getCode() != null) {
+            user.setAnge(areaService.getNameByCode(user.getCode()));
+        }
         user.setUpdatetime(new Date());
         return updateById(user);
     }

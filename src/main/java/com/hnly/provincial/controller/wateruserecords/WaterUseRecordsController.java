@@ -45,7 +45,7 @@ public class WaterUseRecordsController {
     @Tag(name = "统计")
     @Operation(summary = "统计这年与上年每月的总用水量")
     @GetMapping("getMonthSumWater")
-    public JsonBean<MonthSunWaterVO> getMonthSumWater(String code) {
+    public JsonBean<MonthSumWaterVO> getMonthSumWater(String code) {
         if (StringUtils.isEmpty(code)) {
             code = commonUser.getUserCode();
         }
@@ -54,12 +54,12 @@ public class WaterUseRecordsController {
 
     @Tag(name = "统计")
     @Operation(summary = "统计今年累计用水量和今年与去年累计用水量的差值")
-    @GetMapping("getYearSunWater")
-    public JsonBean<YearSunWaterVO> getYearSunWater(String code) {
+    @GetMapping("getYearSumWater")
+    public JsonBean<YearSumWaterVO> getYearSumWater(String code) {
         if (StringUtils.isEmpty(code)) {
             code = commonUser.getUserCode();
         }
-        return JsonBean.success(waterUseRecordsService.getYearSunWater(code));
+        return JsonBean.success(waterUseRecordsService.getYearSumWater(code));
     }
 
     @Tag(name = "统计")

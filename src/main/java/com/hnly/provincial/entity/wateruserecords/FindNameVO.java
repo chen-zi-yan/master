@@ -8,10 +8,10 @@ import lombok.Data;
  * @author : chenziyan
  * @version : 1.0
  * @Date : 2021-09-26 13:46
- * @description :
+ * @description :用水记录(入参)
  ***/
 @Data
-@Schema(name = "FindNameVO", description = "每月的用水量")
+@Schema(name = "FindNameVO", description = "用水记录(入参)")
 public class FindNameVO extends PageWhere<WaterUseRecords> {
 
     @Schema(description = "计量类型")

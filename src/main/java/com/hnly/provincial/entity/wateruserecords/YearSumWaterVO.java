@@ -11,8 +11,8 @@ import java.math.BigDecimal;
  * @Date : 2021-09-23 15:45
  ***/
 @Data
-@Schema(name = "YearSunWaterVO", description = "年累计用水量")
-public class YearSunWaterVO {
+@Schema(name = "YearSumWaterVO", description = "年累计用水量")
+public class YearSumWaterVO {
 
     @Schema(description = "今年累计用水量")
     private BigDecimal yearSum;

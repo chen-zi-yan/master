@@ -30,7 +30,7 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @param code 行政区划
      * @return 今年和去年的每月总用水量
      */
-    MonthSunWaterVO getMonthSumWater(String code);
+    MonthSumWaterVO getMonthSumWater(String code);
 
     /**
      * 获取今年的总用水量
@@ -38,7 +38,7 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @param code 区域码
      * @return 今年的累计用水量
      */
-    YearSunWaterVO getYearSunWater(String code);
+    YearSumWaterVO getYearSumWater(String code);
 
     /**
      * 获取该区域下累计已用水量\剩余水量\已用占比

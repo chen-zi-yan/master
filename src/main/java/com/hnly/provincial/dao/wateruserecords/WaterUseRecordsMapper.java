@@ -29,32 +29,33 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     List<Object> getMonthSumWater(String code, int year);
 
     /**
-     * 统计今年累计用水量和今年与去年累计用水量的差值
-     *
-     * @param code 区域规划
-     * @param year 年
-     * @return 累计用水量
-     */
-    BigDecimal getYearSumWater(String code, int year);
-
-    /**
+     * 统计今年累计用水量/去年累计用水量<br/>
      * 获取该区域下累计已用水量
      *
      * @param code 区域规划
      * @param year 年
      * @return 以区域规划分组获取已用水量
      */
-    BigDecimal getUseWater(String code, String year);
+    BigDecimal getUseWater(String code, int year);
 
     /**
      * 获取行政区划
      *
-     * @param status 行政区划类型
-     * @return 行政区划
+     * @param page 分页
+     * @param status 单位类型
+     * @param code 行政区划
+     * @return 行政区划对象
      */
     IPage<UseWaterStatisticsVO> findUnit(IPage page, String status, String code);
 
-    BigDecimal getUseWaterLimit(String year, String code);
+    /**
+     * 获取地区的用水额度
+     *
+     * @param year 年
+     * @param code 行政区划
+     * @return 该地区的用水额度
+     */
+    BigDecimal getUseWaterLimit(int year, String code);
 
     /**
      * 查询用水记录表分页数据

@@ -83,4 +83,10 @@
             </if>
         </where>
     </select>
+
+    <select id="findByCode" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">
+        select name, code
+        from t_farmer
+        where code = #{code}
+    </select>
 </mapper>

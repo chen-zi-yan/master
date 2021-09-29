@@ -49,9 +49,9 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     /**
      * 获取行政区划
      *
-     * @param page 分页
+     * @param page   分页
      * @param status 单位类型
-     * @param code 行政区划
+     * @param code   行政区划
      * @return 行政区划对象
      */
     IPage<UseWaterStatisticsVO> findUnit(IPage page, String status, String code);
@@ -66,7 +66,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     BigDecimal getUseWaterLimit(String year, String code);
 
     /**
-     * 查询用水记录表分页数据
+     * 查询区域用水记录表分页数据
      *
      * @param page       分页
      * @param code       区域规划
@@ -76,4 +76,13 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return WaterUseRecordsVO对象
      */
     IPage<WaterUseRecordsVO> findListByPage(@Param("page") IPage page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("deviceName") String deviceName, @Param("type") String type);
+
+    /**
+     * 查询农户用水记录表分页数据
+     *
+     * @param page 分页
+     * @param code 行政区划
+     * @return 返回农户对象
+     */
+    IPage<UseWaterStatisticsVO> findByCode(IPage page, String code);
 }

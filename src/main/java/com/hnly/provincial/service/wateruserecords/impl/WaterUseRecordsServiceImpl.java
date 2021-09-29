@@ -76,18 +76,44 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         String year = checkYear(useWaterStatisticsVO.getYear());
         String code = commonUser.code(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
-        IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
-        for (UseWaterStatisticsVO vo : areaList.getRecords()) {
-            BigDecimal useWaterLimit = checkUseWaterLimit(year, vo.getCode());
-            BigDecimal useWater = checkUseWater(year, vo.getCode());
-            vo.setName(checkName(code, vo.getCode()));
-            vo.setUseWaterLimit(useWaterLimit);
-            vo.setUseWater(useWater);
-            vo.setSurplus(useWaterLimit.subtract(useWater));
-            vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
-        }
-        return TableDataUtils.success(areaList.getTotal(), areaList.getRecords());
+
+        Long total = null;
+        TableDataUtils<List<UseWaterStatisticsVO>> listTableDataUtils = checkSumWater(useWaterStatisticsVO, year, code, status, total);
+        return TableDataUtils.success(listTableDataUtils.getTotal(), listTableDataUtils.getData());
     }
+
+    private TableDataUtils<List<UseWaterStatisticsVO>> checkSumWater(UseWaterStatisticsVO useWaterStatisticsVO, String year, String code, String status, Long total) {
+        TableDataUtils<List<UseWaterStatisticsVO>> listTableDataUtils = new TableDataUtils<>(total, null);
+        if (status.equals(code)) {
+            IPage<UseWaterStatisticsVO> farmerList = baseMapper.findByCode(useWaterStatisticsVO.page(), code);
+            for (UseWaterStatisticsVO vo : farmerList.getRecords()) {
+                //自定义数据进行计算
+                BigDecimal useWaterLimit = new BigDecimal("10");
+                BigDecimal useWater = new BigDecimal("5");
+                vo.setUseWaterLimit(useWaterLimit);
+                vo.setUseWater(useWater);
+                vo.setSurplus(useWaterLimit.subtract(useWater));
+                vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
+            }
+            listTableDataUtils.setTotal(farmerList.getTotal());
+            listTableDataUtils.setData(farmerList.getRecords());
+        } else {
+            IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
+            for (UseWaterStatisticsVO vo : areaList.getRecords()) {
+                BigDecimal useWaterLimit = checkUseWaterLimit(year, vo.getCode());
+                BigDecimal useWater = checkUseWater(year, vo.getCode());
+                vo.setName(checkName(code, vo.getCode()));
+                vo.setUseWaterLimit(useWaterLimit);
+                vo.setUseWater(useWater);
+                vo.setSurplus(useWaterLimit.subtract(useWater));
+                vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
+            }
+            listTableDataUtils.setTotal(areaList.getTotal());
+            listTableDataUtils.setData(areaList.getRecords());
+        }
+        return listTableDataUtils;
+    }
+
 
     /**
      * 计算已用水量的百分比
@@ -99,8 +125,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     private BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio;
         if (!useWaterLimit.equals(BigDecimal.ZERO)) {
-            ratio = useWater.divide(useWaterLimit,2, RoundingMode.DOWN);
-        }else {
+            ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN);
+        } else {
             ratio = new BigDecimal(0);
         }
         return ratio;
@@ -173,8 +199,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             return "1";
         } else if (code.length() <= 6) {
             return "2";
-        } else if (code.length() >= 9) {
+        } else if (code.length() < 12) {
             return "3";
+        } else if (code.length() == 12) {
+            return code;
         }
         return "0";
     }

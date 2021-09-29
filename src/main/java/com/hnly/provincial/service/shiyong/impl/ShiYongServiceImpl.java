@@ -27,22 +27,22 @@ import java.util.List;
 public class ShiYongServiceImpl extends ServiceImpl<ShiYongMapper, ShiYong> implements IShiYongService {
 
     @Override
-    public TableDataUtils<List<ShiYongVO>> findListByPage(ShiYongVO shiyongVO) {
+    public TableDataUtils<List<ShiYongVO>> findListByPage(ShiYongVO shiYongVO) {
         Page<ShiYong> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(shiyongVO.getNumber()), ShiYong::getNumber, shiyongVO.getNumber())
-                .likeRight(!StringUtils.isEmpty(shiyongVO.getArea()), ShiYong::getArea, shiyongVO.getArea())
-                .likeRight(!StringUtils.isEmpty(shiyongVO.getIdNumber()), ShiYong::getIdNumber, shiyongVO.getIdNumber())
-                .page(shiyongVO.page());
+                .likeRight(!StringUtils.isEmpty(shiYongVO.getNumber()), ShiYong::getNumber, shiYongVO.getNumber())
+                .likeRight(!StringUtils.isEmpty(shiYongVO.getArea()), ShiYong::getArea, shiYongVO.getArea())
+                .likeRight(!StringUtils.isEmpty(shiYongVO.getIdNumber()), ShiYong::getIdNumber, shiYongVO.getIdNumber())
+                .page(shiYongVO.page());
         List<ShiYongVO> shiYongVOList = Conversion.changeList(page.getRecords(), ShiYongVO.class);
         return TableDataUtils.success(page.getTotal(), shiYongVOList);
     }
 
     @Override
-    public boolean add(ShiYongVO shiyongVO) {
-        checkNumber(shiyongVO.getId(), shiyongVO.getNumber());
-        checkArea(shiyongVO.getId(), shiyongVO.getArea());
-        checkIdNumber(shiyongVO.getId(), shiyongVO.getIdNumber());
-        ShiYong shiYong = Conversion.changeOne(shiyongVO, ShiYong.class);
+    public boolean add(ShiYongVO shiYongVO) {
+        checkNumber(shiYongVO.getId(), shiYongVO.getNumber());
+        checkArea(shiYongVO.getId(), shiYongVO.getArea());
+        checkIdNumber(shiYongVO.getId(), shiYongVO.getIdNumber());
+        ShiYong shiYong = Conversion.changeOne(shiYongVO, ShiYong.class);
         baseMapper.insert(shiYong);
         return true;
     }
@@ -54,11 +54,11 @@ public class ShiYongServiceImpl extends ServiceImpl<ShiYongMapper, ShiYong> impl
     }
 
     @Override
-    public boolean updateData(ShiYongVO shiyongVO) {
-        checkNumber(shiyongVO.getId(), shiyongVO.getNumber());
-        checkArea(shiyongVO.getId(), shiyongVO.getArea());
-        checkIdNumber(shiyongVO.getId(), shiyongVO.getIdNumber());
-        ShiYong shiYong = Conversion.changeOne(shiyongVO, ShiYong.class);
+    public boolean updateData(ShiYongVO shiYongVO) {
+        checkNumber(shiYongVO.getId(), shiYongVO.getNumber());
+        checkArea(shiYongVO.getId(), shiYongVO.getArea());
+        checkIdNumber(shiYongVO.getId(), shiYongVO.getIdNumber());
+        ShiYong shiYong = Conversion.changeOne(shiYongVO, ShiYong.class);
         baseMapper.updateById(shiYong);
         return true;
     }

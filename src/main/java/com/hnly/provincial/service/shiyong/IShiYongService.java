@@ -20,18 +20,18 @@ public interface IShiYongService extends IService<ShiYong> {
     /**
      * 查询使用权证分页数据
      *
-     * @param shiyongVO 条件
+     * @param shiYongVO 条件
      * @return 分页结果
      */
-    TableDataUtils<List<ShiYongVO>> findListByPage(ShiYongVO shiyongVO);
+    TableDataUtils<List<ShiYongVO>> findListByPage(ShiYongVO shiYongVO);
 
     /**
      * 添加使用权证
      *
-     * @param shiyongVO
+     * @param shiYongVO
      * @return false 失败   true 成功
      */
-    boolean add(ShiYongVO shiyongVO);
+    boolean add(ShiYongVO shiYongVO);
 
     /**
      * 删除使用权证
@@ -44,16 +44,16 @@ public interface IShiYongService extends IService<ShiYong> {
     /**
      * 修改使用权证
      *
-     * @param shiyongVO
+     * @param shiYongVO
      * @return false 失败   true 成功
      */
-    boolean updateData(ShiYongVO shiyongVO);
+    boolean updateData(ShiYongVO shiYongVO);
 
     /**
      * id查询数据
      *
      * @param id id
-     * @return ShiyongVO
+     * @return shiYongVO
      */
     ShiYongVO findById(Long id);
 }

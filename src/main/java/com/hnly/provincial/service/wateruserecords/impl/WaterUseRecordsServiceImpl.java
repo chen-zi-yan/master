@@ -66,7 +66,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         BigDecimal yearSumWater = checkFarmerSumWater(baseMapper.getYearSumWater(code, DateTool.getYear()));
         BigDecimal lastYearSumWater = checkFarmerSumWater(baseMapper.getYearSumWater(code, DateTool.getLastYear()));
         YearSumWaterVO yearSumWaterVO = new YearSumWaterVO();
-        yearSumWaterVO.setYearSum(yearSumWater.setScale(2, RoundingMode.DOWN));
+        yearSumWaterVO.setYearSum(yearSumWater);
         yearSumWaterVO.setDiscrepancy(yearSumWater.subtract(lastYearSumWater));
         return yearSumWaterVO;
     }

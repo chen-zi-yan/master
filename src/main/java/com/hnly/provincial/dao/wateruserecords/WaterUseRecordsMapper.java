@@ -2,6 +2,7 @@ package com.hnly.provincial.dao.wateruserecords;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
@@ -54,7 +55,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param code   行政区划
      * @return 行政区划对象
      */
-    IPage<UseWaterStatisticsVO> findUnit(IPage page, String status, String code);
+    IPage<UseWaterStatisticsVO> findUnit(Page<WaterUseRecords> page, String status, String code);
 
     /**
      * 获取地区的用水额度
@@ -75,7 +76,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param type       设备类型
      * @return WaterUseRecordsVO对象
      */
-    IPage<WaterUseRecordsVO> findListByPage(@Param("page") IPage page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("deviceName") String deviceName, @Param("type") String type);
+    IPage<WaterUseRecordsVO> findListByPage(@Param("page") Page<WaterUseRecords> page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("deviceName") String deviceName, @Param("type") String type);
 
     /**
      * 查询农户用水记录表分页数据
@@ -84,5 +85,5 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param code 行政区划
      * @return 返回农户对象
      */
-    IPage<UseWaterStatisticsVO> findByCode(IPage page, String code);
+    IPage<UseWaterStatisticsVO> findByCode(Page<WaterUseRecords> page, String code);
 }

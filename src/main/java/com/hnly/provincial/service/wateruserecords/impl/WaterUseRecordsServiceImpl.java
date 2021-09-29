@@ -2,6 +2,7 @@ package com.hnly.provincial.service.wateruserecords.impl;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.date.DateTool;
 import com.hnly.provincial.comm.user.CommonUser;
@@ -76,16 +77,25 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         String year = checkYear(useWaterStatisticsVO.getYear());
         String code = commonUser.code(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
-
         Long total = null;
-        TableDataUtils<List<UseWaterStatisticsVO>> listTableDataUtils = checkSumWater(useWaterStatisticsVO, year, code, status, total);
+        TableDataUtils<List<UseWaterStatisticsVO>> listTableDataUtils = checkSumWater(useWaterStatisticsVO.page(), year, code, status, total);
         return TableDataUtils.success(listTableDataUtils.getTotal(), listTableDataUtils.getData());
     }
 
-    private TableDataUtils<List<UseWaterStatisticsVO>> checkSumWater(UseWaterStatisticsVO useWaterStatisticsVO, String year, String code, String status, Long total) {
+    /**
+     *获取已用水量额度,可用水额度-计算出-剩余用水,用水量的占比
+     *
+     * @param page 分页
+     * @param year 年
+     * @param code 区域规划
+     * @param status 区域划分类型
+     * @param total 列表数量
+     * @return 用水列表
+     */
+    private TableDataUtils<List<UseWaterStatisticsVO>> checkSumWater(Page<WaterUseRecords> page, String year, String code, String status, Long total) {
         TableDataUtils<List<UseWaterStatisticsVO>> listTableDataUtils = new TableDataUtils<>(total, null);
         if (status.equals(code)) {
-            IPage<UseWaterStatisticsVO> farmerList = baseMapper.findByCode(useWaterStatisticsVO.page(), code);
+            IPage<UseWaterStatisticsVO> farmerList = baseMapper.findByCode(page, code);
             for (UseWaterStatisticsVO vo : farmerList.getRecords()) {
                 //自定义数据进行计算
                 BigDecimal useWaterLimit = new BigDecimal("10");
@@ -98,7 +108,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             listTableDataUtils.setTotal(farmerList.getTotal());
             listTableDataUtils.setData(farmerList.getRecords());
         } else {
-            IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
+            IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(page, status, code);
             for (UseWaterStatisticsVO vo : areaList.getRecords()) {
                 BigDecimal useWaterLimit = checkUseWaterLimit(year, vo.getCode());
                 BigDecimal useWater = checkUseWater(year, vo.getCode());

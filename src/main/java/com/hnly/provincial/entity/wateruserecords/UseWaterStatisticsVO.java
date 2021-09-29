@@ -13,8 +13,11 @@ import java.math.BigDecimal;
  * @description :
  ***/
 @Data
-@Schema(name = "UseWaterStatistics", description = "灌区用水统计")
+@Schema(name = "UseWaterStatisticsVO", description = "灌区用水统计")
 public class UseWaterStatisticsVO extends PageWhere<WaterUseRecords> {
+
+    @Schema(description = "农户Id")
+    private String id;
 
     @Schema(description = "年")
     private String year;

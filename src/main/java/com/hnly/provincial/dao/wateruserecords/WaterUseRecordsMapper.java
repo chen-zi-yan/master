@@ -39,7 +39,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     BigDecimal getYearSumWater(String code, int year);
 
     /**
-     * 获取该区域下累计已用水量
+     * 获取该区域下该年累计已用水量
      *
      * @param code 区域规划
      * @param year 年
@@ -58,7 +58,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     IPage<UseWaterStatisticsVO> findUnit(Page<WaterUseRecords> page, String status, String code);
 
     /**
-     * 获取地区的用水额度
+     * 获取地区该年的用水额度
      *
      * @param year 年
      * @param code 行政区划
@@ -86,4 +86,13 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return 返回农户对象
      */
     IPage<UseWaterStatisticsVO> findByCode(Page<WaterUseRecords> page, String code);
+
+    /**
+     * 获取农户该年的累计用水量
+     *
+     * @param year 年
+     * @param farmerId 农户Id
+     * @return 农户该年的累计用水量
+     */
+    BigDecimal getFarmerSumWater(String year, String farmerId);
 }

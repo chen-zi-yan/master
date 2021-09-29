@@ -51,7 +51,7 @@
     </select>
 
     <select id="findUnit" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">
-        select code
+        select name, code
         from t_area
         where status = #{status}
           and code like concat(#{code}, '%')
@@ -85,8 +85,14 @@
     </select>
 
     <select id="findByCode" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">
-        select name, code
+        select id, name, code
         from t_farmer
         where code = #{code}
+    </select>
+
+    <select id="getFarmerSumWater" resultType="java.math.BigDecimal">
+        select sum(use_water) as useWater
+        from t_water_use_records
+        where year = #{year} and farmer_id = #{farmerId}
     </select>
 </mapper>

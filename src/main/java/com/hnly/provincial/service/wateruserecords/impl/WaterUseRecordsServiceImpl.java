@@ -4,6 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hnly.provincial.comm.date.DateTool;
+import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
@@ -33,6 +34,9 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     @Resource
     private IAreaService iAreaService;
 
+    @Resource
+    private CommonUser commonUser;
+
     @Override
     public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(FindNameVO findNameVO) {
         IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(), findNameVO.getDeviceName(), findNameVO.getType());
@@ -59,22 +63,21 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public YearSumWaterVO getYearSumWater(String code) {
-        BigDecimal yearSumWater = checkUseWater(DateTool.getYear(), code);
-        BigDecimal lastYearSumWater = checkUseWater(DateTool.getLastYear(), code);
+        BigDecimal yearSumWater = baseMapper.getYearSumWater(code, DateTool.getYear()).setScale(2, RoundingMode.DOWN);
+        BigDecimal lastYearSumWater = baseMapper.getYearSumWater(code, DateTool.getLastYear()).setScale(2, RoundingMode.DOWN);
         YearSumWaterVO yearSumWaterVO = new YearSumWaterVO();
-        yearSumWaterVO.setYearSum(yearSumWater);
+        yearSumWaterVO.setYearSum(yearSumWater.setScale(2, RoundingMode.DOWN));
         yearSumWaterVO.setDiscrepancy(yearSumWater.subtract(lastYearSumWater));
         return yearSumWaterVO;
     }
 
     @Override
     public TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
-        int year = checkYear(useWaterStatisticsVO.getYear());
-        String code = checkCode(useWaterStatisticsVO.getCode());
+        String year = checkYear(useWaterStatisticsVO.getYear());
+        String code = commonUser.code(useWaterStatisticsVO.getCode());
         String status = checkStatus(code);
         IPage<UseWaterStatisticsVO> areaList = baseMapper.findUnit(useWaterStatisticsVO.page(), status, code);
-        List<UseWaterStatisticsVO> waterUseRecordsVO = Conversion.changeList(areaList.getRecords(), UseWaterStatisticsVO.class);
-        for (UseWaterStatisticsVO vo : waterUseRecordsVO) {
+        for (UseWaterStatisticsVO vo : areaList.getRecords()) {
             BigDecimal useWaterLimit = checkUseWaterLimit(year, vo.getCode());
             BigDecimal useWater = checkUseWater(year, vo.getCode());
             vo.setName(checkName(code, vo.getCode()));
@@ -83,7 +86,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
             vo.setSurplus(useWaterLimit.subtract(useWater));
             vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
         }
-        return TableDataUtils.success(areaList.getTotal(), waterUseRecordsVO);
+        return TableDataUtils.success(areaList.getTotal(), areaList.getRecords());
     }
 
     /**
@@ -110,8 +113,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param code 区域规划
      * @return 累计用水;量
      */
-    private BigDecimal checkUseWater(int year, String code) {
-        BigDecimal useWater = baseMapper.getUseWater(checkCode(code), year);
+    private BigDecimal checkUseWater(String year, String code) {
+        BigDecimal useWater = baseMapper.getUseWater(commonUser.code(code), year);
         if (useWater != null) {
             useWater = useWater.setScale(2, RoundingMode.DOWN);
         } else {
@@ -127,8 +130,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param code 区域规划
      * @return 用水量定额
      */
-    private BigDecimal checkUseWaterLimit(int year, String code) {
-        BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, checkCode(code));
+    private BigDecimal checkUseWaterLimit(String year, String code) {
+        BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, commonUser.code(code));
         if (useWaterLimit == null) {
             useWaterLimit = new BigDecimal("0");
         }
@@ -177,31 +180,15 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     /**
-     * 条件:行政区划
-     *
-     * @param code 行政区划
-     * @return 行政区划单位
-     */
-    private String checkCode(String code) {
-        if (!StringUtils.isEmpty(code)) {
-            return code.replaceAll("0+$", "");
-        } else {
-            return "41";
-        }
-    }
-
-    /**
      * 条件:年
      *
      * @param year 年
      * @return 为空返回系统年, 返回
      */
-    private int checkYear(int year) {
-        if (year == 0) {
-            return DateTool.getYear();
-        }else if ((year + "").length() != 4){
-            return DateTool.getYear();
-        }else {
+    private String checkYear(String year) {
+        if (StringUtils.isEmpty(year)) {
+            return String.valueOf(DateTool.getYear());
+        } else {
             return year;
         }
     }

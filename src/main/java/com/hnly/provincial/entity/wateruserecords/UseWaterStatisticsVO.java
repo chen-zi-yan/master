@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class UseWaterStatisticsVO extends PageWhere<WaterUseRecords> {
 
     @Schema(description = "年")
-    private Integer year;
+    private String year;
 
     @Schema(description = "单位")
     private String name;

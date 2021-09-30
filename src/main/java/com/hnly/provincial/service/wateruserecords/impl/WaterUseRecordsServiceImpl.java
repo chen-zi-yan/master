@@ -131,15 +131,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     private BigDecimal checkWaterExist(String id, String year) {
         BigDecimal farmerWaterLimit = new BigDecimal("0");
         FindFarmerWaterQuota farmerWaterLimits = baseMapper.getFarmerWaterLimit(id, year);
-        if (farmerWaterLimits == null) {
-            farmerWaterLimit = new BigDecimal("0");
-        } else {
+        if (farmerWaterLimits != null) {
             if (farmerWaterLimits.getFirstOrderTotal() == null && farmerWaterLimits.getSecondOrderTotal() != null) {
-                BigDecimal firstOrderTotal = new BigDecimal("0");
-                farmerWaterLimit = firstOrderTotal.add((farmerWaterLimits.getSecondOrderTotal()));
+                farmerWaterLimit = farmerWaterLimits.getSecondOrderTotal();
             } else if (farmerWaterLimits.getFirstOrderTotal() != null && farmerWaterLimits.getSecondOrderTotal() == null) {
-                BigDecimal secondOrderTotal = new BigDecimal("0");
-                farmerWaterLimit = farmerWaterLimits.getFirstOrderTotal().add((secondOrderTotal));
+                farmerWaterLimit = farmerWaterLimits.getFirstOrderTotal();
             } else if (farmerWaterLimits.getFirstOrderTotal() == null && farmerWaterLimits.getSecondOrderTotal() == null) {
                 farmerWaterLimit = new BigDecimal("0");
             } else if (farmerWaterLimits.getFirstOrderTotal() != null && farmerWaterLimits.getSecondOrderTotal() != null) {

@@ -129,7 +129,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 农户用水额度
      */
     private BigDecimal checkWaterExist(String id, String year) {
-        BigDecimal farmerWaterLimit = null;
+        BigDecimal farmerWaterLimit = new BigDecimal("0");
         FindFarmerWaterQuota farmerWaterLimits = baseMapper.getFarmerWaterLimit(id, year);
         if (farmerWaterLimits == null) {
             farmerWaterLimit = new BigDecimal("0");

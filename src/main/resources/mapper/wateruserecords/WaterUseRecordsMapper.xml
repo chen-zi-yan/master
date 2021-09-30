@@ -95,4 +95,10 @@
         from t_water_use_records
         where year = #{year} and farmer_id = #{farmerId}
     </select>
+
+    <select id="getFarmerWaterLimit" resultType="com.hnly.provincial.entity.wateruserecords.FindFarmerWaterQuota">
+        select first_order_total, second_order_total
+        from t_water_right_limit
+        where farmer_id = #{farmerId} and year = #{year}
+    </select>
 </mapper>

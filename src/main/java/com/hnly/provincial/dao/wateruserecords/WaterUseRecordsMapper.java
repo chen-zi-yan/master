@@ -3,6 +3,7 @@ package com.hnly.provincial.dao.wateruserecords;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hnly.provincial.entity.wateruserecords.FindFarmerWaterQuota;
 import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
 import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
@@ -90,9 +91,18 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     /**
      * 获取农户该年的累计用水量
      *
-     * @param year 年
+     * @param year     年
      * @param farmerId 农户Id
      * @return 农户该年的累计用水量
      */
     BigDecimal getFarmerSumWater(String year, String farmerId);
+
+    /**
+     * 获取农户的用水额度
+     *
+     * @param farmerId 农户id
+     * @param year     年
+     * @return 农户用水额度
+     */
+    FindFarmerWaterQuota getFarmerWaterLimit(String farmerId, String year);
 }

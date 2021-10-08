@@ -8,11 +8,14 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.shiyong.ShiYongMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.shiyong.ShiYong;
 import com.hnly.provincial.entity.shiyong.ShiYongVO;
+import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.shiyong.IShiYongService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,6 +29,9 @@ import java.util.List;
 @Service
 public class ShiYongServiceImpl extends ServiceImpl<ShiYongMapper, ShiYong> implements IShiYongService {
 
+    @Resource
+    private IAreaService iAreaService;
+
     @Override
     public TableDataUtils<List<ShiYongVO>> findListByPage(ShiYongVO shiYongVO) {
         Page<ShiYong> page = lambdaQuery()
@@ -34,6 +40,13 @@ public class ShiYongServiceImpl extends ServiceImpl<ShiYongMapper, ShiYong> impl
                 .likeRight(!StringUtils.isEmpty(shiYongVO.getIdNumber()), ShiYong::getIdNumber, shiYongVO.getIdNumber())
                 .page(shiYongVO.page());
         List<ShiYongVO> shiYongVOList = Conversion.changeList(page.getRecords(), ShiYongVO.class);
+        for (ShiYongVO vo : shiYongVOList) {
+            AreaName allAreaName = iAreaService.getAllAreaName(vo.getArea());
+            vo.setCityName(allAreaName.getShiName());
+            vo.setCountyName(allAreaName.getXianName());
+            vo.setTownshipName(allAreaName.getXiangName());
+            vo.setVillageName(allAreaName.getCunName());
+        }
         return TableDataUtils.success(page.getTotal(), shiYongVOList);
     }
 

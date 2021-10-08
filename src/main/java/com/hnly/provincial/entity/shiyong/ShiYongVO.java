@@ -33,6 +33,18 @@ public class ShiYongVO extends PageWhere<ShiYong> implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @Schema(description = "市名称")
+    private String cityName;
+
+    @Schema(description = "县名称")
+    private String countyName;
+
+    @Schema(description = "乡名称")
+    private String townshipName;
+
+    @Schema(description = "村名称")
+    private String villageName;
+
     @NotNull(message = "号不能为null")
     @NotEmpty(message = "号不能为空")
     @Schema(description = "号")

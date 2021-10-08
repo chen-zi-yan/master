@@ -31,7 +31,7 @@
                 and d.code like concat(#{code},'%')
             </if>
             <if test="name != null and name != ''">
-                and f.name like concat(#{name},'%')
+                and f.name like concat('%', #{name},'%')
             </if>
         </where>
     </select>

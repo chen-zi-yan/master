@@ -37,6 +37,8 @@ public class ShiYongServiceImpl extends ServiceImpl<ShiYongMapper, ShiYong> impl
         Page<ShiYong> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(shiYongVO.getNumber()), ShiYong::getNumber, shiYongVO.getNumber())
                 .likeRight(!StringUtils.isEmpty(shiYongVO.getArea()), ShiYong::getArea, shiYongVO.getArea())
+                .like(!StringUtils.isEmpty(shiYongVO.getPropertyOwner()), ShiYong::getPropertyOwner, shiYongVO.getPropertyOwner())
+                .like(!StringUtils.isEmpty(shiYongVO.getRightHolder()), ShiYong::getRightHolder, shiYongVO.getRightHolder())
                 .likeRight(!StringUtils.isEmpty(shiYongVO.getIdNumber()), ShiYong::getIdNumber, shiYongVO.getIdNumber())
                 .page(shiYongVO.page());
         List<ShiYongVO> shiYongVOList = Conversion.changeList(page.getRecords(), ShiYongVO.class);

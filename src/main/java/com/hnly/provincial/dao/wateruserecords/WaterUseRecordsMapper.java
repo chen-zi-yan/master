@@ -105,4 +105,13 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return 农户用水额度
      */
     FindFarmerWaterQuota getFarmerWaterLimit(String farmerId, String year);
+
+    /**
+     * 获取该区域下今日的累计用水量
+     *
+     * @param code 行政区划
+     * @param date 时间年月日
+     * @return 今日累计用水量
+     */
+    BigDecimal getTodayUseWater(String code, String date);
 }

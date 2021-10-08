@@ -101,4 +101,9 @@
         from t_water_right_limit
         where farmer_id = #{farmerId} and year = #{year}
     </select>
+
+    <select id="getTodayUseWater" resultType="java.math.BigDecimal">
+        select sum(use_water) from t_water_use_records
+        where code like concat(#{code}, '%') and Date(end_time) = #{date};
+    </select>
 </mapper>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -67,6 +68,16 @@ public class WaterUseRecordsController {
     @GetMapping("getUseWater")
     public JsonBean<TableDataUtils<List<UseWaterStatisticsVO>>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO) {
         return JsonBean.success(waterUseRecordsService.getUseWater(useWaterStatisticsVO));
+    }
+
+    @Tag(name = "统计")
+    @Operation(summary = "获取该区域今日的累计用水量")
+    @GetMapping("getTodayUseWater")
+    public JsonBean<BigDecimal> getTodayUseWater(String code) {
+        if (StringUtils.isEmpty(code)){
+            code = commonUser.getUserCode();
+        }
+        return JsonBean.success(waterUseRecordsService.getTodayUseWater(code));
     }
 
 }

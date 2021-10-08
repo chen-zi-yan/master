@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.wateruserecords.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -47,4 +48,12 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @return 累计已用水量\剩余水量\已用占比
      */
     TableDataUtils<List<UseWaterStatisticsVO>> getUseWater(UseWaterStatisticsVO useWaterStatisticsVO);
+
+    /**
+     * 获取该区域下今日的累计用水量
+     *
+     * @param code 行政区划
+     * @return 今日累计用水量
+     */
+    BigDecimal getTodayUseWater(String code);
 }

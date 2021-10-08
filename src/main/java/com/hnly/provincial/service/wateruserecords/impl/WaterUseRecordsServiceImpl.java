@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,6 +81,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         Long total = null;
         TableDataUtils<List<UseWaterStatisticsVO>> listTableDataUtils = checkSumWater(useWaterStatisticsVO.page(), year, code, status, total);
         return TableDataUtils.success(listTableDataUtils.getTotal(), listTableDataUtils.getData());
+    }
+
+    @Override
+    public BigDecimal getTodayUseWater(String code) {
+        String date = new SimpleDateFormat("yyMMdd").format(new Date());
+        return baseMapper.getTodayUseWater(code, date);
     }
 
     /**

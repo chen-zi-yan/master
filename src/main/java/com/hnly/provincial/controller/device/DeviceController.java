@@ -1,5 +1,6 @@
 package com.hnly.provincial.controller.device;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.TableDataUtils;
@@ -72,7 +73,10 @@ public class DeviceController {
     @Tag(name = "统计")
     @Operation(summary = "统计设备的数量")
     @GetMapping("getDeviceCount")
-    public JsonBean<Integer> getDeviceCount() {
-        return JsonBean.success(deviceService.lambdaQuery().likeRight(Device::getCode, commonUser.getUserCode()).count());
+    public JsonBean<Integer> getDeviceCount(String code) {
+        if (StringUtils.isEmpty(code)){
+            code = commonUser.getUserCode();
+        }
+        return JsonBean.success(deviceService.lambdaQuery().likeRight(Device::getCode, code).count());
     }
 }

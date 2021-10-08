@@ -8,6 +8,7 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.device.DeviceMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.device.Device;
 import com.hnly.provincial.entity.device.DeviceVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -43,11 +43,11 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
                 .page(deviceVO.page());
         List<DeviceVO> deviceVOList = Conversion.changeList(page.getRecords(), DeviceVO.class);
         for (DeviceVO vo : deviceVOList) {
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setVillageName(allAreaName.get("cun"));
-            vo.setTownshipName(allAreaName.get("xiang"));
-            vo.setCountyName(allAreaName.get("xian"));
-            vo.setCityName(allAreaName.get("shi"));
+            AreaName areaName = iAreaService.getAllAreaName(vo.getCode());
+            vo.setVillageName(areaName.getCunName());
+            vo.setTownshipName(areaName.getXiangName());
+            vo.setCountyName(areaName.getXianName());
+            vo.setCityName(areaName.getShiName());
         }
         return TableDataUtils.success(page.getTotal(), deviceVOList);
     }

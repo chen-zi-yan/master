@@ -8,6 +8,7 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.wateraverage.WaterAveragePerMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.wateraverage.WaterAveragePer;
 import com.hnly.provincial.entity.wateraverage.WaterAveragePerVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -40,9 +40,9 @@ public class WaterAveragePerServiceImpl extends ServiceImpl<WaterAveragePerMappe
                 .page(waterAveragePerVO.page());
         List<WaterAveragePerVO> waterAveragePerVOList = Conversion.changeList(page.getRecords(), WaterAveragePerVO.class);
         for (WaterAveragePerVO vo : waterAveragePerVOList) {
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getAreaCode());
-            vo.setCityName(allAreaName.get("shi"));
-            vo.setCountyName(allAreaName.get("xian"));
+            AreaName allAreaName = iAreaService.getAllAreaName(vo.getAreaCode());
+            vo.setCityName(allAreaName.getShiName());
+            vo.setCountyName(allAreaName.getXianName());
         }
         return TableDataUtils.success(page.getTotal(), waterAveragePerVOList);
     }

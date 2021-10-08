@@ -9,15 +9,14 @@ import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.area.AreaMapper;
 import com.hnly.provincial.entity.area.Area;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.area.AreaVO;
 import com.hnly.provincial.entity.area.CascadeVO;
 import com.hnly.provincial.service.area.IAreaService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -143,14 +142,10 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     }
 
     @Override
-    public Map<String, String> getAllAreaName(String code) {
-        Map<String, String> map = new HashMap<>();
-        map.put("shi", "");
-        map.put("xian", "");
-        map.put("xiang", "");
-        map.put("cun", "");
-        recursionAreaName(code, map);
-        return map;
+    public AreaName getAllAreaName(String code) {
+        AreaName areaName = new AreaName();
+        recursionAreaName(code, areaName);
+        return areaName;
     }
 
     @Override
@@ -181,27 +176,27 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements IA
     /**
      * 递归查询name
      */
-    public void recursionAreaName(String code, Map<String, String> map) {
+    public void recursionAreaName(String code, AreaName areaName) {
         Area one = lambdaQuery().eq(Area::getCode, code).last("limit 1").one();
         if (one != null && one.getStatus() != null) {
-            setName(one, map);
-            recursionAreaName(one.getFatherCode(), map);
+            setName(one, areaName);
+            recursionAreaName(one.getFatherCode(), areaName);
         }
     }
 
-    public void setName(Area area, Map<String, String> map) {
+    public void setName(Area area, AreaName areaName) {
         switch (area.getStatus()) {
             case "0":
-                map.put("shi", area.getName());
+                areaName.setShiName(area.getName());
                 break;
             case "1":
-                map.put("xian", area.getName());
+                areaName.setXianName(area.getName());
                 break;
             case "2":
-                map.put("xiang", area.getName());
+                areaName.setXiangName(area.getName());
                 break;
             default:
-                map.put("cun", area.getName());
+                areaName.setCunName(area.getName());
                 break;
         }
     }

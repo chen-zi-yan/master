@@ -9,6 +9,7 @@ import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.dao.wateruserecords.WaterUseRecordsMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.wateruserecords.*;
 import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.wateruserecords.IWaterUseRecordsService;
@@ -18,7 +19,6 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -42,11 +42,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(), findNameVO.getDeviceName(), findNameVO.getType());
         List<WaterUseRecordsVO> waterUseRecordsVO = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVO) {
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setCityName(allAreaName.get("shi"));
-            vo.setCountyName(allAreaName.get("xian"));
-            vo.setTownshipName(allAreaName.get("xiang"));
-            vo.setVillageName(allAreaName.get("cun"));
+            AreaName allAreaName = iAreaService.getAllAreaName(vo.getCode());
+            vo.setCityName(allAreaName.getShiName());
+            vo.setCountyName(allAreaName.getXianName());
+            vo.setTownshipName(allAreaName.getXiangName());
+            vo.setVillageName(allAreaName.getCunName());
         }
         return TableDataUtils.success(page.getTotal(), waterUseRecordsVO);
     }

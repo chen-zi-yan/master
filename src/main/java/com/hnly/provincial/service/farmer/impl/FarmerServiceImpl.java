@@ -8,6 +8,7 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.farmer.FarmerMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.farmer.Farmer;
 import com.hnly.provincial.entity.farmer.FarmerVO;
 import com.hnly.provincial.entity.ic.Ic;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -50,17 +50,17 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOList = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOList) {
-            if (!StringUtils.isEmpty(vo.getPhone())){
-                vo.setPhoneHidden(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+            if (!StringUtils.isEmpty(vo.getPhone())) {
+                vo.setPhoneHidden(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
             }
             if (!StringUtils.isEmpty(vo.getIdCard())) {
                 vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1*****$2"));
             }
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setName(allAreaName.get("cun"));
-            vo.setTownshipName(allAreaName.get("xiang"));
-            vo.setCountyName(allAreaName.get("xian"));
-            vo.setCityName(allAreaName.get("shi"));
+            AreaName allAreaName = iAreaService.getAllAreaName(vo.getCode());
+            vo.setName(allAreaName.getCunName());
+            vo.setTownshipName(allAreaName.getXiangName());
+            vo.setCountyName(allAreaName.getXianName());
+            vo.setCityName(allAreaName.getShiName());
         }
         return TableDataUtils.success(page.getTotal(), farmerVOList);
     }

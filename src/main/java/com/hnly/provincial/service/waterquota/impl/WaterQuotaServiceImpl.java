@@ -8,6 +8,7 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.waterquota.WaterQuotaMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.waterquota.WaterQuota;
 import com.hnly.provincial.entity.waterquota.WaterQuotaVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -41,11 +41,11 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
                 .page(waterQuotaVO.page());
         List<WaterQuotaVO> waterQuota = Conversion.changeList(page.getRecords(), WaterQuotaVO.class);
         for (WaterQuotaVO vo : waterQuota) {
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setVillageName(allAreaName.get("cun"));
-            vo.setTownshipName(allAreaName.get("xiang"));
-            vo.setCountyName(allAreaName.get("xian"));
-            vo.setCityName(allAreaName.get("shi"));
+            AreaName allAreaName = iAreaService.getAllAreaName(vo.getCode());
+            vo.setVillageName(allAreaName.getCunName());
+            vo.setTownshipName(allAreaName.getXiangName());
+            vo.setCountyName(allAreaName.getXianName());
+            vo.setCityName(allAreaName.getShiName());
         }
         return TableDataUtils.success(page.getTotal(), waterQuota);
     }

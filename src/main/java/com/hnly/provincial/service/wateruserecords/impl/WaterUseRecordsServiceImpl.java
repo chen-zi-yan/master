@@ -185,10 +185,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      */
     private BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio;
-        if (!useWaterLimit.equals(BigDecimal.ZERO)) {
-            ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN);
-        } else {
+        if (useWaterLimit.compareTo(BigDecimal.ZERO)==0 || useWater.compareTo(BigDecimal.ZERO)==0) {
             ratio = new BigDecimal(0);
+        } else {
+            ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN);
         }
         return ratio;
     }

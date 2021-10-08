@@ -63,8 +63,8 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public YearSumWaterVO getYearSumWater(String code) {
-        BigDecimal yearSumWater = checkFarmerSumWater(baseMapper.getYearSumWater(code, DateTool.getYear()));
-        BigDecimal lastYearSumWater = checkFarmerSumWater(baseMapper.getYearSumWater(code, DateTool.getLastYear()));
+        BigDecimal yearSumWater = getSumWater(baseMapper.getYearSumWater(code, DateTool.getYear()));
+        BigDecimal lastYearSumWater = getSumWater(baseMapper.getYearSumWater(code, DateTool.getLastYear()));
         YearSumWaterVO yearSumWaterVO = new YearSumWaterVO();
         yearSumWaterVO.setYearSum(yearSumWater);
         yearSumWaterVO.setDiscrepancy(yearSumWater.subtract(lastYearSumWater));
@@ -82,13 +82,13 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     /**
-     *获取已用水量额度,可用水额度-计算出-剩余用水,用水量的占比
+     * 获取已用水量额度,可用水额度-计算出-剩余用水,用水量的占比
      *
-     * @param page 分页
-     * @param year 年
-     * @param code 区域规划
+     * @param page   分页
+     * @param year   年
+     * @param code   区域规划
      * @param status 区域划分类型
-     * @param total 列表数量
+     * @param total  列表数量
      * @return 用水列表
      */
     private TableDataUtils<List<UseWaterStatisticsVO>> checkSumWater(Page<WaterUseRecords> page, String year, String code, String status, Long total) {
@@ -96,13 +96,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         if (status.equals(code)) {
             IPage<UseWaterStatisticsVO> farmerList = baseMapper.findByCode(page, code);
             for (UseWaterStatisticsVO vo : farmerList.getRecords()) {
-                //自定义用水额度-进行预算
-                BigDecimal useWaterLimit = new BigDecimal("10");
+                BigDecimal farmerWaterLimit = checkWaterExist(vo.getId(), year);
                 BigDecimal farmerSumWater = getFarmerSumWater(year, vo.getId());
-                vo.setUseWaterLimit(useWaterLimit);
+                vo.setUseWaterLimit(farmerWaterLimit);
                 vo.setUseWater(farmerSumWater);
-                vo.setSurplus(useWaterLimit.subtract(farmerSumWater));
-                vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, farmerSumWater).multiply(new BigDecimal("100")));
+                vo.setSurplus(farmerWaterLimit.subtract(farmerSumWater));
+                vo.setUseWaterRatio(checkUseWaterRatio(farmerWaterLimit, farmerSumWater).multiply(new BigDecimal("100")));
             }
             listTableDataUtils.setTotal(farmerList.getTotal());
             listTableDataUtils.setData(farmerList.getRecords());
@@ -123,10 +122,34 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     /**
+     * 获取农户用水额度
+     *
+     * @param id   id
+     * @param year 年
+     * @return 农户用水额度
+     */
+    private BigDecimal checkWaterExist(String id, String year) {
+        BigDecimal farmerWaterLimit = new BigDecimal("0");
+        FindFarmerWaterQuota farmerWaterLimits = baseMapper.getFarmerWaterLimit(id, year);
+        if (farmerWaterLimits != null) {
+            if (farmerWaterLimits.getFirstOrderTotal() == null && farmerWaterLimits.getSecondOrderTotal() != null) {
+                farmerWaterLimit = farmerWaterLimits.getSecondOrderTotal();
+            } else if (farmerWaterLimits.getFirstOrderTotal() != null && farmerWaterLimits.getSecondOrderTotal() == null) {
+                farmerWaterLimit = farmerWaterLimits.getFirstOrderTotal();
+            } else if (farmerWaterLimits.getFirstOrderTotal() == null && farmerWaterLimits.getSecondOrderTotal() == null) {
+                farmerWaterLimit = new BigDecimal("0");
+            } else if (farmerWaterLimits.getFirstOrderTotal() != null && farmerWaterLimits.getSecondOrderTotal() != null) {
+                farmerWaterLimit = farmerWaterLimits.getFirstOrderTotal().add((farmerWaterLimits.getSecondOrderTotal()));
+            }
+        }
+        return farmerWaterLimit;
+    }
+
+    /**
      * 获取该农户该年累计用水量
      *
      * @param year 年
-     * @param id 农户id
+     * @param id   农户id
      * @return 该农户该年累计用水量
      */
     private BigDecimal getFarmerSumWater(String year, String id) {
@@ -145,8 +168,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param water 数据
      * @return 保留两位小数
      */
-    private BigDecimal checkFarmerSumWater(BigDecimal water) {
-        return water.setScale(2, RoundingMode.DOWN);
+    private BigDecimal getSumWater(BigDecimal water) {
+        if (water != null) {
+            return water.setScale(2, RoundingMode.DOWN);
+        }
+        return new BigDecimal("0");
     }
 
 
@@ -159,10 +185,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      */
     private BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio;
-        if (!useWaterLimit.equals(BigDecimal.ZERO)) {
-            ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN);
-        } else {
+        if (useWaterLimit.compareTo(BigDecimal.ZERO)==0 || useWater.compareTo(BigDecimal.ZERO)==0) {
             ratio = new BigDecimal(0);
+        } else {
+            ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN);
         }
         return ratio;
     }

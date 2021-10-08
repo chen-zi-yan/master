@@ -41,6 +41,7 @@ public enum ResultEnum {
     COUNTY_EXIST(40025, "该县已经存在"),
     ROLE_EXIST(40026, "该角色名称已经存在"),
     CODELIMIT_EXIST(40027, "该区域规划在本年度已经填写过用水定额"),
+    FARMER_QUOTA_EXIST(40028, "该年中该农户在本区域规划内已经填写过用水定额"),
 
 
     ;

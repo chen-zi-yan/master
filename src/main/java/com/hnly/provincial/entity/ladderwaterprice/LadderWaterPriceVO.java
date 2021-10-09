@@ -9,7 +9,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,47 +37,60 @@ public class LadderWaterPriceVO extends PageWhere<LadderWaterPrice> implements S
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+
+    @Schema(description = "市")
+    private String cityName;
+
+    @Schema(description = "县")
+    private String countyName;
+
+    @Schema(description = "乡")
+    private String townshipName;
+
+    @Schema(description = "村")
+    private String villageName;
+
     @NotNull(message = "地区不能为null")
     @NotEmpty(message = "地区不能为空")
     @Schema(description = "地区")
     private String area;
 
-    @Digits(integer = 2, fraction = 2)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "基准水价不能为null")
     @Schema(description = "基准水价")
     private BigDecimal waterPrice;
 
-    @Digits(integer = 1, fraction = 2)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "一阶倍数不能为null")
     @Schema(description = "一阶倍数")
     private BigDecimal firstMultiple;
 
-    @Digits(integer = 1, fraction = 2)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "二阶倍数不能为null")
     @Schema(description = "二阶倍数")
     private BigDecimal secondMultiple;
 
-    @Digits(integer = 1, fraction = 2)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "三阶倍数不能为null")
     @Schema(description = "三阶倍数")
     private BigDecimal thirdMultiple;
 
-    @Digits(integer = 2, fraction = 2)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "一阶水价不能为null")
     @Schema(description = "一阶水价")
     private BigDecimal firstOrderWarterPrice;
 
-    @Digits(integer = 2, fraction = 2)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "二阶水价不能为null")
     @Schema(description = "二阶水价")
     private BigDecimal secondOrderWarterPrice;
 
-    @Digits(integer = 2, fraction = 2)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "三阶水价不能为null")
     @Schema(description = "三阶水价")
     private BigDecimal thirdOrderWarterPrice;
 
-    @Digits(integer = 4, fraction = 4)
+    @Digits(integer = 2, fraction = 3)
     @NotNull(message = "电价不能为null")
     @Schema(description = "电价")
     private BigDecimal electrovalence;

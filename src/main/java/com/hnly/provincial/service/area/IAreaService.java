@@ -63,6 +63,7 @@ public interface IAreaService extends IService<Area> {
     /**
      * 行政区划获取上级所有的名字
      *
+     * @param code 行政区划
      * @return 上级所有名字
      */
     AreaName getAllAreaName(String code);

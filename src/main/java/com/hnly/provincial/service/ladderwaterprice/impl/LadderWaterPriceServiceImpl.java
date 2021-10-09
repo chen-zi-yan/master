@@ -8,11 +8,14 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.ladderwaterprice.LadderWaterPriceMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.ladderwaterprice.LadderWaterPrice;
 import com.hnly.provincial.entity.ladderwaterprice.LadderWaterPriceVO;
+import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.ladderwaterprice.ILadderWaterPriceService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -27,12 +30,22 @@ import java.util.List;
 @Service
 public class LadderWaterPriceServiceImpl extends ServiceImpl<LadderWaterPriceMapper, LadderWaterPrice> implements ILadderWaterPriceService {
 
+    @Resource
+    private IAreaService iAreaService;
+
     @Override
     public TableDataUtils<List<LadderWaterPriceVO>> findListByPage(LadderWaterPriceVO ladderWaterPriceVO) {
         Page<LadderWaterPrice> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(ladderWaterPriceVO.getArea()), LadderWaterPrice::getArea, ladderWaterPriceVO.getArea())
                 .page(ladderWaterPriceVO.page());
         List<LadderWaterPriceVO> ladderWaterPriceVOList = Conversion.changeList(page.getRecords(), LadderWaterPriceVO.class);
+        for (LadderWaterPriceVO vo : ladderWaterPriceVOList) {
+            AreaName allAreaName = iAreaService.getAllAreaName(vo.getArea());
+            vo.setVillageName(allAreaName.getCunName());
+            vo.setTownshipName(allAreaName.getXiangName());
+            vo.setCountyName(allAreaName.getXianName());
+            vo.setCityName(allAreaName.getShiName());
+        }
         return TableDataUtils.success(page.getTotal(), ladderWaterPriceVOList);
     }
 

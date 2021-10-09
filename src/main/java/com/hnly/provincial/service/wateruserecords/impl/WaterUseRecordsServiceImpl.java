@@ -89,6 +89,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         return baseMapper.getTodayUseWater(code, date);
     }
 
+    @Override
+    public BigDecimal getTodayUseWaterNumber(String code) {
+        String date = new SimpleDateFormat("yyMMdd").format(new Date());
+        return baseMapper.getTodayUseWaterNumber(code, date);
+    }
+
     /**
      * 获取已用水量额度,可用水额度-计算出-剩余用水,用水量的占比
      *

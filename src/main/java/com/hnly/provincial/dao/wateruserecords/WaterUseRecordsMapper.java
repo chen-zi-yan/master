@@ -114,4 +114,13 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @return 今日累计用水量
      */
     BigDecimal getTodayUseWater(String code, String date);
+
+    /**
+     * 获取该区域下今日的用水次数
+     *
+     * @param code 行政区划
+     * @param date 时间年月日
+     * @return 今日的用水次数
+     */
+    BigDecimal getTodayUseWaterNumber(String code, String date);
 }

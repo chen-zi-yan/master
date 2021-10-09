@@ -37,7 +37,7 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
     public TableDataUtils<List<WaterQuotaVO>> findListByPage(WaterQuotaVO waterQuotaVO) {
         Page<WaterQuota> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(waterQuotaVO.getCode()), WaterQuota::getCode, waterQuotaVO.getCode())
-                .eq(waterQuotaVO.getYear() != 0, WaterQuota::getYear, waterQuotaVO.getYear())
+                .eq(waterQuotaVO.getYear() != null, WaterQuota::getYear, waterQuotaVO.getYear())
                 .page(waterQuotaVO.page());
         List<WaterQuotaVO> waterQuota = Conversion.changeList(page.getRecords(), WaterQuotaVO.class);
         for (WaterQuotaVO vo : waterQuota) {

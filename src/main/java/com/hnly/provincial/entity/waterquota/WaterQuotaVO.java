@@ -63,10 +63,10 @@ public class WaterQuotaVO extends PageWhere<WaterQuota> implements Serializable 
     private Date updateTime;
 
     @Min(value = 2020, message = "请输入正确的年份")
-    @Max(value = 2100, message = "请输入正确的年份")
+    @Max(value = 2900, message = "请输入正确的年份")
     @NotNull(message = "行政区划不能为空")
     @Schema(description = "年")
-    private int year;
+    private Integer year;
 
 
 }

@@ -35,6 +35,7 @@ public class WebAppConfig implements WebMvcConfigurer {
         excludePath.add("/v3/api-docs/**");
         excludePath.add("/docs");
         excludePath.add("/api-docs/**");
+        excludePath.add("/**");
 
         registry.addInterceptor(interceptorConfig).addPathPatterns("/**")
                 .excludePathPatterns(excludePath);

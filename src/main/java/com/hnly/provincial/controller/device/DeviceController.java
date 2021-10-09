@@ -74,7 +74,7 @@ public class DeviceController {
     @Operation(summary = "统计设备的数量")
     @GetMapping("getDeviceCount")
     public JsonBean<Integer> getDeviceCount(String code) {
-        if (StringUtils.isEmpty(code)){
+        if (StringUtils.isEmpty(code)) {
             code = commonUser.getUserCode();
         }
         return JsonBean.success(deviceService.lambdaQuery().likeRight(Device::getCode, code).count());

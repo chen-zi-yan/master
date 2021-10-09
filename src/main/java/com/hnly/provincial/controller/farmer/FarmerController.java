@@ -77,7 +77,7 @@ public class FarmerController {
     @Operation(summary = "统计农户数量")
     @GetMapping("getFarmerCount")
     public JsonBean<Integer> getFarmerCount(String code) {
-        if (StringUtils.isEmpty(code)){
+        if (StringUtils.isEmpty(code)) {
             code = commonUser.getUserCode();
         }
         return JsonBean.success(farmerService.lambdaQuery().likeRight(Farmer::getCode, code).count());

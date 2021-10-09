@@ -1,6 +1,8 @@
 package com.hnly.provincial.comm.date;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author maqh
@@ -8,11 +10,12 @@ import java.time.LocalDate;
  * @date 2021-09-23
  */
 public class DateTool {
+    private DateTool(){}
 
     /**
-     * 获取当前年
+     * 获取系统当前年
      *
-     * @return 当前年
+     * @return 系统当前年
      */
     public static int getYear() {
         LocalDate localDate = LocalDate.now();
@@ -26,5 +29,14 @@ public class DateTool {
      */
     public static int getLastYear() {
         return getYear() - 1;
+    }
+
+    /**
+     * 获取系统当前年月日
+     *
+     * @return 系统当前年月日
+     */
+    public static String getDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     }
 }

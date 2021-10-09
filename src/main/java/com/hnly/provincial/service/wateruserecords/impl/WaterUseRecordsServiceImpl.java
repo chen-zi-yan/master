@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,9 +83,14 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public TodayUseWaterAndNumberVO getTodayUseWaterAndNumber(String code) {
-        String date = new SimpleDateFormat("yyMMdd").format(new Date());
-        return baseMapper.getTodayUseWaterAndNumber(code, date);
+        return baseMapper.getTodayUseWaterAndNumber(code, DateTool.getDate());
     }
+
+    @Override
+    public BigDecimal getTodayUseWaterPeople(String code) {
+        return baseMapper.getTodayUseWaterPeople(code, DateTool.getDate());
+    }
+
     /**
      * 获取已用水量额度,可用水额度-计算出-剩余用水,用水量的占比
      *

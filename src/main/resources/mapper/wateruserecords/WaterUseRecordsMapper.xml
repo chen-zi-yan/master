@@ -114,9 +114,15 @@
         from t_water_use_records
         where code like concat(#{code}, '%') and Date(end_time) = #{date};
     </select>
+
     <select id="getAccumulativeUseWaterAndNumber"
             resultType="com.hnly.provincial.entity.wateruserecords.AccumulativeUseWaterAndNumberVO">
         select count(*) as wellOpening, sum(use_water) as sumUseWater
+        from t_water_use_records;
+    </select>
+
+    <select id="getSumUseWaterPeople" resultType="java.math.BigDecimal">
+        select count(DISTINCT farmer_id)
         from t_water_use_records;
     </select>
 </mapper>

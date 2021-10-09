@@ -93,7 +93,13 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public AccumulativeUseWaterAndNumberVO getAccumulativeUseWaterAndNumber() {
-        return baseMapper.getAccumulativeUseWaterAndNumber();
+        AccumulativeUseWaterAndNumberVO accumulativeUseWaterAndNumberVO = new AccumulativeUseWaterAndNumberVO();
+        AccumulativeUseWaterAndNumberVO accumulativeUseWaterAndNumber = baseMapper.getAccumulativeUseWaterAndNumber();
+        BigDecimal sumUseWaterPeople = baseMapper.getSumUseWaterPeople();
+        accumulativeUseWaterAndNumberVO.setSumUseWaterFarmer(sumUseWaterPeople);
+        accumulativeUseWaterAndNumberVO.setSumUseWater(accumulativeUseWaterAndNumber.getSumUseWater());
+        accumulativeUseWaterAndNumberVO.setWellOpening(accumulativeUseWaterAndNumber.getWellOpening());
+        return accumulativeUseWaterAndNumberVO;
     }
 
     /**

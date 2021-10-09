@@ -2,6 +2,7 @@ package com.hnly.provincial.controller.ic;
 
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.utils.TableDataUtils;
+import com.hnly.provincial.entity.ic.IcUpdateStatusVO;
 import com.hnly.provincial.entity.ic.IcVO;
 import com.hnly.provincial.service.ic.IIcService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,8 +66,8 @@ public class IcController {
 
     @Operation(summary = "更新卡状态")
     @PutMapping("updateStatus")
-    public JsonBean<String> updateStatus(Long status, Long id) {
-        icService.updateStatus(status, id);
+    public JsonBean<String> updateStatus(IcUpdateStatusVO icUpdateStatusVO) {
+        icService.updateStatus(icUpdateStatusVO.getStatus(), icUpdateStatusVO.getId());
         return JsonBean.success();
     }
 }

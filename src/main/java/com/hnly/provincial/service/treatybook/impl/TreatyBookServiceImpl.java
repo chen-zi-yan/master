@@ -30,6 +30,7 @@ public class TreatyBookServiceImpl extends ServiceImpl<TreatyBookMapper, TreatyB
                 .like(!StringUtils.isEmpty(treatyBookVO.getPartya()), TreatyBook::getPartya, treatyBookVO.getPartya())
                 .like(!StringUtils.isEmpty(treatyBookVO.getPartyb()), TreatyBook::getPartyb, treatyBookVO.getPartyb())
                 .like(!StringUtils.isEmpty(treatyBookVO.getName()), TreatyBook::getName, treatyBookVO.getName())
+                .orderByDesc(TreatyBook::getId)
                 .page(treatyBookVO.page());
         List<TreatyBookVO> treatyBookVOList = Conversion.changeList(page.getRecords(), TreatyBookVO.class);
         return TableDataUtils.success(page.getTotal(), treatyBookVOList);

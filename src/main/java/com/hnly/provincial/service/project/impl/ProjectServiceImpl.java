@@ -39,6 +39,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                 .eq(!StringUtils.isEmpty(projectVO.getUnit()), Project::getUnit, projectVO.getUnit())
                 .eq(!StringUtils.isEmpty(projectVO.getType()), Project::getType, projectVO.getType())
                 .like(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
+                .orderByDesc(Project::getId)
                 .page(projectVO.page());
         List<ProjectVO> projectVOList = Conversion.changeList(page.getRecords(), ProjectVO.class);
         for (ProjectVO vo : projectVOList) {

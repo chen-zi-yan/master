@@ -34,9 +34,10 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
                 .like(!StringUtils.isEmpty(certificateVO.getAddress()), Certificate::getAddress, certificateVO.getAddress())
                 .like(!StringUtils.isEmpty(certificateVO.getPropertyOwner()), Certificate::getPropertyOwner, certificateVO.getPropertyOwner())
                 .likeRight(!StringUtils.isEmpty(certificateVO.getCarId()), Certificate::getCarId, certificateVO.getCarId())
+                .orderByDesc(Certificate::getId)
                 .page(certificateVO.page());
-        List<CertificateVO> certificateVOs = Conversion.changeList(page.getRecords(), CertificateVO.class);
-        return TableDataUtils.success(page.getTotal(), certificateVOs);
+        List<CertificateVO> certificateVOList = Conversion.changeList(page.getRecords(), CertificateVO.class);
+        return TableDataUtils.success(page.getTotal(), certificateVOList);
     }
 
     @Override

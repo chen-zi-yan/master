@@ -40,6 +40,7 @@ public class ShiYongServiceImpl extends ServiceImpl<ShiYongMapper, ShiYong> impl
                 .like(!StringUtils.isEmpty(shiYongVO.getPropertyOwner()), ShiYong::getPropertyOwner, shiYongVO.getPropertyOwner())
                 .like(!StringUtils.isEmpty(shiYongVO.getRightHolder()), ShiYong::getRightHolder, shiYongVO.getRightHolder())
                 .likeRight(!StringUtils.isEmpty(shiYongVO.getIdNumber()), ShiYong::getIdNumber, shiYongVO.getIdNumber())
+                .orderByDesc(ShiYong::getId)
                 .page(shiYongVO.page());
         List<ShiYongVO> shiYongVOList = Conversion.changeList(page.getRecords(), ShiYongVO.class);
         for (ShiYongVO vo : shiYongVOList) {

@@ -84,7 +84,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     @Override
-    public BigDecimal getTodayUseWaterAndNumber(String code) {
+    public TodayUseWaterAndNumberVO getTodayUseWaterAndNumber(String code) {
         String date = new SimpleDateFormat("yyMMdd").format(new Date());
         return baseMapper.getTodayUseWaterAndNumber(code, date);
     }

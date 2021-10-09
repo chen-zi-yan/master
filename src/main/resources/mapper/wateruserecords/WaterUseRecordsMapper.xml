@@ -103,8 +103,8 @@
         where farmer_id = #{farmerId} and year = #{year}
     </select>
 
-    <select id="getTodayUseWaterAndNumber" resultType="java.math.BigDecimal">
-        select count(*), sum(use_water)
+    <select id="getTodayUseWaterAndNumber" resultType="com.hnly.provincial.entity.wateruserecords.TodayUseWaterAndNumberVO">
+        select count(*) as useWaterNumber, sum(use_water) as useWater
         from t_water_use_records
         where code like concat(#{code}, '%') and Date(end_time) = #{date};
     </select>

@@ -3,10 +3,7 @@ package com.hnly.provincial.dao.wateruserecords;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hnly.provincial.entity.wateruserecords.FindFarmerWaterQuota;
-import com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecords;
-import com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO;
+import com.hnly.provincial.entity.wateruserecords.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
@@ -113,5 +110,5 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param date 时间年月日
      * @return 今日累计用水量
      */
-    BigDecimal getTodayUseWaterAndNumber(String code, String date);
+    TodayUseWaterAndNumberVO getTodayUseWaterAndNumber(String code, String date);
 }

@@ -8,11 +8,9 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.farmer.FarmerMapper;
-import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.farmer.Farmer;
 import com.hnly.provincial.entity.farmer.FarmerVO;
 import com.hnly.provincial.entity.ic.Ic;
-import com.hnly.provincial.service.area.IAreaService;
 import com.hnly.provincial.service.farmer.IFarmerService;
 import com.hnly.provincial.service.ic.IIcService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,18 +33,12 @@ import java.util.List;
 public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> implements IFarmerService {
 
     @Resource
-    private IAreaService iAreaService;
-
-    @Resource
     private IIcService icService;
 
     @Override
     public TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO) {
         Page<Farmer> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(farmerVO.getName()), Farmer::getName, farmerVO.getName())
-                .likeRight(!StringUtils.isEmpty(farmerVO.getCode()), Farmer::getCode, farmerVO.getCode())
-                .likeRight(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
-                .likeRight(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
+                .eq(farmerVO.getId() != null, Farmer::getId, farmerVO.getId())
                 .page(farmerVO.page());
         List<FarmerVO> farmerVOList = Conversion.changeList(page.getRecords(), FarmerVO.class);
         for (FarmerVO vo : farmerVOList) {
@@ -56,11 +48,6 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
             if (!StringUtils.isEmpty(vo.getIdCard())) {
                 vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1*****$2"));
             }
-            AreaName allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setName(allAreaName.getCunName());
-            vo.setTownshipName(allAreaName.getXiangName());
-            vo.setCountyName(allAreaName.getXianName());
-            vo.setCityName(allAreaName.getShiName());
         }
         return TableDataUtils.success(page.getTotal(), farmerVOList);
     }

@@ -20,7 +20,7 @@ public interface IFarmerService extends IService<Farmer> {
     /**
      * 查询农户表分页数据
      *
-     * @param farmerVO 条件
+     * @param farmerVO 对象
      * @return 分页结果
      */
     TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO);
@@ -28,7 +28,7 @@ public interface IFarmerService extends IService<Farmer> {
     /**
      * 添加农户表
      *
-     * @param farmerVO
+     * @param farmerVO 对象
      * @return false 失败   true 成功
      */
     boolean add(FarmerVO farmerVO);
@@ -44,7 +44,7 @@ public interface IFarmerService extends IService<Farmer> {
     /**
      * 修改农户表
      *
-     * @param farmerVO
+     * @param farmerVO 对象
      * @return false 失败   true 成功
      */
     boolean updateData(FarmerVO farmerVO);

@@ -33,7 +33,9 @@ public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcServi
 
     @Override
     public TableDataUtils<List<IcVO>> findListByPage(IcVO icVO) {
-        Page<Ic> page = lambdaQuery().page(icVO.page());
+        Page<Ic> page = lambdaQuery()
+                .eq(icVO.getFarmerId() != null && icVO.getFarmerId() != 0, Ic::getFarmerId, icVO.getFarmerId())
+                .page(icVO.page());
         List<IcVO> icVOList = Conversion.changeList(page.getRecords(), IcVO.class);
         for (IcVO vo : icVOList) {
             String farmerName = iFarmerService.getFarmerName(vo.getFarmerId());

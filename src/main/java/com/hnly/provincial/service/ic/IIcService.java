@@ -64,5 +64,5 @@ public interface IIcService extends IService<Ic> {
      * @param id id
      * @return false 失败   true 成功
      */
-    boolean updateStatus(Long status, long id);
+    boolean updateStatus(String status, long id);
 }

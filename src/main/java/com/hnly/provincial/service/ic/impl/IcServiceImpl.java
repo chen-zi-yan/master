@@ -90,7 +90,7 @@ public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcServi
     }
 
     @Override
-    public boolean updateStatus(Long status, long id) {
+    public boolean updateStatus(String status, long id) {
         return baseMapper.updateStatus(status, id);
     }
 }

@@ -20,5 +20,5 @@ public interface IcMapper extends BaseMapper<Ic> {
      * @param id id
      * @return false 失败   true 成功
      */
-    boolean updateStatus(Long status, long id);
+    boolean updateStatus(String status, long id);
 }

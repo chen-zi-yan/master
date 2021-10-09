@@ -48,9 +48,12 @@ public class FarmerVO extends PageWhere<Farmer> implements Serializable {
     @Schema(description = "乡")
     private String townshipName;
 
-    @NotNull(message = "村名不能null")
-    @NotEmpty(message = "村名不能为空")
     @Schema(description = "村")
+    private String villageName;
+
+    @NotNull(message = "农户名称不能null")
+    @NotEmpty(message = "农户名称不能为空")
+    @Schema(description = "农户名称")
     private String name;
 
     @NotNull(message = "行政区划不能null")

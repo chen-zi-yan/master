@@ -57,7 +57,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1*****$2"));
             }
             AreaName allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setName(allAreaName.getCunName());
+            vo.setVillageName(allAreaName.getCunName());
             vo.setTownshipName(allAreaName.getXiangName());
             vo.setCountyName(allAreaName.getXianName());
             vo.setCityName(allAreaName.getShiName());

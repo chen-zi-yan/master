@@ -56,4 +56,13 @@ public interface IIcService extends IService<Ic> {
      * @return IcVO
      */
     IcVO findById(Long id);
+
+    /**
+     * 更新ic卡号状态
+     *
+     * @param status 状态
+     * @param id id
+     * @return false 失败   true 成功
+     */
+    boolean updateStatus(String status, long id);
 }

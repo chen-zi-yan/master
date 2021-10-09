@@ -90,5 +90,10 @@ public class WaterUseRecordsController {
         return JsonBean.success(waterUseRecordsService.getTodayUseWaterPeople(code));
     }
 
-
+    @Tag(name = "统计")
+    @Operation(summary = "获取该区域的累计灌溉开井次数和累计用水量")
+    @GetMapping("getAccumulativeUseWaterAndNumber")
+    public JsonBean<AccumulativeUseWaterAndNumberVO> getAccumulativeUseWaterAndNumber() {
+        return JsonBean.success(waterUseRecordsService.getAccumulativeUseWaterAndNumber());
+    }
 }

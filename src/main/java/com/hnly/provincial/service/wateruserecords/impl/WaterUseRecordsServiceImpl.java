@@ -91,6 +91,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         return baseMapper.getTodayUseWaterPeople(code, DateTool.getDate());
     }
 
+    @Override
+    public AccumulativeUseWaterAndNumberVO getAccumulativeUseWaterAndNumber() {
+        return baseMapper.getAccumulativeUseWaterAndNumber();
+    }
+
     /**
      * 获取已用水量额度,可用水额度-计算出-剩余用水,用水量的占比
      *

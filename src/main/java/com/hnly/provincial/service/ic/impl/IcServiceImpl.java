@@ -9,9 +9,11 @@ import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.ic.IcMapper;
 import com.hnly.provincial.entity.ic.Ic;
 import com.hnly.provincial.entity.ic.IcVO;
+import com.hnly.provincial.service.farmer.IFarmerService;
 import com.hnly.provincial.service.ic.IIcService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -26,10 +28,17 @@ import java.util.List;
 @Service
 public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcService {
 
+    @Resource
+    private IFarmerService iFarmerService;
+
     @Override
     public TableDataUtils<List<IcVO>> findListByPage(IcVO icVO) {
         Page<Ic> page = lambdaQuery().page(icVO.page());
         List<IcVO> icVOList = Conversion.changeList(page.getRecords(), IcVO.class);
+        for (IcVO vo : icVOList) {
+            String farmerName = iFarmerService.getFarmerName(vo.getFarmerId());
+            vo.setFarmerName(farmerName);
+        }
         return TableDataUtils.success(page.getTotal(), icVOList);
     }
 

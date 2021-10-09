@@ -82,6 +82,7 @@
                 and wur.type = #{type}
             </if>
         </where>
+        order by wur.id DESC
     </select>
 
     <select id="findByCode" resultType="com.hnly.provincial.entity.wateruserecords.UseWaterStatisticsVO">

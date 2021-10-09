@@ -88,4 +88,9 @@ public class IcServiceImpl extends ServiceImpl<IcMapper, Ic> implements IIcServi
         Ic ic = baseMapper.selectById(id);
         return Conversion.changeOne(ic, IcVO.class);
     }
+
+    @Override
+    public boolean updateStatus(Long status, long id) {
+        return baseMapper.updateStatus(status, id);
+    }
 }

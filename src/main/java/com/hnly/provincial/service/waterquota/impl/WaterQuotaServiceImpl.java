@@ -81,7 +81,7 @@ public class WaterQuotaServiceImpl extends ServiceImpl<WaterQuotaMapper, WaterQu
      * @param code 行政区划
      * @throws MyException 抛出自定义异常 行政区划已存在
      */
-    private void checkCode(Long id, String code, int year) throws MyException {
+    private void checkCode(Long id, String code, Integer year) throws MyException {
         int count = lambdaQuery().eq(WaterQuota::getCode, code)
                 .eq(WaterQuota::getYear, year)
                 .ne(id != null, WaterQuota::getId, id).count();

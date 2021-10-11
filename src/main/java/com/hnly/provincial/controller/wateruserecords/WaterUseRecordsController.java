@@ -94,7 +94,7 @@ public class WaterUseRecordsController {
     @Operation(summary = "获取该区域的累计用水农户数和累计灌溉开井次数和累计用水量")
     @GetMapping("getFarmerNumberAndSumUseWaterAndWellOpeningNumber")
     public JsonBean<FarmerNumberAndSumUseWaterAndWellOpeningNumberVO> getFarmerNumberAndSumUseWaterAndWellOpeningNumber(String code) {
-        if (StringUtils.isEmpty(code)){
+        if (StringUtils.isEmpty(code)) {
             code = commonUser.getUserCode();
         }
         return JsonBean.success(waterUseRecordsService.getFarmerNumberAndSumUseWaterAndWellOpeningNumber(code));

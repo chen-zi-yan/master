@@ -104,7 +104,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public List<BigDecimal> getMonthSumWaterByYear(Long year, String code) {
-        if (year == null){
+        if (year == null) {
             year = (long) DateTool.getYear();
         }
         return baseMapper.getMonthSumWaterByYear(year, commonUser.code(code));
@@ -158,18 +158,20 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 农户用水额度
      */
     private BigDecimal checkWaterExist(String id, String year) {
-        BigDecimal farmerWaterLimit = new BigDecimal("0");
+        BigDecimal farmerWaterLimit;
         FindFarmerWaterQuota farmerWaterLimits = baseMapper.getFarmerWaterLimit(id, year);
         if (farmerWaterLimits != null) {
             if (farmerWaterLimits.getFirstOrderTotal() == null && farmerWaterLimits.getSecondOrderTotal() != null) {
                 farmerWaterLimit = farmerWaterLimits.getSecondOrderTotal();
             } else if (farmerWaterLimits.getFirstOrderTotal() != null && farmerWaterLimits.getSecondOrderTotal() == null) {
                 farmerWaterLimit = farmerWaterLimits.getFirstOrderTotal();
-            } else if (farmerWaterLimits.getFirstOrderTotal() == null && farmerWaterLimits.getSecondOrderTotal() == null) {
-                farmerWaterLimit = new BigDecimal("0");
             } else if (farmerWaterLimits.getFirstOrderTotal() != null && farmerWaterLimits.getSecondOrderTotal() != null) {
                 farmerWaterLimit = farmerWaterLimits.getFirstOrderTotal().add((farmerWaterLimits.getSecondOrderTotal()));
+            } else {
+                farmerWaterLimit = new BigDecimal("0");
             }
+        } else {
+            farmerWaterLimit = new BigDecimal("0");
         }
         return farmerWaterLimit;
     }
@@ -182,9 +184,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 该农户该年累计用水量
      */
     private BigDecimal getFarmerSumWater(String year, String id) {
-        BigDecimal useWater = baseMapper.getFarmerSumWater(year, id);
-        if (useWater != null) {
-            useWater = useWater.setScale(2, RoundingMode.DOWN);
+        BigDecimal useWater;
+        BigDecimal farmerSumWater = baseMapper.getFarmerSumWater(year, id);
+        if (farmerSumWater != null) {
+            useWater = farmerSumWater.setScale(2, RoundingMode.DOWN);
         } else {
             useWater = new BigDecimal("0");
         }
@@ -214,7 +217,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      */
     private BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio;
-        if (useWaterLimit.compareTo(BigDecimal.ZERO)==0 || useWater.compareTo(BigDecimal.ZERO)==0) {
+        if (useWaterLimit.compareTo(BigDecimal.ZERO) == 0 || useWater.compareTo(BigDecimal.ZERO) == 0) {
             ratio = new BigDecimal(0);
         } else {
             ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN);
@@ -230,9 +233,10 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 累计用水;量
      */
     private BigDecimal getUseWater(String year, String code) {
-        BigDecimal useWater = baseMapper.getUseWater(commonUser.code(code), year);
-        if (useWater != null) {
-            useWater = useWater.setScale(2, RoundingMode.DOWN);
+        BigDecimal useWater;
+        BigDecimal sumUseWater = baseMapper.getUseWater(commonUser.code(code), year);
+        if (sumUseWater != null) {
+            useWater = sumUseWater.setScale(2, RoundingMode.DOWN);
         } else {
             useWater = new BigDecimal("0");
         }
@@ -247,8 +251,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @return 用水量定额
      */
     private BigDecimal getUseWaterLimit(String year, String code) {
-        BigDecimal useWaterLimit = baseMapper.getUseWaterLimit(year, commonUser.code(code));
-        if (useWaterLimit == null) {
+        BigDecimal useWaterLimit;
+        BigDecimal useWaterLimitValue = baseMapper.getUseWaterLimit(year, commonUser.code(code));
+        if (useWaterLimitValue != null) {
+            useWaterLimit = useWaterLimitValue;
+        }else {
             useWaterLimit = new BigDecimal("0");
         }
         return useWaterLimit;

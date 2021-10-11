@@ -93,12 +93,9 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getFarmerNumberAndSumUseWaterAndWellOpeningNumber(String code) {
-        if (StringUtils.isEmpty(code)){
-            code = commonUser.getUserCode();
-        }
         FarmerNumberAndSumUseWaterAndWellOpeningNumberVO farmerNumberAndSumUseWaterAndWellOpeningNumberVO = new FarmerNumberAndSumUseWaterAndWellOpeningNumberVO();
-        BigDecimal sumUseWaterPeople = baseMapper.getFarmerNumber(code);
-        FarmerNumberAndSumUseWaterAndWellOpeningNumberVO accumulativeUseWaterAndNumber = baseMapper.getSumUseWaterAndWellOpeningNumber(code);
+        BigDecimal sumUseWaterPeople = baseMapper.getFarmerNumber(code, DateTool.getYear());
+        FarmerNumberAndSumUseWaterAndWellOpeningNumberVO accumulativeUseWaterAndNumber = baseMapper.getSumUseWaterAndWellOpeningNumber(code, DateTool.getYear());
         farmerNumberAndSumUseWaterAndWellOpeningNumberVO.setSumUseWaterFarmer(sumUseWaterPeople);
         farmerNumberAndSumUseWaterAndWellOpeningNumberVO.setSumUseWater(accumulativeUseWaterAndNumber.getSumUseWater());
         farmerNumberAndSumUseWaterAndWellOpeningNumberVO.setWellOpening(accumulativeUseWaterAndNumber.getWellOpening());

@@ -125,17 +125,19 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * 获取该区域的和累计灌溉开井次数和累计用水量
      *
      * @param code 行政区划
+     * @param year 年
      * @return 累计灌溉开井次数和累计用水量
      */
-    FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getSumUseWaterAndWellOpeningNumber(String code);
+    FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getSumUseWaterAndWellOpeningNumber(String code, Integer year);
 
     /**
      * 获取该区域的累计用水农户数
      *
      * @param code 行政区划
+     * @param year 年
      * @return 累计用水农户数
      */
-    BigDecimal getFarmerNumber(String code);
+    BigDecimal getFarmerNumber(String code, Integer year);
 
     /**
      * 获取该区域该年每月的累计用水量

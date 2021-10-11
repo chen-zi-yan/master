@@ -68,9 +68,10 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
     /**
      * 获取该区域的累计用水农户数和累计灌溉开井次数和累计用水量
      *
+     * @param code 行政区划
      * @return 累计用水农户数和累计灌溉开井次数和累计用水量
      */
-    FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getFarmerNumberAndSumUseWaterAndWellOpeningNumber();
+    FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getFarmerNumberAndSumUseWaterAndWellOpeningNumber(String code);
 
     /**
      * 获取该区域该年每月的累计用水量

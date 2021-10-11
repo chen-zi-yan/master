@@ -93,8 +93,8 @@ public class WaterUseRecordsController {
     @Tag(name = "统计")
     @Operation(summary = "获取该区域的累计用水农户数和累计灌溉开井次数和累计用水量")
     @GetMapping("getFarmerNumberAndSumUseWaterAndWellOpeningNumber")
-    public JsonBean<FarmerNumberAndSumUseWaterAndWellOpeningNumberVO> getFarmerNumberAndSumUseWaterAndWellOpeningNumber() {
-        return JsonBean.success(waterUseRecordsService.getFarmerNumberAndSumUseWaterAndWellOpeningNumber());
+    public JsonBean<FarmerNumberAndSumUseWaterAndWellOpeningNumberVO> getFarmerNumberAndSumUseWaterAndWellOpeningNumber(String code) {
+        return JsonBean.success(waterUseRecordsService.getFarmerNumberAndSumUseWaterAndWellOpeningNumber(code));
     }
 
     @Tag(name = "统计")

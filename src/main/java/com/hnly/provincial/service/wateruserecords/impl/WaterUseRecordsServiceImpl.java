@@ -105,7 +105,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     @Override
     public List<BigDecimal> getMonthSumWaterByYear(Long year, String code) {
         if (year == null){
-            year = Long.valueOf(DateTool.getYear());
+            year = (long) DateTool.getYear();
         }
         return baseMapper.getMonthSumWaterByYear(year, commonUser.code(code));
     }

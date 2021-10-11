@@ -96,4 +96,11 @@ public class WaterUseRecordsController {
     public JsonBean<FarmerNumberAndSumUseWaterAndWellOpeningNumberVO> getFarmerNumberAndSumUseWaterAndWellOpeningNumber() {
         return JsonBean.success(waterUseRecordsService.getFarmerNumberAndSumUseWaterAndWellOpeningNumber());
     }
+
+    @Tag(name = "统计")
+    @Operation(summary = "获取河南省该年每月的累计用水量")
+    @GetMapping("getMonthSumWaterByYear")
+    public JsonBean<List<BigDecimal>> getMonthSumWaterByYear(String year) {
+        return JsonBean.success(waterUseRecordsService.getMonthSumWaterByYear(year));
+    }
 }

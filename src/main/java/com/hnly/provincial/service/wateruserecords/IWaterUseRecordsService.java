@@ -58,7 +58,7 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
     TodayUseWaterAndNumberVO getTodayUseWaterAndNumber(String code);
 
     /**
-     * 获取该区域下今日用水人数
+     * 获取河南省该年每月的累计用水量
      *
      * @param code 行政区划
      * @return 今日用水人数
@@ -71,4 +71,12 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @return 累计用水农户数和累计灌溉开井次数和累计用水量
      */
     FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getFarmerNumberAndSumUseWaterAndWellOpeningNumber();
+
+    /**
+     * 获取该年每月的累计用水量
+     *
+     * @param year 年
+     * @return 该年每月的累计用水量
+     */
+    List<BigDecimal> getMonthSumWaterByYear(String year);
 }

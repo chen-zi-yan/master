@@ -102,6 +102,14 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         return farmerNumberAndSumUseWaterAndWellOpeningNumberVO;
     }
 
+    @Override
+    public List<BigDecimal> getMonthSumWaterByYear(String year) {
+        if (StringUtils.isEmpty(year)){
+            year = "2021";
+        }
+        return baseMapper.getMonthSumWaterByYear(year);
+    }
+
     /**
      * 获取已用水量额度,可用水额度-计算出-剩余用水,用水量的占比
      *

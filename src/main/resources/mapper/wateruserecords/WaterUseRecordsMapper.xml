@@ -125,4 +125,12 @@
         select count(DISTINCT farmer_id)
         from t_water_use_records;
     </select>
+
+    <select id="getMonthSumWaterByYear" resultType="java.math.BigDecimal">
+        select sum(use_water)
+        from t_water_use_records
+        where year = #{year}
+        group by month
+        order by month
+    </select>
 </mapper>

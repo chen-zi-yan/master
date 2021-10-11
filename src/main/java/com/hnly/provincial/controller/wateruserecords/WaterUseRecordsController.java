@@ -103,7 +103,7 @@ public class WaterUseRecordsController {
     @Tag(name = "统计")
     @Operation(summary = "获取该区域该年每月的累计用水量")
     @GetMapping("getMonthSumWaterByYear")
-    public JsonBean<List<BigDecimal>> getMonthSumWaterByYear(Integer year, String code) {
+    public JsonBean<List<BigDecimal>> getMonthSumWaterByYear(Long year, String code) {
         return JsonBean.success(waterUseRecordsService.getMonthSumWaterByYear(year, code));
     }
 }

@@ -47,8 +47,8 @@ public class CommonUser {
      * @return 整理后code
      */
     public String code(String code) {
-        String str = "";
-        if (code == null) {
+        String str;
+        if (StringUtils.isEmpty(code)) {
             str = "41";
         } else if (Integer.parseInt(code.substring(9, 12)) > 0) {
             str = code.substring(0, 12);

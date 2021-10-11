@@ -136,10 +136,11 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
     BigDecimal getFarmerNumber();
 
     /**
-     * 获取河南省该年每月的累计用水量
+     * 获取该区域该年每月的累计用水量
      *
      * @param year 年
-     * @return 该年每月的累计用水量
+     * @param code 区域
+     * @return 该区域该年每月的累计用水量
      */
-    List<BigDecimal> getMonthSumWaterByYear(String year);
+    List<BigDecimal> getMonthSumWaterByYear(Integer year, String code);
 }

@@ -129,7 +129,7 @@
     <select id="getMonthSumWaterByYear" resultType="java.math.BigDecimal">
         select sum(use_water)
         from t_water_use_records
-        where year = #{year}
+        where  year = #{year} and code like concat(#{code}, '%')
         group by month
         order by month
     </select>

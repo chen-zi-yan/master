@@ -103,11 +103,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     @Override
-    public List<BigDecimal> getMonthSumWaterByYear(String year) {
-        if (StringUtils.isEmpty(year)){
-            year = "2021";
+    public List<BigDecimal> getMonthSumWaterByYear(Integer year, String code) {
+        if (year == null){
+            year = DateTool.getYear();
         }
-        return baseMapper.getMonthSumWaterByYear(year);
+        return baseMapper.getMonthSumWaterByYear(year, commonUser.code(code));
     }
 
     /**

@@ -70,5 +70,5 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      *
      * @return 累计用水农户数和累计灌溉开井次数和累计用水量
      */
-    AccumulativeUseWaterAndNumberVO getAccumulativeUseWaterAndNumber();
+    FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getFarmerNumberAndSumUseWaterAndWellOpeningNumber();
 }

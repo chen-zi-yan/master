@@ -8,12 +8,12 @@ import java.math.BigDecimal;
 /**
  * @author : chenziyan
  * @version : 1.0
- * @Date : 2021-09-30 10:07
+ * @Date : 2021-10-10 10:07
  * @description : 获取该区域的累计用水农户数和累计灌溉开井次数和累计用水量
  ***/
 @Data
-@Schema(name = "AccumulativeUseWaterAndNumberVO", description = "获取该区域的累计用水农户数和累计灌溉开井次数和累计用水量")
-public class AccumulativeUseWaterAndNumberVO {
+@Schema(name = "FarmerNumberAndSumUseWaterAndWellOpeningNumberVO", description = "获取该区域的累计用水农户数和累计灌溉开井次数和累计用水量")
+public class FarmerNumberAndSumUseWaterAndWellOpeningNumberVO {
 
     @Schema(description = "累计用水农户数")
     private BigDecimal sumUseWaterFarmer;

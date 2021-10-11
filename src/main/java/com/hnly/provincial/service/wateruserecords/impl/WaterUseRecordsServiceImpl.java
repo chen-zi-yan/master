@@ -92,14 +92,14 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     @Override
-    public AccumulativeUseWaterAndNumberVO getAccumulativeUseWaterAndNumber() {
-        AccumulativeUseWaterAndNumberVO accumulativeUseWaterAndNumberVO = new AccumulativeUseWaterAndNumberVO();
-        AccumulativeUseWaterAndNumberVO accumulativeUseWaterAndNumber = baseMapper.getAccumulativeUseWaterAndNumber();
-        BigDecimal sumUseWaterPeople = baseMapper.getSumUseWaterPeople();
-        accumulativeUseWaterAndNumberVO.setSumUseWaterFarmer(sumUseWaterPeople);
-        accumulativeUseWaterAndNumberVO.setSumUseWater(accumulativeUseWaterAndNumber.getSumUseWater());
-        accumulativeUseWaterAndNumberVO.setWellOpening(accumulativeUseWaterAndNumber.getWellOpening());
-        return accumulativeUseWaterAndNumberVO;
+    public FarmerNumberAndSumUseWaterAndWellOpeningNumberVO getFarmerNumberAndSumUseWaterAndWellOpeningNumber() {
+        FarmerNumberAndSumUseWaterAndWellOpeningNumberVO farmerNumberAndSumUseWaterAndWellOpeningNumberVO = new FarmerNumberAndSumUseWaterAndWellOpeningNumberVO();
+        BigDecimal sumUseWaterPeople = baseMapper.getFarmerNumber();
+        FarmerNumberAndSumUseWaterAndWellOpeningNumberVO accumulativeUseWaterAndNumber = baseMapper.getSumUseWaterAndWellOpeningNumber();
+        farmerNumberAndSumUseWaterAndWellOpeningNumberVO.setSumUseWaterFarmer(sumUseWaterPeople);
+        farmerNumberAndSumUseWaterAndWellOpeningNumberVO.setSumUseWater(accumulativeUseWaterAndNumber.getSumUseWater());
+        farmerNumberAndSumUseWaterAndWellOpeningNumberVO.setWellOpening(accumulativeUseWaterAndNumber.getWellOpening());
+        return farmerNumberAndSumUseWaterAndWellOpeningNumberVO;
     }
 
     /**

@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -120,18 +121,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      */
     private ArrayList<Object> getMonthSumWaterByYearAndCode(List<MonthSumWaterByYearAndCodeVO> monthSumWaterByYearAndCodeVO) {
         ArrayList<Object> objects = new ArrayList<>(12);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
-        objects.add(0);
+        objects.addAll(Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0));
         for (MonthSumWaterByYearAndCodeVO vo : monthSumWaterByYearAndCodeVO) {
             if ("1".equals(vo.getMonth())) {
                 objects.set(0, vo.getUseWater());

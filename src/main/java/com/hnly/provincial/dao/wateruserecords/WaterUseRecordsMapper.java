@@ -25,7 +25,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param year 年
      * @return 每月的累计用水量
      */
-    List<Object> getMonthSumWater(String code, int year);
+    List<MonthSumWaterByYearAndCodeVO> getMonthSumWater(String code, int year);
 
     /**
      * 统计今年累计用水量和今年与去年累计用水量的差值

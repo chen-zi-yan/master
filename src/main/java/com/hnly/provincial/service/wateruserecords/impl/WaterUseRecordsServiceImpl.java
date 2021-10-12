@@ -54,11 +54,11 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public MonthSumWaterVO getMonthSumWater(String code) {
-        List<Object> monthSumWater = baseMapper.getMonthSumWater(code, DateTool.getYear());
-        List<Object> lastYearMonthSumWater = baseMapper.getMonthSumWater(code, DateTool.getLastYear());
+        List<MonthSumWaterByYearAndCodeVO> monthSumWater = baseMapper.getMonthSumWater(code, DateTool.getYear());
+        List<MonthSumWaterByYearAndCodeVO> lastYearMonthSumWater = baseMapper.getMonthSumWater(code, DateTool.getLastYear());
         MonthSumWaterVO monthSumWaterVO = new MonthSumWaterVO();
-        monthSumWaterVO.setYear(monthSumWater);
-        monthSumWaterVO.setLastYear(lastYearMonthSumWater);
+        monthSumWaterVO.setYear(getMonthSumWaterByYearAndCode(monthSumWater));
+        monthSumWaterVO.setLastYear(getMonthSumWaterByYearAndCode(lastYearMonthSumWater));
         return monthSumWaterVO;
     }
 
@@ -112,6 +112,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         return getMonthSumWaterByYearAndCode(monthSumWaterByYearAndCodeVO);
     }
 
+    /**
+     * 获取该区域该年每月的累计用水量
+     *
+     * @param monthSumWaterByYearAndCodeVO  月份和用水量对象
+     * @return 1到12月的用水数组
+     */
     private ArrayList<Object> getMonthSumWaterByYearAndCode(List<MonthSumWaterByYearAndCodeVO> monthSumWaterByYearAndCodeVO) {
         ArrayList<Object> objects = new ArrayList<>(12);
         objects.add(0);

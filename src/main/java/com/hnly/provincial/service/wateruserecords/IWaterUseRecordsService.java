@@ -5,6 +5,7 @@ import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.wateruserecords.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,5 +81,5 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @param code 区域
      * @return 该区域该年每月的累计用水量
      */
-    List<BigDecimal> getMonthSumWaterByYear(Long year, String code);
+    ArrayList<Object> getMonthSumWaterByYearAndCode(Long year, String code);
 }

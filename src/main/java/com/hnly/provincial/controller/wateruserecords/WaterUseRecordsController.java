@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -102,8 +103,8 @@ public class WaterUseRecordsController {
 
     @Tag(name = "统计")
     @Operation(summary = "获取该区域该年每月的累计用水量")
-    @GetMapping("getMonthSumWaterByYear")
-    public JsonBean<List<BigDecimal>> getMonthSumWaterByYear(Long year, String code) {
-        return JsonBean.success(waterUseRecordsService.getMonthSumWaterByYear(year, code));
+    @GetMapping("getMonthSumWaterByYearAndCode")
+    public JsonBean<ArrayList<Object>> getMonthSumWaterByYearAndCode(Long year, String code) {
+        return JsonBean.success(waterUseRecordsService.getMonthSumWaterByYearAndCode(year, code));
     }
 }

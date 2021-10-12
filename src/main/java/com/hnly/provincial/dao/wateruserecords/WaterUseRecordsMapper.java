@@ -146,5 +146,5 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param code 区域
      * @return 该区域该年每月的累计用水量
      */
-    List<BigDecimal> getMonthSumWaterByYear(Long year, String code);
+    List<MonthSumWaterByYearAndCodeVO> getMonthSumWaterByYearAndCode(@Param("year") Long year, @Param("code") String code);
 }

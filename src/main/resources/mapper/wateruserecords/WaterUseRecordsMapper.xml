@@ -128,8 +128,8 @@
         where code like concat(#{code}, '%')  and year = #{year};
     </select>
 
-    <select id="getMonthSumWaterByYear" resultType="java.math.BigDecimal">
-        select sum(use_water)
+    <select id="getMonthSumWaterByYearAndCode" resultType="com.hnly.provincial.entity.wateruserecords.MonthSumWaterByYearAndCodeVO">
+        select month , sum(use_water) as useWater
         from t_water_use_records
         where  year = #{year} and code like concat(#{code}, '%')
         group by month

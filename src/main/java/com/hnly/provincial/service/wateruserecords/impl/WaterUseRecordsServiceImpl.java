@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,11 +104,56 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
     }
 
     @Override
-    public List<BigDecimal> getMonthSumWaterByYear(Long year, String code) {
+    public ArrayList<Object> getMonthSumWaterByYearAndCode(Long year, String code) {
         if (year == null) {
             year = (long) DateTool.getYear();
         }
-        return baseMapper.getMonthSumWaterByYear(year, commonUser.code(code));
+        List<MonthSumWaterByYearAndCodeVO> monthSumWaterByYearAndCodeVO = baseMapper.getMonthSumWaterByYearAndCode(year, commonUser.code(code));
+        return getMonthSumWaterByYearAndCode(monthSumWaterByYearAndCodeVO);
+    }
+
+    private ArrayList<Object> getMonthSumWaterByYearAndCode(List<MonthSumWaterByYearAndCodeVO> monthSumWaterByYearAndCodeVO) {
+        ArrayList<Object> objects = new ArrayList<>(12);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        objects.add(0);
+        for (MonthSumWaterByYearAndCodeVO vo : monthSumWaterByYearAndCodeVO) {
+            if ("1".equals(vo.getMonth())) {
+                objects.set(0, vo.getUseWater());
+            } else if ("2".equals(vo.getMonth())) {
+                objects.set(1, vo.getUseWater());
+            } else if ("3".equals(vo.getMonth())) {
+                objects.set(2, vo.getUseWater());
+            } else if ("4".equals(vo.getMonth())) {
+                objects.set(3, vo.getUseWater());
+            } else if ("5".equals(vo.getMonth())) {
+                objects.set(4, vo.getUseWater());
+            } else if ("6".equals(vo.getMonth())) {
+                objects.set(5, vo.getUseWater());
+            } else if ("7".equals(vo.getMonth())) {
+                objects.set(6, vo.getUseWater());
+            } else if ("8".equals(vo.getMonth())) {
+                objects.set(7, vo.getUseWater());
+            } else if ("9".equals(vo.getMonth())) {
+                objects.set(8, vo.getUseWater());
+            } else if ("10".equals(vo.getMonth())) {
+                objects.set(9, vo.getUseWater());
+            } else if ("11".equals(vo.getMonth())) {
+                objects.set(10, vo.getUseWater());
+            } else if ("12".equals(vo.getMonth())) {
+                objects.set(11, vo.getUseWater());
+            }
+        }
+        return objects;
     }
 
     /**
@@ -255,7 +301,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         BigDecimal useWaterLimitValue = baseMapper.getUseWaterLimit(year, commonUser.code(code));
         if (useWaterLimitValue != null) {
             useWaterLimit = useWaterLimitValue;
-        }else {
+        } else {
             useWaterLimit = new BigDecimal("0");
         }
         return useWaterLimit;

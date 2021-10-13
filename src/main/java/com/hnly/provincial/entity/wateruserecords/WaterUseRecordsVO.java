@@ -64,6 +64,9 @@ public class WaterUseRecordsVO extends PageWhere<WaterUseRecords> implements Ser
     @Schema(description = "行政区划")
     private String code;
 
+    @Schema(description = "设备号")
+    private Long devSn;
+
     @Schema(description = "年份")
     private String year;
 
@@ -110,7 +113,7 @@ public class WaterUseRecordsVO extends PageWhere<WaterUseRecords> implements Ser
     private BigDecimal useMoneyThird;
 
     public String getTypeName() {
-        if (type == null){
+        if (type == null) {
             return "";
         }
         switch (type) {

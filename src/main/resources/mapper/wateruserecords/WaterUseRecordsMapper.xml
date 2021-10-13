@@ -64,7 +64,7 @@
     </select>
 
     <select id="findListByPage" resultType="com.hnly.provincial.entity.wateruserecords.WaterUseRecordsVO">
-        select d.name as deviceName, f.name as farmerName, wur.*
+        select d.name as deviceName, d.dev_sn as devSn,f.name as farmerName, wur.*
         from t_water_use_records wur
         left join t_device d on wur.device_id = d.id
         left join t_farmer f on wur.farmer_id = f.id

@@ -74,7 +74,7 @@ public interface WaterUseRecordsMapper extends BaseMapper<WaterUseRecords> {
      * @param type       设备类型
      * @return WaterUseRecordsVO对象
      */
-    IPage<WaterUseRecordsVO> findListByPage(@Param("page") Page<WaterUseRecords> page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("deviceName") String devSn, @Param("type") String type);
+    IPage<WaterUseRecordsVO> findListByPage(@Param("page") Page<WaterUseRecords> page, @Param("code") String code, @Param("farmerName") String farmerName, @Param("devSn") String devSn, @Param("type") String type);
 
     /**
      * 查询农户用水记录表分页数据

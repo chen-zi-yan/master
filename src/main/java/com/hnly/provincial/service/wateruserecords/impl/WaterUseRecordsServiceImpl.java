@@ -121,19 +121,19 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         summationVO.setSummationUseWaterLimit(useWaterLimit);
         summationVO.setSummationUseWater(useWater);
         summationVO.setSummationSurplus(useWaterLimit.subtract(useWater));
-        summationVO.setSummationUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
+        summationVO.setSummationUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater));
         return summationVO;
     }
 
     /**
      * 获取该区域该年每月的累计用水量
      *
-     * @param monthSumWaterByYearAndCodeVO  月份和用水量对象
+     * @param monthSumWaterByYearAndCodeVO 月份和用水量对象
      * @return 1到12月的用水数组
      */
     private ArrayList<Object> getMonthSumWaterByYearAndCode(List<MonthSumWaterByYearAndCodeVO> monthSumWaterByYearAndCodeVO) {
         ArrayList<Object> objects = new ArrayList<>(12);
-        objects.addAll(Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0));
+        objects.addAll(Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
         for (MonthSumWaterByYearAndCodeVO vo : monthSumWaterByYearAndCodeVO) {
             if ("1".equals(vo.getMonth())) {
                 objects.set(0, vo.getUseWater());
@@ -269,12 +269,12 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param useWater      用掉的水量
      * @return 用水的百分比
      */
-    private static BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
+    private BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio;
         if (useWaterLimit.compareTo(BigDecimal.ZERO) == 0 || useWater.compareTo(BigDecimal.ZERO) == 0) {
             ratio = new BigDecimal(0);
         } else {
-            ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN);
+            ratio = useWater.divide(useWaterLimit, 2, RoundingMode.DOWN).multiply(new BigDecimal("100"));
         }
         return ratio;
     }

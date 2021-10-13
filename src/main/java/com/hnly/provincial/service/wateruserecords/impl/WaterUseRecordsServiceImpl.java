@@ -41,7 +41,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
 
     @Override
     public TableDataUtils<List<WaterUseRecordsVO>> findListByPage(FindNameVO findNameVO) {
-        IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(), findNameVO.getDeviceName(), findNameVO.getType());
+        IPage<WaterUseRecordsVO> page = baseMapper.findListByPage(findNameVO.page(), findNameVO.getCode(), findNameVO.getFarmerName(), findNameVO.getDevSn(), findNameVO.getType());
         List<WaterUseRecordsVO> waterUseRecordsVO = Conversion.changeList(page.getRecords(), WaterUseRecordsVO.class);
         for (WaterUseRecordsVO vo : waterUseRecordsVO) {
             AreaName allAreaName = iAreaService.getAllAreaName(vo.getCode());

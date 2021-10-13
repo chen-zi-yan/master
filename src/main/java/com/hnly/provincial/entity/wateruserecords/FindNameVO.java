@@ -20,8 +20,8 @@ public class FindNameVO extends PageWhere<WaterUseRecords> {
     @Schema(description = "农户名称")
     private String farmerName;
 
-    @Schema(description = "设备名称")
-    private String deviceName;
+    @Schema(description = "设备号")
+    private String devSn;
 
     @Schema(description = "行政区划")
     private String code;

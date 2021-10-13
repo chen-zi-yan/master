@@ -73,10 +73,10 @@
                 and wur.code like concat(#{code}, '%')
             </if>
             <if test="farmerName != null and farmerName != ''">
-                and f.name like concat(#{farmerName}, '%')
+                and f.name like concat('%', #{farmerName}, '%')
             </if>
             <if test="deviceName != null and deviceName != ''">
-                and d.name like concat(#{deviceName}, '%')
+                and d.dev_sn like concat(#{devSn}, '%')
             </if>
             <if test="type != null and type != ''">
                 and wur.type = #{type}

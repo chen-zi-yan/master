@@ -54,5 +54,8 @@ public class RechargeRecordsVO extends PageWhere<RechargeRecords> implements Ser
     @Schema(description = "充值金额")
     private String money;
 
+    @Schema(description = "充值时间")
+    private String createTime;
+
 
 }

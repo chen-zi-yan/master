@@ -107,4 +107,11 @@ public class WaterUseRecordsController {
     public JsonBean<ArrayList<Object>> getMonthSumWaterByYearAndCode(Long year, String code) {
         return JsonBean.success(waterUseRecordsService.getMonthSumWaterByYearAndCode(year, code));
     }
+
+    @Tag(name = "统计")
+    @Operation(summary = "获取该区域合计用水额度合计已用水量合计剩余水量合计已用占比")
+    @GetMapping("getSummation")
+    public JsonBean<SummationVO> getSummation(String year, String code) {
+        return JsonBean.success(waterUseRecordsService.getSummation(year, code));
+    }
 }

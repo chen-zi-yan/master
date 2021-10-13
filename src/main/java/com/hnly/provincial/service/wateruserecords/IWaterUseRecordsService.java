@@ -82,4 +82,13 @@ public interface IWaterUseRecordsService extends IService<WaterUseRecords> {
      * @return 该区域该年每月的累计用水量
      */
     ArrayList<Object> getMonthSumWaterByYearAndCode(Long year, String code);
+
+    /**
+     * 获取合计用水额度合计已用水量合计剩余水量合计已用占比
+     *
+     * @param year 年
+     * @param code 行政区划
+     * @return 合计用水额度-合计已用水量-合计剩余水量-合计已用占比
+     */
+    SummationVO getSummation(String year, String code);
 }

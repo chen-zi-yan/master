@@ -113,6 +113,18 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
         return getMonthSumWaterByYearAndCode(monthSumWaterByYearAndCodeVO);
     }
 
+    @Override
+    public SummationVO getSummation(String year, String code) {
+        SummationVO summationVO = new SummationVO();
+        BigDecimal useWaterLimit = getUseWaterLimit(year, code);
+        BigDecimal useWater = getUseWater(year, code);
+        summationVO.setSummationUseWaterLimit(useWaterLimit);
+        summationVO.setSummationUseWater(useWater);
+        summationVO.setSummationSurplus(useWaterLimit.subtract(useWater));
+        summationVO.setSummationUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
+        return summationVO;
+    }
+
     /**
      * 获取该区域该年每月的累计用水量
      *
@@ -172,7 +184,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
                 vo.setUseWaterLimit(farmerWaterLimit);
                 vo.setUseWater(farmerSumWater);
                 vo.setSurplus(farmerWaterLimit.subtract(farmerSumWater));
-                vo.setUseWaterRatio(checkUseWaterRatio(farmerWaterLimit, farmerSumWater).multiply(new BigDecimal("100")));
+                vo.setUseWaterRatio(checkUseWaterRatio(farmerWaterLimit, farmerSumWater));
             }
             listTableDataUtils.setTotal(farmerList.getTotal());
             listTableDataUtils.setData(farmerList.getRecords());
@@ -184,7 +196,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
                 vo.setUseWaterLimit(useWaterLimit);
                 vo.setUseWater(useWater);
                 vo.setSurplus(useWaterLimit.subtract(useWater));
-                vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater).multiply(new BigDecimal("100")));
+                vo.setUseWaterRatio(checkUseWaterRatio(useWaterLimit, useWater));
             }
             listTableDataUtils.setTotal(areaList.getTotal());
             listTableDataUtils.setData(areaList.getRecords());
@@ -257,7 +269,7 @@ public class WaterUseRecordsServiceImpl extends ServiceImpl<WaterUseRecordsMappe
      * @param useWater      用掉的水量
      * @return 用水的百分比
      */
-    private BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
+    private static BigDecimal checkUseWaterRatio(BigDecimal useWaterLimit, BigDecimal useWater) {
         BigDecimal ratio;
         if (useWaterLimit.compareTo(BigDecimal.ZERO) == 0 || useWater.compareTo(BigDecimal.ZERO) == 0) {
             ratio = new BigDecimal(0);

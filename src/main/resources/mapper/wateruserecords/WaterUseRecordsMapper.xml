@@ -75,7 +75,7 @@
             <if test="farmerName != null and farmerName != ''">
                 and f.name like concat('%', #{farmerName}, '%')
             </if>
-            <if test="deviceName != null and deviceName != ''">
+            <if test="devSn != null and devSn != ''">
                 and d.dev_sn like concat(#{devSn}, '%')
             </if>
             <if test="type != null and type != ''">

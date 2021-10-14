@@ -46,7 +46,7 @@ public class UserVO extends PageWhere<User> implements Serializable {
 
     @Null(message = "不能修改密码", groups = {Update.class})
     @NotEmpty(message = "密码不能为空", groups = {Add.class})
-    @Size(min = 4, max = 16, message = "账号长度大于4字符小于12字符")
+    @Size(min = 4, max = 16, message = "密码长度大于4字符小于12字符")
     @Schema(description = "密码")
     private String password;
 
@@ -76,6 +76,8 @@ public class UserVO extends PageWhere<User> implements Serializable {
 
     @Schema(description = "权限id")
     private Long quanxian;
+
+    private String quanxianName;
 
     @Schema(description = "创建时间")
     private Date createtime;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hnly.provincial.dao.shiyong.ShiyongMapper">
+<mapper namespace="com.hnly.provincial.dao.shiyong.ShiYongMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.shiyong.Shiyong">
+    <resultMap id="BaseResultMap" type="com.hnly.provincial.entity.shiyong.ShiYong">
         <id column="id" property="id" />
         <result column="number" property="number" />
         <result column="area" property="area" />

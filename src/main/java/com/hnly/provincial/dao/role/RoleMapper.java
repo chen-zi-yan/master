@@ -1,7 +1,7 @@
 package com.hnly.provincial.dao.role;
 
-import com.hnly.provincial.entity.role.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hnly.provincial.entity.role.Role;
 
 /**
  * <p>
@@ -12,5 +12,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-09-16
  */
 public interface RoleMapper extends BaseMapper<Role> {
-
 }

@@ -1,8 +1,11 @@
 package com.hnly.provincial.service.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.entity.user.User;
 import com.hnly.provincial.entity.user.UserVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -40,10 +43,18 @@ public interface IUserService extends IService<User> {
     /**
      * 启用禁用用户
      *
-     * @param id 用户id
+     * @param id   用户id
      * @param type 启用禁用状态
      * @return true 修改成功<br>
      * false 修改失败
      */
     boolean disableUser(Long id, String type);
+
+    /**
+     * 分页获取用户信息
+     *
+     * @param vo 查询条件
+     * @return 分页信息
+     */
+    TableDataUtils<List<UserVO>> getPage(UserVO vo);
 }

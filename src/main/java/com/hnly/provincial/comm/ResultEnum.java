@@ -15,7 +15,7 @@ public enum ResultEnum {
     NOT_AUTHORITY(401, "非法访问"),
     USER_ALREADY_EXISTS(40001, "该用户名已存在"),
     NOSESSION(40002, "未登录,或session过期"),
-    USER_NOT_LOGIN(40003, "账号被禁用"),
+    TOKEN_OVERDUE(40003, "token即将过期"),
     USER_USERNAME_PASSWORD_EXISTS(40004, "账号或密码错误"),
     SAVE_ERROR(40005, "保存错误"),
     NOT_DELETE(40006, "无法删除"),
@@ -38,6 +38,10 @@ public enum ResultEnum {
     CARID_EXIST(40022, "该身份证号码或组织机构代码已经存在"),
     AREA_EXIST(40023, "该设施所在行政区域已经存在"),
     NUMBER_EXIST(40024, "该号码已经存在"),
+    COUNTY_EXIST(40025, "该县已经存在"),
+    ROLE_EXIST(40026, "该角色名称已经存在"),
+    CODELIMIT_EXIST(40027, "该区域规划在本年度已经填写过用水定额"),
+    FARMER_QUOTA_EXIST(40028, "该年中该农户在本区域规划内已经填写过用水定额"),
 
 
     ;

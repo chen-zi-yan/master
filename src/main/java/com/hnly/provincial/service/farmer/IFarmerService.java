@@ -20,7 +20,7 @@ public interface IFarmerService extends IService<Farmer> {
     /**
      * 查询农户表分页数据
      *
-     * @param farmerVO 条件
+     * @param farmerVO 对象
      * @return 分页结果
      */
     TableDataUtils<List<FarmerVO>> findListByPage(FarmerVO farmerVO);
@@ -28,7 +28,7 @@ public interface IFarmerService extends IService<Farmer> {
     /**
      * 添加农户表
      *
-     * @param farmerVO
+     * @param farmerVO 对象
      * @return false 失败   true 成功
      */
     boolean add(FarmerVO farmerVO);
@@ -44,7 +44,7 @@ public interface IFarmerService extends IService<Farmer> {
     /**
      * 修改农户表
      *
-     * @param farmerVO
+     * @param farmerVO 对象
      * @return false 失败   true 成功
      */
     boolean updateData(FarmerVO farmerVO);
@@ -56,4 +56,12 @@ public interface IFarmerService extends IService<Farmer> {
      * @return FarmerVO
      */
     FarmerVO findById(Long id);
+
+    /**
+     * 查询数据中的农户id=农户farmer表中的id
+     *
+     * @param farmerId 用水数据表中的farmer_id
+     * @return 存在则返回农户的名字, 失败返回一个空值
+     */
+    String getFarmerName(Long farmerId);
 }

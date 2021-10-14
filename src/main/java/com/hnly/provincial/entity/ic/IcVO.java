@@ -40,6 +40,9 @@ public class IcVO extends PageWhere<Ic> implements Serializable {
     @Schema(description = "农户id")
     private Long farmerId;
 
+    @Schema(description = "农户名称")
+    private String farmerName;
+
     @NotNull(message = "ic卡号不能为null")
     @NotEmpty(message = "ic卡号不能为空")
     @Schema(description = "ic卡号")
@@ -75,6 +78,9 @@ public class IcVO extends PageWhere<Ic> implements Serializable {
     private Date updateTime;
 
     public String getStatusName() {
+        if (status == null){
+            return "";
+        }
         switch (status) {
             case "0":
                 return "正常";
@@ -83,18 +89,21 @@ public class IcVO extends PageWhere<Ic> implements Serializable {
             case "2":
                 return "失效";
             default:
-                return "状态错误";
+                return "";
         }
     }
 
     public String getTypeName() {
+        if (type == null){
+            return "";
+        }
         switch (type) {
             case "0":
                 return "标椎ic卡";
             case "1":
                 return "非标准ic卡";
             default:
-                return "错误";
+                return "";
         }
     }
 

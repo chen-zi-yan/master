@@ -3,6 +3,7 @@ package com.hnly.provincial.comm.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.hnly.provincial.comm.ResultEnum;
 import com.hnly.provincial.config.interceptor.exception.MyException;
@@ -21,7 +22,7 @@ public class TokenUtil {
     private TokenUtil() {
     }
 
-    public static final long EXPIRE_TIME = 60L * 60L * 1000L;
+    public static final long EXPIRE_TIME = 8 * 60L * 60L * 1000L;
     /** 密钥盐 */
     private static final String TOKEN_SECRET = "nongyeshuijiazhonghegaige";
 
@@ -30,6 +31,7 @@ public class TokenUtil {
     private static final String USERNAME = "userName";
     private static final String ID = "id";
     private static final String ROLEID = "roleId";
+    private static final String CODE = "code";
 
     /**
      * 签名生成
@@ -43,6 +45,7 @@ public class TokenUtil {
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, user.getUsername())
                 .withClaim(ID, user.getId())
+                .withClaim(CODE, user.getCode())
                 .withClaim(ROLEID, user.getQuanxian())
                 .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -58,13 +61,11 @@ public class TokenUtil {
     public static boolean verify(String token) {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-            DecodedJWT jwt = verifier.verify(token);
-            if (System.currentTimeMillis() > jwt.getExpiresAt().getTime()) {
-                throw new MyException(ResultEnum.TOKEN_EXPIRED);
-            }
+            verifier.verify(token);
             return true;
         } catch (Exception e) {
-            return false;
+            log.debug("token失效");
+            throw new MyException(ResultEnum.NOSESSION);
         }
     }
 
@@ -76,11 +77,17 @@ public class TokenUtil {
      */
     public static String refreshToken(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-        DecodedJWT jwt = verifier.verify(token);
+        DecodedJWT jwt = null;
+        try {
+            jwt = verifier.verify(token);
+        } catch (JWTVerificationException e) {
+            throw new MyException(ResultEnum.NOSESSION);
+        }
         return JWT.create()
                 .withIssuer(AUTH)
                 .withClaim(USERNAME, jwt.getClaim(USERNAME).asString())
                 .withClaim(ID, jwt.getClaim(ID).asLong())
+                .withClaim(CODE, jwt.getClaim(CODE).asString())
                 .withClaim(ROLEID, jwt.getClaim(ROLEID).asLong())
                 .withExpiresAt(new Date(jwt.getExpiresAt().getTime() + EXPIRE_TIME))
                 .sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -94,10 +101,16 @@ public class TokenUtil {
      */
     public static User getTokenUserId(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer(AUTH).build();
-        DecodedJWT jwt = verifier.verify(token.replace("Bearer ", ""));
+        DecodedJWT jwt = null;
+        try {
+            jwt = verifier.verify(token.replace("Bearer ", ""));
+        } catch (Exception e) {
+            return new User();
+        }
         User user = new User();
         user.setId(jwt.getClaim(ID).asLong());
         user.setUsername(jwt.getClaim(USERNAME).asString());
+        user.setCode(jwt.getClaim(CODE).asString());
         user.setQuanxian(jwt.getClaim(ROLEID).asLong());
         return user;
     }

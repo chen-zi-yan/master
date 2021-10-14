@@ -33,8 +33,8 @@ public class WebAppConfig implements WebMvcConfigurer {
         excludePath.add("/user/login");
         excludePath.add("/swagger**/**");
         excludePath.add("/v3/api-docs/**");
-        //临时添加,便于测试,可以访问所有
-        excludePath.add("/**");
+        excludePath.add("/docs");
+        excludePath.add("/api-docs/**");
 
         registry.addInterceptor(interceptorConfig).addPathPatterns("/**")
                 .excludePathPatterns(excludePath);

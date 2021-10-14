@@ -24,14 +24,26 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("t_shiyong")
-@Schema(name = "ShiyongVO", description = "使用权证")
-public class ShiyongVO extends PageWhere<Shiyong> implements Serializable {
+@TableName("t_shi_yong")
+@Schema(name = "ShiYongVO", description = "使用权证")
+public class ShiYongVO extends PageWhere<ShiYong> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    @Schema(description = "市名称")
+    private String cityName;
+
+    @Schema(description = "县名称")
+    private String countyName;
+
+    @Schema(description = "乡名称")
+    private String townshipName;
+
+    @Schema(description = "村名称")
+    private String villageName;
 
     @NotNull(message = "号不能为null")
     @NotEmpty(message = "号不能为空")

@@ -8,6 +8,7 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.farmer.FarmerMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.farmer.Farmer;
 import com.hnly.provincial.entity.farmer.FarmerVO;
 import com.hnly.provincial.entity.ic.Ic;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -48,19 +48,21 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
                 .likeRight(!StringUtils.isEmpty(farmerVO.getPhone()), Farmer::getPhone, farmerVO.getPhone())
                 .likeRight(!StringUtils.isEmpty(farmerVO.getIdCard()), Farmer::getIdCard, farmerVO.getIdCard())
                 .page(farmerVO.page());
-        List<FarmerVO> farmerVOs = Conversion.changeList(page.getRecords(), FarmerVO.class);
-        for (FarmerVO vo : farmerVOs) {
-            if (!StringUtils.isEmpty(vo.getPhone())){
-                vo.setPhoneHidden(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+        List<FarmerVO> farmerVOList = Conversion.changeList(page.getRecords(), FarmerVO.class);
+        for (FarmerVO vo : farmerVOList) {
+            if (!StringUtils.isEmpty(vo.getPhone())) {
+                vo.setPhoneHidden(vo.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
             }
-            vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})","$1*****$2"));
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setName(allAreaName.get("cun"));
-            vo.setTownshipName(allAreaName.get("xiang"));
-            vo.setCountyName(allAreaName.get("xian"));
-            vo.setCityName(allAreaName.get("shi"));
+            if (!StringUtils.isEmpty(vo.getIdCard())) {
+                vo.setIdCardHidden(vo.getIdCard().replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1*****$2"));
+            }
+            AreaName allAreaName = iAreaService.getAllAreaName(vo.getCode());
+            vo.setVillageName(allAreaName.getCunName());
+            vo.setTownshipName(allAreaName.getXiangName());
+            vo.setCountyName(allAreaName.getXianName());
+            vo.setCityName(allAreaName.getShiName());
         }
-        return TableDataUtils.success(page.getTotal(), farmerVOs);
+        return TableDataUtils.success(page.getTotal(), farmerVOList);
     }
 
     @Override
@@ -110,7 +112,7 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
      */
     private void checkIdCard(String idCard, Long id) throws MyException {
         int count = lambdaQuery().eq(Farmer::getIdCard, idCard)
-                .ne(id != null,Farmer::getId, id).count();
+                .ne(id != null, Farmer::getId, id).count();
         if (count != 0) {
             throw new MyException(ResultEnum.IDCODE_EXIST);
         }
@@ -122,5 +124,18 @@ public class FarmerServiceImpl extends ServiceImpl<FarmerMapper, Farmer> impleme
         return Conversion.changeOne(farmer, FarmerVO.class);
     }
 
-
+    /**
+     * 查询数据中的农户id=农户farmer表中的id
+     *
+     * @param farmerId 用水数据表中的farmer_id
+     * @return 存在则返回农户的名字, 失败返回一个空值
+     */
+    @Override
+    public String getFarmerName(Long farmerId) {
+        Farmer byId = baseMapper.selectById(farmerId);
+        if (byId == null) {
+            return "";
+        }
+        return byId.getName();
+    }
 }

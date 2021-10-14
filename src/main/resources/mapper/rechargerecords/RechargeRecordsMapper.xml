@@ -15,13 +15,13 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id
-        , order_no, money, ic_code, dev_sn, dev_registration_no, create_time
+        id, order_no, money, ic_code, dev_sn, dev_registration_no, create_time
     </sql>
 
-    <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO" parameterType="string">
+    <select id="selectData" resultType="com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO"
+            parameterType="string">
         select d.code as code,f.name as name,r.dev_registration_no as devRegistrationNo,r.money as money,r.ic_code as
-        icCode,r.dev_sn as devSn
+        icCode,r.dev_sn as devSn, r.create_time as createTime
         from t_recharge_records r
         left join t_device d on r.dev_sn = d.dev_sn and r.dev_registration_no = d.dev_registration_no and d.type = 1
         left join t_ic i on r.ic_code = i.ic_code
@@ -31,9 +31,10 @@
                 and d.code like concat(#{code},'%')
             </if>
             <if test="name != null and name != ''">
-                and f.name like concat(#{name},'%')
+                and f.name like concat('%', #{name},'%')
             </if>
         </where>
+        order by r.id DESC
     </select>
 
 </mapper>

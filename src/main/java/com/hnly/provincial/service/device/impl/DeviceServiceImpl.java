@@ -8,6 +8,7 @@ import com.hnly.provincial.comm.utils.Conversion;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.config.interceptor.exception.MyException;
 import com.hnly.provincial.dao.device.DeviceMapper;
+import com.hnly.provincial.entity.area.AreaName;
 import com.hnly.provincial.entity.device.Device;
 import com.hnly.provincial.entity.device.DeviceVO;
 import com.hnly.provincial.service.area.IAreaService;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -41,15 +41,15 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
                 .likeRight(!StringUtils.isEmpty(deviceVO.getCode()), Device::getCode, deviceVO.getCode())
                 .likeRight(!StringUtils.isEmpty(deviceVO.getDevSn()), Device::getDevSn, deviceVO.getDevSn())
                 .page(deviceVO.page());
-        List<DeviceVO> deviceVOs = Conversion.changeList(page.getRecords(), DeviceVO.class);
-        for (DeviceVO vo : deviceVOs) {
-            Map<String, String> allAreaName = iAreaService.getAllAreaName(vo.getCode());
-            vo.setVillageName(allAreaName.get("cun"));
-            vo.setTownshipName(allAreaName.get("xiang"));
-            vo.setCountyName(allAreaName.get("xian"));
-            vo.setCityName(allAreaName.get("shi"));
+        List<DeviceVO> deviceVOList = Conversion.changeList(page.getRecords(), DeviceVO.class);
+        for (DeviceVO vo : deviceVOList) {
+            AreaName areaName = iAreaService.getAllAreaName(vo.getCode());
+            vo.setVillageName(areaName.getCunName());
+            vo.setTownshipName(areaName.getXiangName());
+            vo.setCountyName(areaName.getXianName());
+            vo.setCityName(areaName.getShiName());
         }
-        return TableDataUtils.success(page.getTotal(), deviceVOs);
+        return TableDataUtils.success(page.getTotal(), deviceVOList);
     }
 
     @Override
@@ -97,5 +97,20 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     public DeviceVO findById(Long id) {
         Device device = baseMapper.selectById(id);
         return Conversion.changeOne(device, DeviceVO.class);
+    }
+
+    /**
+     * 查询数据中的农户id=设备device表中的id
+     *
+     * @param deviceId 用水数据表中的device_id
+     * @return 存在则返回设备的类型, 失败返回一个空值
+     */
+    @Override
+    public String getDeviceName(Long deviceId) {
+        Device byId = baseMapper.selectById(deviceId);
+        if (byId == null) {
+            return "";
+        }
+        return byId.getName();
     }
 }

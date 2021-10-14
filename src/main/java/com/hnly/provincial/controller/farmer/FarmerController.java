@@ -1,9 +1,12 @@
 package com.hnly.provincial.controller.farmer;
 
+import com.alibaba.druid.util.StringUtils;
 import com.hnly.provincial.comm.JsonBean;
+import com.hnly.provincial.comm.user.CommonUser;
 import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.validation.Add;
 import com.hnly.provincial.comm.validation.Update;
+import com.hnly.provincial.entity.farmer.Farmer;
 import com.hnly.provincial.entity.farmer.FarmerVO;
 import com.hnly.provincial.service.farmer.IFarmerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +32,9 @@ import java.util.List;
 @RestController
 @RequestMapping("farmer")
 public class FarmerController {
+
+    @Resource
+    private CommonUser commonUser;
 
     @Resource
     private IFarmerService farmerService;
@@ -65,4 +71,17 @@ public class FarmerController {
     public JsonBean<FarmerVO> findById(@PathVariable Long id) {
         return JsonBean.success(farmerService.findById(id));
     }
+
+
+    @Tag(name = "统计")
+    @Operation(summary = "统计农户数量")
+    @GetMapping("getFarmerCount")
+    public JsonBean<Integer> getFarmerCount(String code) {
+        if (StringUtils.isEmpty(code)) {
+            code = commonUser.getUserCode();
+        }
+        return JsonBean.success(farmerService.lambdaQuery().likeRight(Farmer::getCode, code).count());
+    }
+
+
 }

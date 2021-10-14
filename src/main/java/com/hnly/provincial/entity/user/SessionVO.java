@@ -17,5 +17,8 @@ public class SessionVO {
     @Schema(description = "有效期毫秒")
     private Long validPeriod;
 
+    @Schema(description = "登陆用户名称")
+    private String name;
+
 
 }

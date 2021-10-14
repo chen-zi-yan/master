@@ -30,10 +30,14 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     public TableDataUtils<List<CertificateVO>> findListByPage(CertificateVO certificateVO) {
         Page<Certificate> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(certificateVO.getCode()), Certificate::getCode, certificateVO.getCode())
+                .like(!StringUtils.isEmpty(certificateVO.getName()), Certificate::getName, certificateVO.getName())
+                .like(!StringUtils.isEmpty(certificateVO.getAddress()), Certificate::getAddress, certificateVO.getAddress())
+                .like(!StringUtils.isEmpty(certificateVO.getPropertyOwner()), Certificate::getPropertyOwner, certificateVO.getPropertyOwner())
                 .likeRight(!StringUtils.isEmpty(certificateVO.getCarId()), Certificate::getCarId, certificateVO.getCarId())
+                .orderByDesc(Certificate::getId)
                 .page(certificateVO.page());
-        List<CertificateVO> certificateVOs = Conversion.changeList(page.getRecords(), CertificateVO.class);
-        return TableDataUtils.success(page.getTotal(), certificateVOs);
+        List<CertificateVO> certificateVOList = Conversion.changeList(page.getRecords(), CertificateVO.class);
+        return TableDataUtils.success(page.getTotal(), certificateVOList);
     }
 
     @Override

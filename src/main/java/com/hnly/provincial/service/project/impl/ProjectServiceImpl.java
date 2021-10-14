@@ -35,16 +35,17 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     public TableDataUtils<List<ProjectVO>> findListByPage(ProjectVO projectVO) {
         Page<Project> page = lambdaQuery()
                 .likeRight(!StringUtils.isEmpty(projectVO.getCode()), Project::getCode, projectVO.getCode())
-                .likeRight(!StringUtils.isEmpty(projectVO.getName()), Project::getName, projectVO.getName())
+                .like(!StringUtils.isEmpty(projectVO.getName()), Project::getName, projectVO.getName())
                 .eq(!StringUtils.isEmpty(projectVO.getUnit()), Project::getUnit, projectVO.getUnit())
                 .eq(!StringUtils.isEmpty(projectVO.getType()), Project::getType, projectVO.getType())
-                .likeRight(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
+                .like(!StringUtils.isEmpty(projectVO.getManufacturers()), Project::getManufacturers, projectVO.getManufacturers())
+                .orderByDesc(Project::getId)
                 .page(projectVO.page());
-        List<ProjectVO> projectVOS = Conversion.changeList(page.getRecords(), ProjectVO.class);
-        for (ProjectVO vo : projectVOS) {
+        List<ProjectVO> projectVOList = Conversion.changeList(page.getRecords(), ProjectVO.class);
+        for (ProjectVO vo : projectVOList) {
             replenishAreaName(vo);
         }
-        return TableDataUtils.success(page.getTotal(), projectVOS);
+        return TableDataUtils.success(page.getTotal(), projectVOList);
     }
 
     @Override

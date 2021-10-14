@@ -2,7 +2,7 @@ package com.hnly.provincial.controller.rechargerecords;
 
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.utils.TableDataUtils;
-import com.hnly.provincial.entity.rechargerecords.RechargeRecordsDTO;
+import com.hnly.provincial.entity.rechargerecords.RechargeRecordsVO;
 import com.hnly.provincial.service.rechargerecords.IRechargeRecordsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,8 +33,8 @@ public class RechargeRecordsController {
 
     @Operation(summary = "查询充值记录分页数据")
     @GetMapping()
-    public JsonBean<TableDataUtils<List<RechargeRecordsDTO>>> findListByPage(RechargeRecordsDTO rechargeRecordsDTO) {
-        return JsonBean.success(rechargeRecordsService.findListByPage(rechargeRecordsDTO));
+    public JsonBean<TableDataUtils<List<RechargeRecordsVO>>> findListByPage(RechargeRecordsVO rechargeRecordsVO) {
+        return JsonBean.success(rechargeRecordsService.findListByPage(rechargeRecordsVO));
     }
 
 }

@@ -62,4 +62,11 @@ public class IcController {
     public JsonBean<IcVO> findById(@PathVariable Long id) {
         return JsonBean.success(icService.findById(id));
     }
+
+    @Operation(summary = "更新卡状态")
+    @PutMapping("updateStatus")
+    public JsonBean<String> updateStatus(@RequestBody IcVO icVO) {
+        icService.updateStatus(icVO.getStatus(), icVO.getId());
+        return JsonBean.success();
+    }
 }

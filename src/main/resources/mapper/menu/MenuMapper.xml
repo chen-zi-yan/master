@@ -20,4 +20,24 @@
     <sql id="Base_Column_List">
         id, type, name, `key`, url, sort, parent_key, create_time, update_time
     </sql>
+    <select id="getUserMenu" resultType="com.hnly.provincial.entity.menu.MenuVO">
+        select m.*  from t_role_menu rm left join t_menu m on m.id = rm.menu_id
+        where role_id = #{id}
+        and parent_key is null
+        and type = 1
+        order by sort
+    </select>
+    <select id="getChildren" resultType="com.hnly.provincial.entity.menu.MenuVO">
+        select m.*  from t_role_menu rm left join t_menu m on m.id = rm.menu_id
+        where role_id = #{id}
+        and parent_key = #{key}
+        and type = 1
+        order by sort
+    </select>
+    <select id="getButton" resultType="com.hnly.provincial.entity.menu.MenuVO">
+        select m.*  from t_role_menu rm left join t_menu m on m.id = rm.menu_id
+        where role_id = #{id}
+        and type = 2
+        order by sort
+    </select>
 </mapper>

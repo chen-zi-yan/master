@@ -3,6 +3,7 @@ package com.hnly.provincial.controller.user;
 
 import com.hnly.provincial.comm.JsonBean;
 import com.hnly.provincial.comm.ResultEnum;
+import com.hnly.provincial.comm.utils.TableDataUtils;
 import com.hnly.provincial.comm.utils.TokenUtil;
 import com.hnly.provincial.comm.validation.Add;
 import com.hnly.provincial.comm.validation.Update;
@@ -57,6 +58,7 @@ public class UserController {
             String sign = TokenUtil.sign(login);
             SessionVO vo = new SessionVO();
             vo.setToken(sign);
+            vo.setName(login.getName());
             vo.setValidPeriod(TokenUtil.EXPIRE_TIME);
             return JsonBean.success(vo);
         }
@@ -70,15 +72,22 @@ public class UserController {
         return JsonBean.success(list);
     }
 
+    @Operation(summary = "分页获取用户信息")
+    @GetMapping
+    public JsonBean<TableDataUtils<List<UserVO>>> getPage(UserVO vo) {
+        return JsonBean.success(userService.getPage(vo));
+    }
+
     @Operation(summary = "刷新token")
     @PostMapping("refreshToken")
-    public JsonBean<Map<String, String>> refreshToken(HttpServletRequest request) {
+    public JsonBean<Map<String, Object>> refreshToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         token = token.replace("Bearer ", "");
         String newToken = TokenUtil.refreshToken(token);
-        Map<String, String> tokenMap = new HashMap<>(2);
+        Map<String, Object> tokenMap = new HashMap<>(2);
         tokenMap.put("oldToken", token);
         tokenMap.put("newToken", newToken);
+        tokenMap.put("validPeriod", TokenUtil.EXPIRE_TIME);
         return JsonBean.success(tokenMap);
     }
 

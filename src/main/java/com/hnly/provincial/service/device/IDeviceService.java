@@ -56,4 +56,13 @@ public interface IDeviceService extends IService<Device> {
      * @return DeviceVO
      */
     DeviceVO findById(Long id);
+
+
+    /**
+     * 查询数据中的农户id=设备device表中的id
+     *
+     * @param deviceId 用水数据表中的device_id
+     * @return 存在则返回设备的类型, 失败返回一个空值
+     */
+    String getDeviceName(Long deviceId);
 }

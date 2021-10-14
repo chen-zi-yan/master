@@ -27,12 +27,13 @@ public class TreatyBookServiceImpl extends ServiceImpl<TreatyBookMapper, TreatyB
     @Override
     public TableDataUtils<List<TreatyBookVO>> findListByPage(TreatyBookVO treatyBookVO) {
         Page<TreatyBook> page = lambdaQuery()
-                .likeRight(!StringUtils.isEmpty(treatyBookVO.getPartya()), TreatyBook::getPartya, treatyBookVO.getPartya())
-                .likeRight(!StringUtils.isEmpty(treatyBookVO.getPartyb()), TreatyBook::getPartyb, treatyBookVO.getPartyb())
-                .likeRight(!StringUtils.isEmpty(treatyBookVO.getName()), TreatyBook::getName, treatyBookVO.getName())
+                .like(!StringUtils.isEmpty(treatyBookVO.getPartya()), TreatyBook::getPartya, treatyBookVO.getPartya())
+                .like(!StringUtils.isEmpty(treatyBookVO.getPartyb()), TreatyBook::getPartyb, treatyBookVO.getPartyb())
+                .like(!StringUtils.isEmpty(treatyBookVO.getName()), TreatyBook::getName, treatyBookVO.getName())
+                .orderByDesc(TreatyBook::getId)
                 .page(treatyBookVO.page());
-        List<TreatyBookVO> treatyBookVOs = Conversion.changeList(page.getRecords(), TreatyBookVO.class);
-        return TableDataUtils.success(page.getTotal(), treatyBookVOs);
+        List<TreatyBookVO> treatyBookVOList = Conversion.changeList(page.getRecords(), TreatyBookVO.class);
+        return TableDataUtils.success(page.getTotal(), treatyBookVOList);
     }
 
     @Override
